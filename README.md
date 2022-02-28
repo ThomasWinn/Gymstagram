@@ -44,7 +44,7 @@ In this space please either provide images (around 4) showing your prototypes, O
 
 **[Add images/photos that show your paper prototype (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository) along with a very brief caption:**
 
-Link to prototype: https://app.moqups.com/5frE3V4AWB/view/page/a227f713d
+Link to prototype (Updated): https://app.moqups.com/5frE3V4AWB/view/page/a227f713d
 
 ![](https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif)
 
