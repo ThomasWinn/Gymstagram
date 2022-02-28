@@ -5,9 +5,15 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Project 1</title>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/base-min.css">
     </head>
     <body>
-        <p>Homework</p>
+        <form class="pure-form" method="post" enctype="multipart/form-data" action="{{url_for("main_page")}}">
+            <fieldset>
+                <input type="file" name="image" accept="image/jpeg,image/png,image/gif" />
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </fieldset>
+        </form>
     </body>
     <footer>
         <p>Created by <b>Thomas Nguyen</b></p>
