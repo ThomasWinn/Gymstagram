@@ -8,6 +8,12 @@
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/base-min.css">
     </head>
     <body>
+        <div class="imageGallery pure-g">
+            {% for id in image_ids %}
+              <img class="pure-u-1-6 image" src="{{url_for("view_image", img_id=id)}}"/>
+            
+            {% endfor %}
+        </div>
         <form class="pure-form" method="post" enctype="multipart/form-data" action="{{url_for("main_page")}}">
             <fieldset>
                 <input type="file" name="image" accept="image/jpeg,image/png,image/gif" />
