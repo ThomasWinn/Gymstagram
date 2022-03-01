@@ -7,8 +7,13 @@ name = "pypi"
 flask = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
+psycopg2 = "*"
+python-dotenv = "*"
+requests = "*"
+authlib = "*"
+six = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9.10"
+python_version = "3.8.5"
