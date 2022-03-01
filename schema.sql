@@ -1,4 +1,4 @@
--- -- DROP TABLE user_responses;
+DROP TABLE images;
 
 -- create table user (
 --   time_created TIMESTAMP without time zone DEFAULT CURRENT_TIMESTAMP,
