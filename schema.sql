@@ -1,5 +1,5 @@
-drop table images;
 drop table exercises;
+drop table images;
 drop table posts;
 create table posts (
   post_id SERIAL PRIMARY KEY,
