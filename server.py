@@ -1,6 +1,3 @@
-
-from crypt import methods
-from telnetlib import STATUS
 from functools import wraps
 from werkzeug.utils import secure_filename
 from os import environ as env
