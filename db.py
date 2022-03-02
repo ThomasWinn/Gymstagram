@@ -40,16 +40,16 @@ def get_db_cursor(commit=False):
 
 def get_image(img_id):
     with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM images where image_id=%s", (img_id,))
+        cur.execute("SELECT * FROM imagess where image_id=%s", (img_id,))
         return cur.fetchone()
 
 def upload_image(data, filename):
     with get_db_cursor(True) as cur:
-        cur.execute("insert into images (filename, data) values (%s, %s)", (filename, data))
+        cur.execute("insert into imagess (filename, data) values (%s, %s)", (filename, data))
 
 def get_image_ids():
     with get_db_cursor() as cur:
-        cur.execute("select image_id from images;")
+        cur.execute("select image_id from imagess;")
         return [r['image_id'] for r in cur]
 
 # CREATE functions

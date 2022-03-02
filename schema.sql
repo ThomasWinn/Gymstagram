@@ -4,6 +4,7 @@ create table imagess (
   filename text,
   data bytea
 );
+
 drop table exercises;
 drop table images;
 drop table posts;
