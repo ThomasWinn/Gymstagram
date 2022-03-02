@@ -62,3 +62,7 @@ relied on external code, expertise, or anything else, please disclose that
 here:**
 
 ...
+
+## Some Refernces
+Frontend:
+https://www.w3schools.com/howto/howto_css_searchbar.asp

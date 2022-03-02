@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+        <link rel="stylesheet" href="/static/styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <title> {% block title %} {% endblock %} Gymstagram</title>
+    </head>
+    <body>
+        <div class="topnav">
+            <!-- <div class="hov left"> -->
+            <a class="hov left" href="">Gymstagram</a>
+            <!-- </div> -->
+            <div class="search-container">
+                <form class="pure-form" action="/action_page.php">
+                  <input type="text" placeholder="Search.." name="search">
+                  <button class="pure-button" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            <!-- if (guest) -->
+            <div class="hov right">
+                <a class="options" href="">Log In/Sign Up</a>
+            </div>
+            <!-- else:
+            <div>
+                <a class="right" href="">Add POst</a>
+                <a class="right" href="">DM</a>
+            </div> -->
+        </div>
+        <div class="content-padding">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script type="text/javascript" src="/static/main.js"></script>
+    </body>
+    <div class="footer">
+        Created by Team 7
+    </div>
+</html>
