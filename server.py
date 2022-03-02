@@ -36,6 +36,14 @@ def initialize():
 def main_page():
     return render_template('home.html')
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+@app.route('/messages')
+def messages():
+    return render_template('messages.html')
+
 @app.route('/create_post', methods=["GET"])
 def create_post():
 
