@@ -1,16 +1,22 @@
-<!DOCTYPE html>
+{% extends "parent.html" %}
+{% block title %} {% endblock %}
+{% block content %}
+    <p class="daily-quote">Quote of the Day: "Insert random quote from a database of quotes here" </p>
+    <div class="post">
+        <div class="post-top">
+            <p>*Inser profile pic* *insert profile name*</p>
+        </div>
+        <img class=" post-img pure-img" src="../static/images/gym_test.jpg">
+        <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+        <div class="post-like-comment">
+            <div>
+                <button type=""><i class="pure-button fa fa-thumbs-up"></i></button>
+                <button type=""><i class="pure-button fa fa-thumbs-down"></i></button>
+            </div>
+            <div>
+                <button type=""><i class="pure-button fa fa-comments"></i></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Project 1</title>
-    </head>
-    <body>
-        <p>Homework</p>
-        <a href="{{ url_for("create_post") }}">Hello</a>
-    </body>
-    <footer>
-        <p>Created by <b>Thomas Nguyen</b></p>
-    </footer>
-</html>

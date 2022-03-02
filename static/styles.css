@@ -1,0 +1,128 @@
+
+
+.content-padding {
+    padding-top: 3em;
+    padding-bottom: 5em;
+}
+
+.topnav {
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+    background-color: #999900;
+    display:flex;
+    justify-content: space-between;
+  }
+  
+.topnav .left{
+    text-align: left;
+    display: block;
+    color: black;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav .right{
+    text-align: right;
+    display: block;
+    color: black;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav .options{
+    color: black;
+    text-decoration: none;
+}
+
+.topnav .hov:hover {
+    background-color: #CCCC00;
+    color: black;
+}
+
+.topnav .search-container {
+    text-align: center;
+}
+
+.topnav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+}
+
+.topnav .search-container button {
+    text-align: center;
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+background: #ccc;
+}
+  
+/* @media screen and (max-width: 600px) {
+    .topnav .search-container {
+        float: none;
+    }
+    .topnav a, .topnav input[type=text], .topnav .search-container button {
+        float: none;
+        display: block;
+        text-align: left;
+        width: 100%;
+        margin: 0;
+        padding: 14px;
+    }
+    .topnav input[type=text] {
+        border: 1px solid #ccc;  
+    }
+} */
+
+.footer {
+    background: #FFFFCC;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 1em;
+    text-align: center;
+}
+
+.daily-quote {
+    text-align: center;
+}
+
+
+
+.post {
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: lightgray;
+}
+.post-top {
+    font-size: 20px;
+}
+.post-img {
+    width: 100%;
+}
+.post-caption {
+    font-size: 18px;
+}
+.post-like-comment {
+    display:flex;
+    justify-content: space-between;
+}
+
+.post-like-comment button {
+    border: none;
+    font-size: 24px;
+}
