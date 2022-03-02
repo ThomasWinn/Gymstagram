@@ -38,6 +38,11 @@ def get_db_cursor(commit=False):
       finally:
           cursor.close()
 
+def get_image(img_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM images where image_id=%s", (img_id,))
+        return cur.fetchone()
+
 def upload_image(data, filename):
     with get_db_cursor(True) as cur:
         cur.execute("insert into images (filename, data) values (%s, %s)", (filename, data))

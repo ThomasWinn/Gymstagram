@@ -1,6 +1,6 @@
 from crypt import methods
 from telnetlib import STATUS
-from flask import Flask, render_template, request, g, redirect, url_for
+from flask import Flask, render_template, request, g, redirect, url_for, send_file
 import os
 import db
 import io
@@ -16,9 +16,14 @@ def initialize():
 def main_page():
     return render_template('home.html')
 
-@app.route('/create_post')
+@app.route('/create_post', methods=["GET"])
 def create_post():
-    return render_template('create_post.html')
+
+    status = request.args.get("status", "")
+    
+    with db.get_db_cursor() as cur:
+        image_ids = db.get_image_ids()
+        return render_template("create_post.html", image_ids = image_ids)
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -42,7 +47,6 @@ def upload_post():
     if 'image' not in request.files:
         return redirect(url_for("main_page", status="Image Upload Failed: No selected file"))
     file = request.files['image']
-
     if file.filename == '':
         return redirect(url_for("main_page", status="Image Upload Failed: No selected file"))
     if file and allowed_file(file.filename):
