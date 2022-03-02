@@ -10,30 +10,33 @@
     width: 100%;
     overflow: hidden;
     background-color: #999900;
-    display:flex;
-    justify-content: space-between;
   }
   
 .topnav .left{
     text-align: left;
     display: block;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav .logo{
+    display: inline-block;
     color: black;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
 }
 
 .topnav .right{
     text-align: right;
     display: block;
-    color: black;
-    padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
 }
 
 .topnav .options{
+    display: inline-block;
     color: black;
+    padding: 14px 16px;
     text-decoration: none;
 }
 
@@ -65,7 +68,7 @@
 }
 
 .topnav .search-container button:hover {
-background: #ccc;
+    background: #ccc;
 }
   
 /* @media screen and (max-width: 600px) {
@@ -96,17 +99,20 @@ background: #ccc;
 
 .daily-quote {
     text-align: center;
+    font-size: 28px;
 }
 
-
-
-.post {
+.post-area {
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    width: 60%;
+}
+
+.post {
     border-style: solid;
     border-width: 2px;
     border-color: lightgray;
+    margin: 1em;
 }
 .post-top {
     font-size: 20px;
@@ -122,7 +128,58 @@ background: #ccc;
     justify-content: space-between;
 }
 
-.post-like-comment button {
+.post-like-comment i {
     border: none;
+    background-color: white;
     font-size: 24px;
+}
+
+.button-center {
+    text-align: center;
+    font-size: 24px;
+}
+
+.button-left {
+    text-align: right;
+    font-size: 24px;
+}
+
+.button-right {
+    text-align: left;
+    font-size: 24px;
+}
+
+
+/* profile css */
+.profile-area {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+.outline {
+    /* width: 75%; */
+    outline: 1px solid black;
+    /* border-style: solid;
+    border-width: 1px;
+    border-color: lightgray; */
+    /* border: soild black 1px; */
+}
+
+.profile-post {
+    border-style: solid;
+    border-width: 2px;
+    border-color: lightgray;
+    margin: 0.5em;
+}
+
+.profile-post-trash {
+    display:flex;
+    justify-content: space-between;
+}
+
+.profile-post-trash i {
+    border: none;
+    background-color: white;
 }

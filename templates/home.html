@@ -1,22 +1,146 @@
 {% extends "parent.html" %}
+{% block header %}
+{% endblock %}
 {% block title %} {% endblock %}
 {% block content %}
+
     <p class="daily-quote">Quote of the Day: "Insert random quote from a database of quotes here" </p>
-    <div class="post">
-        <div class="post-top">
-            <p>*Inser profile pic* *insert profile name*</p>
+    {% if not session["profile"] %}
+    <div class="pure-g">
+        <div class="button-center pure-u-1-1">
+            <a class=" pure-button" href="">Explore</a>
         </div>
-        <img class=" post-img pure-img" src="../static/images/gym_test.jpg">
-        <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
-        <div class="post-like-comment">
-            <div>
-                <button type=""><i class="pure-button fa fa-thumbs-up"></i></button>
-                <button type=""><i class="pure-button fa fa-thumbs-down"></i></button>
+    </div>
+    {% endif %}
+    {% if session["profile"] %}
+        <div class="pure-g">
+            <div class="button-left pure-u-1-2">
+                <a class="pure-button" href="">Following</a>
             </div>
-            <div>
-                <button type=""><i class="pure-button fa fa-comments"></i></button>
+            <div class="button-right pure-u-1-2">
+                <a class=" pure-button" href="">Explore</a>
             </div>
         </div>
+    {% endif %}
+    <div class="post-area">
+        <div class="pure-g">
+            <div class="pure-u-1-2">
+                <div class="post">
+                    <div class="post-top">
+                        <p>*Insert profile pic* *insert profile name*</p>
+                    </div>
+                    <img class=" post-img pure-img" src="../static/images/gym_test.jpg">
+                    <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+                    <div class="post-like-comment">
+                        <div>
+                            <i class="pure-button fa fa-thumbs-up"></i>
+                            <i class="pure-button fa fa-thumbs-down"></i>
+                        </div>
+                        <div>
+                            <i class="pure-button fa fa-comments"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="post">
+                    <div class="post-top">
+                        <p>*Insert profile pic* *insert profile name*</p>
+                    </div>
+                    <img class=" post-img pure-img" src="../static/images/gym_test2.jpg">
+                    <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+                    <div class="post-like-comment">
+                        <div>
+                            <i class="pure-button fa fa-thumbs-up"></i>
+                            <i class="pure-button fa fa-thumbs-down"></i>
+                        </div>
+                        <div>
+                            <i class="pure-button fa fa-comments"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row 2 -->
+        <div class="pure-g">
+            <div class="pure-u-1-2">
+                <div class="post">
+                    <div class="post-top">
+                        <p>*Insert profile pic* *insert profile name*</p>
+                    </div>
+                    <img class=" post-img pure-img" src="../static/images/gym_test3.jpg">
+                    <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+                    <div class="post-like-comment">
+                        <div>
+                            <i class="pure-button fa fa-thumbs-up"></i>
+                            <i class="pure-button fa fa-thumbs-down"></i>
+                        </div>
+                        <div>
+                            <i class="pure-button fa fa-comments"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="post">
+                    <div class="post-top">
+                        <p>*Insert profile pic* *insert profile name*</p>
+                    </div>
+                    <img class=" post-img pure-img" src="../static/images/gym_test4.jpg">
+                    <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+                    <div class="post-like-comment">
+                        <div>
+                            <i class="pure-button fa fa-thumbs-up"></i>
+                            <i class="pure-button fa fa-thumbs-down"></i>
+                        </div>
+                        <div>
+                            <i class="pure-button fa fa-comments"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- row 3 -->
+        <div class="pure-g">
+            <div class="pure-u-1-2">
+                <div class="post">
+                    <div class="post-top">
+                        <p>*Insert profile pic* *insert profile name*</p>
+                    </div>
+                    <img class=" post-img pure-img" src="../static/images/gym_test5.jpg">
+                    <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+                    <div class="post-like-comment">
+                        <div>
+                            <i class="pure-button fa fa-thumbs-up"></i>
+                            <i class="pure-button fa fa-thumbs-down"></i>
+                        </div>
+                        <div>
+                            <i class="pure-button fa fa-comments"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="post">
+                    <div class="post-top">
+                        <p>*Insert profile pic* *insert profile name*</p>
+                    </div>
+                    <img class=" post-img pure-img" src="../static/images/gym_test6.jpg">
+                    <p class="post-caption"><b>*insert_username*</b> *This is the caption, I want to make it long to see what happens*</p>
+                    <div class="post-like-comment">
+                        <div>
+                            <i class="pure-button fa fa-thumbs-up"></i>
+                            <i class="pure-button fa fa-thumbs-down"></i>
+                        </div>
+                        <div>
+                            <i class="pure-button fa fa-comments"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 
