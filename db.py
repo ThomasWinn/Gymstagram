@@ -1,9 +1,3 @@
-""" database access
-docs:
-* http://initd.org/psycopg/docs/
-* http://initd.org/psycopg/docs/pool.html
-* http://initd.org/psycopg/docs/extras.html#dictionary-like-cursor
-"""
 
 from contextlib import contextmanager
 import logging
@@ -43,6 +37,20 @@ def get_db_cursor(commit=False):
               connection.commit()
       finally:
           cursor.close()
+
+def get_image(img_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM images where image_id=%s", (img_id,))
+        return cur.fetchone()
+
+def upload_image(data, filename):
+    with get_db_cursor(True) as cur:
+        cur.execute("insert into images (filename, data) values (%s, %s)", (filename, data))
+
+def get_image_ids():
+    with get_db_cursor() as cur:
+        cur.execute("select image_id from images;")
+        return [r['image_id'] for r in cur]
 
 # CREATE functions
 def add_post(title, description, user_id):

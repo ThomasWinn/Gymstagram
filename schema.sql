@@ -1,3 +1,9 @@
+DROP TABLE imagess;
+create table imagess (
+  image_id SERIAL PRIMARY KEY,
+  filename text,
+  data bytea
+);
 drop table exercises;
 drop table images;
 drop table posts;
@@ -37,3 +43,4 @@ create table images (
 
 insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', '1');
 insert into exercises (post_id, time_based, exercise_name, num_sets, num_reps) values (1, FALSE, 'Bench Press', 3, 8);
+

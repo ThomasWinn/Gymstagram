@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Project 1</title>
+        <link rel="stylesheet" href="../static/css/main.css">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/base-min.css">
+    </head>
+    <body>
+        <div class="imageGallery pure-g">
+            {% for id in image_ids %}
+              <img class="pure-u-1-6 image" src="{{url_for("view_image", img_id=id)}}"/>
+            
+            {% endfor %}
+        </div>
+        <form class="pure-form" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}">
+            <fieldset>
+                <input type="file" name="image" accept="image/jpeg,image/png,image/gif" />
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </fieldset>
+        </form>
+    </body>
+    <footer>
+        <p>Created by <b>Thomas Nguyen</b></p>
+    </footer>
+</html>
