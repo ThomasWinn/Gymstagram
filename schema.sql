@@ -8,12 +8,20 @@ create table imagess (
 drop table exercises;
 drop table images;
 drop table posts;
+drop table likes;
+drop table dislikes;
+drop table users;
+
 create table posts (
   post_id SERIAL PRIMARY KEY,
   tstamp timestamp NOT NULL DEFAULT NOW(),
   post_title VARCHAR(255) NOT NULL,
   post_description text,
   user_id text
+  CONSTRAINT fk_user
+    FOREIGN KEY(user_id)
+  REFERENCES users(user_id)
+  ON DELETE CASCADE
 );
 
 create table exercises (
@@ -40,6 +48,33 @@ create table images (
       FOREIGN KEY(post_id) 
 	  REFERENCES posts(post_id)
 	  ON DELETE CASCADE
+);
+
+create table likes (
+  post_id INT,
+  users_liked INT[],
+  CONSTRAINT fk_post
+    FOREIGN KEY(post_id)
+  REFERENCES posts(post_id)
+  ON DELETE CASCADE
+);
+
+create table dislikes (
+  post_id INT,
+  users_disliked INT[],
+  CONSTRAINT fk_post
+    FOREIGN KEY(post_id)
+  REFERENCES posts(post_id)
+  ON DELETE CASCADE
+);
+
+create table users (
+  user_id SERIAL PRIMARY KEY,
+  username varchar(255),
+  first_name varchar(255),
+  last_name varchar(255),
+  followers_cnt INT,
+  following_cnt INT
 );
 
 insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', '1');

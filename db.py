@@ -70,6 +70,12 @@ def add_exercise(post_id, time_based, exercise_name, num_sets, num_reps, num_tim
 
 # Probably need to call this in conjunction with get_post_exercises... running an inner/natural join between the exercises
 # and posts tables might work but will get really messy
+
+def get_user_profile(user):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM users where user_id = %s", (user,))
+        return cur.fetchall()
+
 def get_all_posts():
     with get_db_cursor() as cur:
         cur.execute("SELECT * FROM posts")
@@ -109,3 +115,12 @@ def delete_exercise(exercise_id):
 def delete_exercises_by_post(post_id):
     with get_db_cursor() as cur:
         cur.execute("DELETE FROM exercises WHERE post_id = %s", (post_id,))
+
+
+########################## SEARCH #############################
+def search_user(text):
+    with get_db_cursor() as cur:
+        # same thing as select all users where text in username HAVENT TRIED YET
+        query = """SELECT * FROM users WHERE username LIKE '%%s%'"""
+        cur.execute(query, (text))
+        return cur.fetchall()
