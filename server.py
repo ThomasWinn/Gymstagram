@@ -1,3 +1,4 @@
+from crypt import methods
 from functools import wraps
 from werkzeug.utils import secure_filename
 from os import environ as env
@@ -10,6 +11,12 @@ import db
 import io
 import json
 
+'''
+Questions:
+Liking/dislike button - IS there a way you can update likes and dislikes realtime if we have two buttons? How will the server know when the button is pressed and specific post id?
+Searching - realtime searching after onpress of each letter ("autocomplete")? How do we pass the server the string we typed so far without pressing the search button or enter?
+'''
+# TODO: Test all functionality to connect to front end
 # import psycopg2 #installed binary version # unable to use heroku psql #not able to understand how to access the db
 app = Flask(__name__)
 app.secret_key = env['CLIENT_SECRET']
@@ -36,22 +43,86 @@ def initialize():
 def main_page():
     return render_template('home.html')
 
+########################## PROFILE #############################
+
+# return data containing necessary things for a profile
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+    data = {
+        'username': '',
+        'first_name': '',
+        'last_name': '',
+        'followers': 0,
+        'following': 0,
+    }
+    # IF LOGGED IN return your profile page else return a blurred out page or soemthing where in middle says sign in / log in that directs to auth0
+    if 'profile' in session:
+        # retrieve stuff from db about user
+        user_profile = db.get_user_profile(session['profile']['user_id'])
+        data['username'] = user_profile[1]
+        data['first_name'] = user_profile[2]
+        data['last_name'] = user_profile[3]
+        data['followers'] = user_profile[4]
+        data['following'] = user_profile[5]
 
+        user_posts = db.get_user_posts(session['profile']['user_id'])
+        data['posts'] = user_posts
+
+        return render_template('profile.html', data=data)
+    # TODO: direct to new page
+    else:
+        return render_template('no_profile.html', data=data)
+
+########################## DM ######################################
 @app.route('/messages')
 def messages():
     return render_template('messages.html')
 
+########################## LOGIN / LOGOUT ##################################
+@app.route('/callback')
+def callback_handling():
+    # Handles response from token endpoint
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    userinfo = resp.json()
+
+    # Store the user information in flask session.
+    session['jwt_payload'] = userinfo
+    session['profile'] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture']
+    }
+    return redirect('/')
+
+@app.route('/login')
+def login():
+    return auth0.authorize_redirect(redirect_uri='http://localhost:5000/callback')
+
+@app.route('/logout')
+def logout():
+    # Clear session stored data
+    session.clear()
+    # Redirect user to logout endpoint
+    params = {'returnTo': url_for('main_page', _external=True), 'client_id': env['CLIENT_ID']}
+    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+
+########################## CREATE POST ##################################
+
 @app.route('/create_post', methods=["GET"])
 def create_post():
-
-    status = request.args.get("status", "")
     
-    with db.get_db_cursor() as cur:
-        image_ids = db.get_image_ids()
-        return render_template("create_post.html", image_ids = image_ids)
+    # if logged in 
+    if 'profile' in session:
+        status = request.args.get("status", "")
+        
+        with db.get_db_cursor() as cur:
+            image_ids = db.get_image_ids()
+            return render_template("create_post.html", image_ids = image_ids)
+
+    # TODO: create html page that tells them to sign in to view this page basically
+    else:
+        return render_template('no_create_post.html')
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -83,33 +154,22 @@ def upload_post():
         db.upload_image(data, filename)
 
     return redirect(url_for("main_page", status="Image Uploaded Successfully"))
-@app.route('/callback')
-def callback_handling():
-    # Handles response from token endpoint
-    auth0.authorize_access_token()
-    resp = auth0.get('userinfo')
-    userinfo = resp.json()
 
-    # Store the user information in flask session.
-    session['jwt_payload'] = userinfo
-    session['profile'] = {
-        'user_id': userinfo['sub'],
-        'name': userinfo['name'],
-        'picture': userinfo['picture']
-    }
-    return redirect('/')
+########################## LIKE / DISLIKE ##################################
+# I'm confused how the heck we are going to do this
+# TODO: I need to understand and populate shit into the db first to test.
 
-@app.route('/login')
-def login():
-    return auth0.authorize_redirect(redirect_uri='http://localhost:5000/callback')
+########################## SEARCH ##################################
+@app.route('/search', methods=['POST'])
+def search_text():
 
-@app.route('/logout')
-def logout():
-    # Clear session stored data
-    session.clear()
-    # Redirect user to logout endpoint
-    params = {'returnTo': url_for('main_page', _external=True), 'client_id': env['CLIENT_ID']}
-    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+    # search through usernames
+    # TODO: some button to check if we should search through username or hashtag
+    to_search = request.form.get('search', '') # if there's nothing in search, it'll just search through all users
+    found_users = db.search_user(to_search)
+
+    # TODO: how to return back information without reloading the page?
+    return render_template('profile.html', users=found_users)
 
 def requires_auth(f):
   @wraps(f)
