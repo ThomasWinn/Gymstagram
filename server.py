@@ -1,4 +1,3 @@
-from crypt import methods
 from functools import wraps
 from werkzeug.utils import secure_filename
 from os import environ as env

@@ -1,23 +1,32 @@
-DROP TABLE imagess;
-create table imagess (
-  image_id SERIAL PRIMARY KEY,
-  filename text,
-  data bytea
-);
-
 drop table exercises;
+drop table following;
 drop table images;
-drop table posts;
 drop table likes;
 drop table dislikes;
+drop table posts;
 drop table users;
+
+create table users (
+  user_id text PRIMARY KEY,
+  username varchar(255),
+  first_name varchar(255),
+  last_name varchar(255)
+);
+
+create table following (
+  user_id text,
+  follower_id text,
+  UNIQUE (user_id, follower_id)
+);
 
 create table posts (
   post_id SERIAL PRIMARY KEY,
   tstamp timestamp NOT NULL DEFAULT NOW(),
-  post_title VARCHAR(255) NOT NULL,
+  post_title text NOT NULL,
   post_description text,
-  user_id text
+  filename text,
+  data bytea,
+  user_id text,
   CONSTRAINT fk_user
     FOREIGN KEY(user_id)
   REFERENCES users(user_id)
@@ -39,44 +48,18 @@ create table exercises (
 	  ON DELETE CASCADE
 );
 
-create table images (
-    img_id SERIAL PRIMARY KEY,
-    post_id INT,
-    filename text,
-    data bytea,
-    CONSTRAINT fk_post
-      FOREIGN KEY(post_id) 
-	  REFERENCES posts(post_id)
-	  ON DELETE CASCADE
-);
-
 create table likes (
   post_id INT,
-  users_liked INT[],
-  CONSTRAINT fk_post
-    FOREIGN KEY(post_id)
-  REFERENCES posts(post_id)
-  ON DELETE CASCADE
+  user_liked text,
+  UNIQUE (post_id, user_liked)
 );
 
 create table dislikes (
   post_id INT,
-  users_disliked INT[],
-  CONSTRAINT fk_post
-    FOREIGN KEY(post_id)
-  REFERENCES posts(post_id)
-  ON DELETE CASCADE
+  user_disliked text,
+  UNIQUE (post_id, user_disliked)
 );
 
-create table users (
-  user_id SERIAL PRIMARY KEY,
-  username varchar(255),
-  first_name varchar(255),
-  last_name varchar(255),
-  followers_cnt INT,
-  following_cnt INT
-);
-
-insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', '1');
-insert into exercises (post_id, time_based, exercise_name, num_sets, num_reps) values (1, FALSE, 'Bench Press', 3, 8);
+insert into users (user_id, username, first_name, last_name) values ('lKsjf23Dlds12', 'liux2789', 'Hughdan', 'Liu');
+insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', 'lKsjf23Dlds12') RETURNING post_id;
 
