@@ -21,7 +21,7 @@
         $(time_exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise"/> <label for="time">Choose a duration</label><select name="text[]" id="time"><option value="seconds">Seconds</option><option value="minutes">Minutes</option><option value="hours">Hours</option></select> <input type="number" name="text[]" placeholder = "Enter in time spent"/><a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise"/> <input type="number" name="text[]" placeholder = "Enter in time spent"/><select name="text[]" id="time"><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select><a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
             }
         });
 
@@ -33,16 +33,24 @@
         })
     });
 
+    var loadFile = function(event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        // var input_image = document.getElementById('input_img').style.display = "none";
+    };
+
     </script>
     <body>
         <div id="create_body">
             <h1 class = "pure-menu-heading ">Create your Gymstagram post!</h1>
             <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form">
-    
               <fieldset>
-                  <textarea name = "text" rows = "10" cols = "50">Write a caption...</textarea>
-                  <br></br>
-                  <input type="file" name="image" accept="image/jpeg,image/png,image/gif" />
+                <p><img id="output" width="500" /></p>
+                <input type="file" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif" />
+                <br><br>
+                  <textarea name = "text" rows = "5" cols = "50">Write a caption...</textarea>
+                  <br><br>
+
                   <div class = "exercises_wrap">
                     <div> <button class="add_exercise pure-button">Add Sets/Reps Exercise</button></div>
                     <div> <button class="time_exercise pure-button">Add Timed Exercise</button></div>

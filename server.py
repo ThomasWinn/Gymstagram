@@ -56,21 +56,24 @@ def profile():
     }
     # IF LOGGED IN return your profile page else return a blurred out page or soemthing where in middle says sign in / log in that directs to auth0
     if 'profile' in session:
+        ####### maybe add in !!!!!
         # retrieve stuff from db about user
-        user_profile = db.get_user_profile(session['profile']['user_id'])
-        data['username'] = user_profile[1]
-        data['first_name'] = user_profile[2]
-        data['last_name'] = user_profile[3]
-        data['followers'] = user_profile[4]
-        data['following'] = user_profile[5]
+        # user_profile = db.get_user_profile(session['profile']['user_id'])
+        # data['username'] = user_profile[1]
+        # data['first_name'] = user_profile[2]
+        # data['last_name'] = user_profile[3]
+        # data['followers'] = user_profile[4]
+        # data['following'] = user_profile[5]
 
-        user_posts = db.get_user_posts(session['profile']['user_id'])
-        data['posts'] = user_posts
+        # user_posts = db.get_user_posts(session['profile']['user_id'])
+        # data['posts'] = user_posts
 
-        return render_template('profile.html', data=data)
+        # return render_template('profile.html', data=data)
+        return render_template('profile.html')
     # TODO: direct to new page
     else:
-        return render_template('no_profile.html', data=data)
+        # return render_template('no_profile.html', data=data)
+        return render_template('profile.html')
 
 ########################## DM ######################################
 @app.route('/messages')
