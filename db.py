@@ -56,8 +56,8 @@ def get_image_ids():
 def add_post(title, description, user_id):
     with get_db_cursor() as cur:
         current_app.logger.info("Adding post %s, %s, %s", title, description, user_id)
-        cur.execute("INSERT INTO posts (post_title, post_description, user_id) VALUES (%s, %s, %s)", (title, description, user_id))
-
+        cur.execute("INSERT INTO posts (post_title, post_description, user_id) VALUES (%s, %s, %s) RETURNING post_id", (title, description, user_id))
+        return cur.fetchall()
 # This is tricky, idk how we're gonna retrive the post_id associated with the exercise in order to establish the foreign
 # key relationship
 def add_exercise(post_id, time_based, exercise_name, num_sets, num_reps, num_time, time_units):
@@ -97,12 +97,12 @@ def get_post_exercises(post_id):
 # Manually updating/deleting each exercise when a user 
 def update_post(post_id, title, description):
     with get_db_cursor() as cur:
-        cur.execute("UPDATE posts SET post_title = %s, post_description = %s WHERE post_id = %s", (post_id,))
+        cur.execute("UPDATE posts SET post_title = %s, post_description = %s WHERE post_id = %s", (title, description, post_id))
 
 
 # DELETE functions
 
-# post deletion will cascade and delete associated exercises and image
+# post deletion will cascade and delete associated exercises
 def delete_post(post_id):
     with get_db_cursor() as cur:
         cur.execute("DELETE FROM posts WHERE post_id = %s", (post_id,))
@@ -121,6 +121,6 @@ def delete_exercises_by_post(post_id):
 def search_user(text):
     with get_db_cursor() as cur:
         # same thing as select all users where text in username HAVENT TRIED YET
-        query = """SELECT * FROM users WHERE username LIKE '%%s%'"""
-        cur.execute(query, (text))
+        query = "%" + text + "%"
+        cur.execute('SELECT * FROM users WHERE username like %s', (query,))
         return cur.fetchall()
