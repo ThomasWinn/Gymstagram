@@ -53,17 +53,21 @@ def get_image_ids():
         return [r['image_id'] for r in cur]
 
 # CREATE functions
-def add_post(title, description, user_id):
-    with get_db_cursor() as cur:
-        current_app.logger.info("Adding post %s, %s, %s", title, description, user_id)
-        cur.execute("INSERT INTO posts (post_title, post_description, user_id) VALUES (%s, %s, %s) RETURNING post_id", (title, description, user_id))
-        return cur.fetchall()
-# This is tricky, idk how we're gonna retrive the post_id associated with the exercise in order to establish the foreign
-# key relationship
-def add_exercise(post_id, time_based, exercise_name, num_sets, num_reps, num_time, time_units):
-    with get_db_cursor() as cur:
-        current_app.logger.info("Adding exercise %s, %s, %s, %s, %s, %s, %s", post_id, time_based, exercise_name, num_sets, num_reps, num_time, time_units)
-        cur.execute("INSERT INTO exercises (post_id, time_based, exercise_name, num_sets, num_reps, num_time, time_units) VALUES (%s, %s, %s, %s, %s, %s, %s)", (post_id, time_based, exercise_name, num_sets, num_reps, num_time, time_units))
+def add_post(user_id, description, filename, data):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Adding post %s, %s, %s, %s", user_id, description, filename, data)
+        cur.execute("INSERT INTO posts (user_id, description, filename, data) VALUES (%s, %s, %s, %s) RETURNING post_id", (user_id, description, filename, data))
+        return cur.fetchone()
+
+def add_exercise(post_id, exercise_name, num_sets, num_reps):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Adding exercise %s, %s, %s, %s", post_id, exercise_name, num_sets, num_reps)
+        cur.execute("INSERT INTO exercises (post_id, time_based, exercise_name, num_sets, num_reps) VALUES (%s, false, %s, %s, %s)", (post_id, exercise_name, num_sets, num_reps))
+
+def add_time_exercise(post_id, exercise_name, num_time, time_units):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Adding time based exercise %s, %s, %s, %s", post_id, exercise_name, num_time, time_units)
+        cur.execute("INSERT INTO exercises (post_id, time_based, exercise_name, num_time, time_units) VALUES (%s, true, %s, %s, %s)", (post_id, exercise_name, num_time, time_units))
 
 
 # READ functions 

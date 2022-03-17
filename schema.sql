@@ -22,15 +22,14 @@ create table following (
 create table posts (
   post_id SERIAL PRIMARY KEY,
   tstamp timestamp NOT NULL DEFAULT NOW(),
-  post_title text NOT NULL,
-  post_description text,
+  description text NOT NULL,
   filename text,
   data bytea,
-  user_id text,
-  CONSTRAINT fk_user
-    FOREIGN KEY(user_id)
-  REFERENCES users(user_id)
-  ON DELETE CASCADE
+  user_id text
+  -- CONSTRAINT fk_user
+  --   FOREIGN KEY(user_id)
+  -- REFERENCES users(user_id)
+  -- ON DELETE CASCADE
 );
 
 create table exercises (
@@ -41,7 +40,7 @@ create table exercises (
     num_sets INT,
     num_reps INT,
     num_time INT,
-    time_units INT,
+    time_units text,
     CONSTRAINT fk_post
       FOREIGN KEY(post_id) 
 	  REFERENCES posts(post_id)
@@ -60,6 +59,6 @@ create table dislikes (
   UNIQUE (post_id, user_disliked)
 );
 
-insert into users (user_id, username, first_name, last_name) values ('lKsjf23Dlds12', 'liux2789', 'Hughdan', 'Liu');
-insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', 'lKsjf23Dlds12') RETURNING post_id;
+-- insert into users (user_id, username, first_name, last_name) values ('lKsjf23Dlds12', 'liux2789', 'Hughdan', 'Liu');
+-- insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', 'lKsjf23Dlds12') RETURNING post_id;
 
