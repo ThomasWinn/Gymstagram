@@ -40,7 +40,9 @@ def initialize():
 
 @app.route('/')
 def main_page():
+    
     return render_template('home.html')
+
 
 ########################## PROFILE #############################
 
