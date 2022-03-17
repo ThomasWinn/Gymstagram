@@ -183,3 +183,10 @@
     border: none;
     background-color: white;
 }
+
+#create_body {
+    text-align: center;
+}
+#post_form {
+    display: inline-block;
+}
