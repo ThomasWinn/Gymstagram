@@ -150,8 +150,19 @@ def upload_post():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         data = file.read()
-        db.upload_image(data, filename)
-
+        description = request.form.get("text")
+        user_id = session['profile']['user_id']
+        post_id = db.add_post(user_id, description, filename, data)[0]
+        # print(post_id)
+        text = request.form.getlist("text[]")
+        exercises = []
+        for x in range(0, len(text), 3):
+            exercises.append(text[x:x+3])
+        for exercise in exercises:
+            if exercise[2].isdigit():
+                db.add_exercise(post_id, exercise[0], exercise[1], exercise[2])
+            else:
+                db.add_time_exercise(post_id, exercise[0], exercise[1], exercise[2])
     return redirect(url_for("main_page", status="Image Uploaded Successfully"))
 
 ########################## LIKE / DISLIKE ##################################
