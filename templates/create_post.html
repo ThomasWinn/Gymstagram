@@ -15,13 +15,13 @@
         $(exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise"/> <input type="text" name="text[]" placeholder = "Enter in # of sets"/> <input type="text" name="text[]" placeholder = "Enter in # of reps"/> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise"/> <input type="number" name="text[]" placeholder = "Enter in # of sets"/> <input type="number" name="text[]" placeholder = "Enter in # of reps"/> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
             }
         });
         $(time_exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise"/> <input type="text" name="text[]" placeholder = "Enter in time spent"/> <a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise"/> <label for="time">Choose a duration</label><select name="text[]" id="time"><option value="seconds">Seconds</option><option value="minutes">Minutes</option><option value="hours">Hours</option></select> <input type="number" name="text[]" placeholder = "Enter in time spent"/><a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
             }
         });
 
@@ -35,19 +35,21 @@
 
     </script>
     <body>
-        <h1 class = "pure-menu-heading ">Create your Gymstagram post!</h1>
-        <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form">
-
-          <fieldset>
-              <textarea name = "text" rows = "10" cols = "50">Write a caption...</textarea>
-              <br></br>
-              <input type="file" name="image" accept="image/jpeg,image/png,image/gif" />
-              <div class = "exercises_wrap">
-                <div> <button class="add_exercise pure-button">Add Sets/Reps Exercise</button></div>
-                <div> <button class="time_exercise pure-button">Add Timed Exercise</button></div>
-              </div>
-              <button type="submit" class="pure-button pure-button-primary">Submit</button>
-          </fieldset>
-        </form>
+        <div id="create_body">
+            <h1 class = "pure-menu-heading ">Create your Gymstagram post!</h1>
+            <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form">
+    
+              <fieldset>
+                  <textarea name = "text" rows = "10" cols = "50">Write a caption...</textarea>
+                  <br></br>
+                  <input type="file" name="image" accept="image/jpeg,image/png,image/gif" />
+                  <div class = "exercises_wrap">
+                    <div> <button class="add_exercise pure-button">Add Sets/Reps Exercise</button></div>
+                    <div> <button class="time_exercise pure-button">Add Timed Exercise</button></div>
+                  </div>
+                  <button type="submit" class="pure-button pure-button-primary">Submit</button>
+              </fieldset>
+            </form>
+        </div>
       </body>
 {% endblock %}
