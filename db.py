@@ -85,6 +85,11 @@ def get_all_posts():
         cur.execute("SELECT * FROM posts")
         return cur.fetchall()
 
+def get_all_posts_reverse():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM posts")
+        return cur.fetchall()
+
 def get_user_posts(user_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT * FROM posts where user_id = %s", (user_id,))
@@ -96,6 +101,11 @@ def get_post_exercises(post_id):
         cur.execute("SELECT * FROM exercises WHERE post_id = %s", (post_id,))
         return cur.fetchall()
 
+def get_all_exercises():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM exercises")
+        return cur.fetchall()
+
 # UPDATE functions
 # Maybe we update the exercises associated with a post by deleting all of the posts exercises and just re-saving them?
 # Manually updating/deleting each exercise when a user 
@@ -103,6 +113,10 @@ def update_post(post_id, title, description):
     with get_db_cursor() as cur:
         cur.execute("UPDATE posts SET post_title = %s, post_description = %s WHERE post_id = %s", (title, description, post_id))
 
+def get_post(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM posts where post_id = %s", (post_id,))
+        return cur.fetchall()
 
 # DELETE functions
 

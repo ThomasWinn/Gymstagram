@@ -9,7 +9,14 @@ import os
 import db
 import io
 import json
+# import jinja2
+# from jinja2.ext import Extension
 
+
+# jinja_env = jinja2.Environment(
+#     loader=jinja2.FileSystemLoader('.'),
+#     extensions=['jinja2.ext.do']
+# )
 '''
 Questions:
 Liking/dislike button - IS there a way you can update likes and dislikes realtime if we have two buttons? How will the server know when the button is pressed and specific post id?
@@ -19,6 +26,11 @@ Searching - realtime searching after onpress of each letter ("autocomplete")? Ho
 # import psycopg2 #installed binary version # unable to use heroku psql #not able to understand how to access the db
 app = Flask(__name__)
 app.secret_key = env['CLIENT_SECRET']
+
+# jinja_env = jinja2.Environment(
+#     loader=jinja2.FileSystemLoader('.'),
+#     extensions=['jinja2.ext.do']
+# )
 
 oauth = OAuth(app)
 
@@ -40,8 +52,12 @@ def initialize():
 
 @app.route('/')
 def main_page():
-    
-    return render_template('home.html')
+    all_posts = db.get_all_posts()
+    all_exercises = db.get_all_exercises()
+    # print(all_posts)
+    # current_app.logger.info(all_posts)
+    # console.log(all_posts)
+    return render_template('home.html', posts = all_posts, exercises=all_exercises)
 
 
 ########################## PROFILE #############################
@@ -133,13 +149,12 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
 
 ### IMAGES
-@app.route('/image/<int:img_id>')
-def view_image(img_id):
-    image_row = db.get_image(img_id)
-    stream = io.BytesIO(image_row["data"])
-         
+@app.route('/post/<int:post_id>')
+def view_post_image(post_id):
+    image_row = db.get_post(post_id)[0]
+    stream = io.BytesIO(image_row[4])
     # use special "send_file" function
-    return send_file(stream, attachment_filename=image_row["filename"])    
+    return send_file(stream, attachment_filename=image_row["filename"]) 
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -195,3 +210,8 @@ def requires_auth(f):
     return f(*args, **kwargs)
 
   return decorated
+
+# @app.route('/posts/<post_id>', methods=['GET'])
+# def get_post_exercises(post_id):
+#     exercises = db.get_post_exercises(post_id)
+#     return render_template("home.html", exercises = exercises)
