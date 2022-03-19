@@ -4,7 +4,7 @@ from os import environ as env
 from werkzeug.exceptions import HTTPException
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
-from flask import Flask, render_template, request, g, redirect, url_for, send_file, jsonify, session
+from flask import Flask, render_template, request, g, redirect, url_for, send_file, jsonify, session, current_app
 import os
 import db
 import io
@@ -99,6 +99,21 @@ def messages():
     return render_template('messages.html')
 
 ########################## LOGIN / LOGOUT ##################################
+
+### CHECK TO SEE IF USER IS FIRST TIME OR NOT
+def first_time_user(session):
+    # for some reason, it'll get a profile from the db, but when I look in the db, the user was never added...
+    current_app.logger.info(db.get_user_profile(session['user_id']))
+    if len(db.get_user_profile(session['user_id'])) == 0:
+        full_name = session['name'].split(' ')
+        fname = full_name[0]
+        lname = full_name[1]
+        db.add_user(session['user_id'], fname, lname)
+        return True
+    else:
+        return False
+
+
 @app.route('/callback')
 def callback_handling():
     # Handles response from token endpoint
@@ -113,6 +128,15 @@ def callback_handling():
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
+
+    #### WON"T ADD TROLL
+    if first_time_user(session['profile']):
+        current_app.logger.info('FIRST TIMER')
+    else:
+        current_app.logger.info('NOT FIRST TIMER')
+    
+    ### TODO: make functionality if he/she is already a user in the db
+    
     return redirect('/')
 
 @app.route('/login')
@@ -196,10 +220,20 @@ def search_text():
     # search through usernames
     # TODO: some button to check if we should search through username or hashtag
     to_search = request.form.get('search', '') # if there's nothing in search, it'll just search through all users
-    found_users = db.search_user(to_search)
-
+    search_type = request.form.get('search_type', '')
+    if search_type == 'name':
+        # full_name search
+        found_search = db.search_name(to_search)
+    elif search_type == 'username':
+        # TODO:
+        found_search = db.search_user(to_search)
+    elif search_type == 'tag':
+        # TODO:
+        pass
+    
     # TODO: how to return back information without reloading the page?
-    return render_template('profile.html', users=found_users)
+    print(found_search)
+    return render_template('searched.html', users=found_search)
 
 def requires_auth(f):
   @wraps(f)

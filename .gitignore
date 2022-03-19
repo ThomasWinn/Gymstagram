@@ -1,3 +1,4 @@
 Procfile
 Pipfile.lock
 Pipfile
+.env

@@ -69,6 +69,15 @@ def add_time_exercise(post_id, exercise_name, num_time, time_units):
         current_app.logger.info("Adding time based exercise %s, %s, %s, %s", post_id, exercise_name, num_time, time_units)
         cur.execute("INSERT INTO exercises (post_id, time_based, exercise_name, num_time, time_units) VALUES (%s, true, %s, %s, %s)", (post_id, exercise_name, num_time, time_units))
 
+def add_user(user_id, fname, lname):
+    with get_db_cursor(True) as cur:
+        blank = ''
+        fname = fname.lower()
+        lname = lname.lower()
+        full_name = fname + ' ' + lname
+        current_app.logger.info("Adding User %s, %s, %s, %s", user_id, fname, lname, full_name)
+        cur.execute("INSERT INTO users (user_id, username, first_name, last_name, full_name) VALUES (%s, %s, %s, %s, %s)", (user_id, blank, fname, lname, full_name))
+
 
 # READ functions 
 
@@ -139,6 +148,15 @@ def delete_exercises_by_post(post_id):
 def search_user(text):
     with get_db_cursor() as cur:
         # same thing as select all users where text in username HAVENT TRIED YET
+        text = text.lower()
         query = "%" + text + "%"
         cur.execute('SELECT * FROM users WHERE username like %s', (query,))
+        return cur.fetchall()
+
+# full_name search
+def search_name(text):
+    with get_db_cursor() as cur:
+        text = text.lower()
+        query = "%" + text + "%"
+        cur.execute('SELECT * from users WHERE full_name like %s', (query,))
         return cur.fetchall()
