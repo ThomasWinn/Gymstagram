@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="/static/main.js"></script>
         {% block header %} {% endblock %}
-        <title> {% block title %} {% endblock %} Gymstagram</title>
+        <title> {% block title %} {% endblock %}-Gymstagram</title>
     </head>
     <body>
         <div class="custom-wrapper pure-g" id="menu">
@@ -28,7 +28,12 @@
                         <li class="pure-menu-item search-pad">
                             <div class="search-container">
                                 <form class="pure-form" action="{{ url_for('search_text') }}" method="post">
-                                  <input type="text" placeholder="Search.." name="search">
+                                  <input type="text" placeholder="Search.." name="search" required>
+                                  <select name="search_type" required>
+                                      <option value="name">Name</option>
+                                      <option value="username">Username</option>
+                                      <option value="tag">Tag</option>
+                                  </select>
                                   <button class="pure-button" type="submit"><i class="fa fa-search"></i></button>
                                 </form>
                             </div>
@@ -49,7 +54,7 @@
                             <a href="{{ url_for('create_post') }}" class="pure-menu-link">Add Post</a>
                         </li>
                         <li class="pure-menu-item">
-                            <a href="{{ url_for('profile') }}" class="pure-menu-link">Profile</a>
+                            <a href="{{ url_for('profile', id=session['profile']['user_id']) }}" class="pure-menu-link">Profile</a>
                         </li>
                         <li class="pure-menu-item">
                             <a href="{{ url_for('logout') }}" class="pure-menu-link">Logout</a>

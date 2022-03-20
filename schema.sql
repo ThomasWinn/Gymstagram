@@ -1,6 +1,6 @@
 drop table exercises;
 drop table following;
-drop table images;
+-- drop table images;
 drop table likes;
 drop table dislikes;
 drop table posts;
@@ -10,7 +10,8 @@ create table users (
   user_id text PRIMARY KEY,
   username varchar(255),
   first_name varchar(255),
-  last_name varchar(255)
+  last_name varchar(255),
+  full_name varchar(255)
 );
 
 create table following (
@@ -59,6 +60,10 @@ create table dislikes (
   UNIQUE (post_id, user_disliked)
 );
 
--- insert into users (user_id, username, first_name, last_name) values ('lKsjf23Dlds12', 'liux2789', 'Hughdan', 'Liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dlds12', 'liux2789', 'hughdan', 'liu', 'hughdan liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjkd', 'dfalk789', 'thom', 'liu', 'thom liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dfj2', 'lifjs89', 't', 'liu', 't liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsalfkjsaf12', 'liuxlkj9', 'jeff', 'liu', 'jeff liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKla3Dlds12', 'lilfaj', 'calvin', 'liu', 'calvin liu');
 -- insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', 'lKsjf23Dlds12') RETURNING post_id;
 
