@@ -4,7 +4,7 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-    <p class="daily-quote">Quote of the Day: "Insert random quote from a database of quotes here" </p>
+    <p class="daily-quote">{{quote}}</p>
     {% if not session["profile"] %}
     <div class="pure-g">
         <div class="button-center pure-u-1-1">

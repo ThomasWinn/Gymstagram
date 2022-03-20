@@ -5,10 +5,16 @@ from werkzeug.exceptions import HTTPException
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
 from flask import Flask, render_template, request, g, redirect, url_for, send_file, jsonify, session, current_app
+
+from bs4 import BeautifulSoup
+from scrape_quotes import *
+
 import os
 import db
 import io
 import json
+import random
+
 # import jinja2
 # from jinja2.ext import Extension
 
@@ -50,14 +56,23 @@ auth0 = oauth.register(
 def initialize():
     db.setup()
 
+    # check to see if there are already quotes in the db
+    if (len(db.get_all_quotes()) == 0):
+        # Scrape 
+        quotes = generate_quotes()
+        db.add_quotes(quotes)
+
 @app.route('/')
 def main_page():
     all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
-    # print(all_posts)
-    # current_app.logger.info(all_posts)
-    # console.log(all_posts)
-    return render_template('home.html', posts = all_posts, exercises=all_exercises)
+    rand = random.randint(1, 49)
+    chosen_quote = db.get_quote(rand)
+    la_quote = chosen_quote[0][0]
+    if 'Erin' in la_quote:
+        la_quote.replace('- -', '-')
+
+    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote)
 
 
 ########################## PROFILE #############################
