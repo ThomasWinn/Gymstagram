@@ -268,6 +268,11 @@ def search_text():
     print(found_search)
     return render_template('searched.html', users=found_search)
 
+@app.route('/view_post/<int:post_id>', methods=['GET'])
+def view_post(post_id):
+    current_post = db.get_post(post_id)[0]
+    current_exercises = db.get_post_exercises(post_id)
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises)
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):
 #     exercises = db.get_post_exercises(post_id)

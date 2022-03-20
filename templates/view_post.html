@@ -1,0 +1,106 @@
+{% extends "parent.html" %}
+{% block header %}
+{% endblock %}
+{% block title %}Post {% endblock %}
+{% block content %}
+<script src=http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js></script>
+<script type = "text/javascript">
+    $(document).ready(function() {
+        var container         = $(".exercises_wrap");
+        var comment_button      = $(".add_comment"); //Plus sign id
+
+
+        var x = 0; //input field count intially
+        $(comment_button).click(function(e){         e.preventDefault();
+            if(x < max){ //maximum number of input field allowed
+                x++; //input field increment
+                $(container).append('<div class = "pure-u-1"> <textarea name = "text" rows = "5" cols = "50" placeholder="Write a caption..."></textarea> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
+            }
+        });
+
+        $(container).on("click",".delete_exercise", function(e){ //user click on remove text
+            e.preventDefault(); $(this).parent('div').remove(); x--;
+        })
+
+    });
+
+    </script>     
+    
+<div class="post-area">  
+                      <div class="post">
+                          <div class="post-top">
+                              <p>*Insert profile pic* *insert profile name*</p>
+                          </div>
+                              <div>
+
+                                    <img class=" post-img pure-img" src="{{url_for("view_post_image", post_id=current_post['post_id'])}}">
+                                  <table class="pure-table pure-table-horizontal post-table">
+                                      <thead>
+                                          <tr>
+                                              <th>Exercise</th>
+                                              <th>Sets</th>
+                                              <th>Reps</th>
+                                              <th>Time</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                      {% for exercise in current_exercises %}
+                                          {% if exercise['post_id'] == current_post['post_id'] %}
+                                              <tr>
+                                                  <td>{{exercise['exercise_name']}}</td>
+                                                  <td>
+                                                      {% if exercise['num_sets'] == None %}
+                                                          -
+                                                      {% else %}
+                                                          {{exercise['num_sets']}}
+                                                      {% endif %}
+                                                  </td>
+                                                  <td>
+                                                      {% if exercise['num_reps'] == None %}
+                                                          -
+                                                      {% else %}
+                                                          {{exercise['num_reps']}}
+                                                      {% endif %}
+                                                  </td>
+                                                  <td>
+                                                      {% if exercise['num_time'] == None %}
+                                                          -
+                                                      {% else %}
+                                                          {{exercise['num_time']}} {{exercise['time_units']}}
+                                                      {% endif %}
+                                                  </td>
+                                              </tr>
+                                          {% endif %}
+                                      {% endfor %}
+                                      </tbody>
+                                  </table>
+                                  <p class="post-caption"><b>{{ current_post['user_id'] }}</b> {{ current_post['description'] }} </p>
+                              </div>
+                          <div class="post-like-comment">
+                              <div>
+                                  <i class="pure-button fa fa-thumbs-up"></i>
+                                  <i class="pure-button fa fa-thumbs-down"></i>
+                              </div>
+                              <div>
+                                    <!-- <button id = add_comment>
+                                          <i class="pure-button fa fa-comments"></i>
+                                    </button> -->
+                                          
+                              </div>
+                          </div>
+                          <div class = "comments">
+                              <textarea name = "comment" rows = "5" cols = "50" placeholder="Comment"></textarea>
+                              <button type = "submit" class = "pure-button">Comment</button>
+                          </div>
+                      </div>
+
+                     
+                        
+                        <!-- <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form"> -->
+
+                        <!-- </form> -->
+
+                      
+  </div>
+      
+{% endblock %}
