@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from os import environ as env
 from werkzeug.exceptions import HTTPException
 from authlib.integrations.flask_client import OAuth
+from authlib.oauth2.rfc6749 import OAuth2Token
 from six.moves.urllib.parse import urlencode
 from flask import Flask, render_template, request, g, redirect, url_for, send_file, jsonify, session, current_app
 
@@ -40,8 +41,14 @@ app.secret_key = env['CLIENT_SECRET']
 
 oauth = OAuth(app)
 
-auth0 = oauth.register(
-    'auth0',
+def fetch_token(name, request):
+    token = OAuth2Token.find(
+        name=name,
+        user=request.user
+    )
+    return token.to_token()
+
+auth0 = oauth.register('auth0',
     client_id=env['CLIENT_ID'],
     client_secret=env['CLIENT_SECRET'],
     api_base_url='https://' + env['DOMAIN'],
@@ -50,7 +57,10 @@ auth0 = oauth.register(
     client_kwargs={
         'scope': 'openid profile email',
     },
-)
+    server_metadata_url='https://' + env['DOMAIN'] + '/.well-known'
+                        '/openid-configuration',
+    fetch_token=fetch_token,
+    )
 
 def requires_auth(f):
   @wraps(f)
