@@ -52,6 +52,15 @@ auth0 = oauth.register(
     },
 )
 
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    if 'profile' not in session:
+      # Redirect to Login page here
+      return redirect('/')
+    return f(*args, **kwargs)
+  return decorated
+
 @app.before_first_request
 def initialize():
     db.setup()
@@ -159,6 +168,7 @@ def login():
     return auth0.authorize_redirect(redirect_uri=url_for('callback_handling', _external=True))
 
 @app.route('/logout')
+@requires_auth
 def logout():
     # Clear session stored data
     session.clear()
@@ -169,23 +179,20 @@ def logout():
 ########################## CREATE POST ##################################
 
 @app.route('/create_post', methods=["GET"])
+@requires_auth
 def create_post():
     
     # if logged in 
-    if 'profile' in session:
-        status = request.args.get("status", "")
+    # if 'profile' in session:
+    #     status = request.args.get("status", "")
         
-        with db.get_db_cursor() as cur:
-            image_ids = db.get_image_ids()
-            return render_template("create_post.html", image_ids = image_ids)
+    #     with db.get_db_cursor() as cur:
+    #         image_ids = db.get_image_ids()
+    #         return render_template("create_post.html", image_ids = image_ids)
 
     # TODO: create html page that tells them to sign in to view this page basically
-    else:
-        return render_template('no_create_post.html')
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
+    # else:
+    return render_template('create_post.html')
 
 ### IMAGES
 @app.route('/post/<int:post_id>')
@@ -200,6 +207,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
 
 @app.route('/create_post', methods=['POST'])
+@requires_auth
 def upload_post():
     if 'image' not in request.files:
         return redirect(url_for("main_page", status="Image Upload Failed: No selected file"))
@@ -249,16 +257,6 @@ def search_text():
     # TODO: how to return back information without reloading the page?
     print(found_search)
     return render_template('searched.html', users=found_search)
-
-def requires_auth(f):
-  @wraps(f)
-  def decorated(*args, **kwargs):
-    if 'profile' not in session:
-      # Redirect to Login page here
-      return redirect('/')
-    return f(*args, **kwargs)
-
-  return decorated
 
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):

@@ -38,20 +38,6 @@ def get_db_cursor(commit=False):
       finally:
           cursor.close()
 
-def get_image(img_id):
-    with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM imagess where image_id=%s", (img_id,))
-        return cur.fetchone()
-
-def upload_image(data, filename):
-    with get_db_cursor(True) as cur:
-        cur.execute("insert into imagess (filename, data) values (%s, %s)", (filename, data))
-
-def get_image_ids():
-    with get_db_cursor() as cur:
-        cur.execute("select image_id from imagess;")
-        return [r['image_id'] for r in cur]
-
 # CREATE functions
 def add_post(user_id, description, filename, data):
     with get_db_cursor(True) as cur:
@@ -78,6 +64,15 @@ def add_user(user_id, fname, lname):
         current_app.logger.info("Adding User %s, %s, %s, %s", user_id, fname, lname, full_name)
         cur.execute("INSERT INTO users (user_id, username, first_name, last_name, full_name) VALUES (%s, %s, %s, %s, %s)", (user_id, blank, fname, lname, full_name))
 
+def like_post(post_id, user_id):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Adding Like %s, %s", post_id, user_id)
+        cur.execute("INSERT INTO likes (post_id, user_id) VALUES (%s, %s)", (post_id, user_id))
+
+def follow_user(user_id, follower_id):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Adding Follower %s, %s", user_id, follower_id)
+        cur.execute("INSERT INTO following (user_id, follower_id) VALUES (%s, %s)", (user_id, follower_id))
 
 # READ functions 
 
@@ -91,17 +86,22 @@ def get_user_profile(user):
 
 def get_all_posts():
     with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM posts")
+        cur.execute("SELECT * FROM posts ORDER BY tstamp DESC")
         return cur.fetchall()
 
 def get_all_posts_reverse():
     with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM posts")
+        cur.execute("SELECT * FROM posts ORDER BY tstamp ASC")
         return cur.fetchall()
 
 def get_user_posts(user_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT * FROM posts where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_post(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM posts where post_id = %s", (post_id,))
         return cur.fetchall()
 
 # retrieve all exercises associated with a post
@@ -115,6 +115,32 @@ def get_all_exercises():
         cur.execute("SELECT * FROM exercises")
         return cur.fetchall()
 
+def get_num_likes(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT COUNT(*) AS num_likes FROM likes where post_id = %s", (post_id,))
+        return cur.fetchone()
+
+def get_num_followers(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT COUNT(*) AS num_followers FROM followers where user_id = %s", (user_id,))
+        return cur.fetchone()
+
+def get_followers(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT follower_id FROM followers where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_num_followed(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT COUNT(*) AS num_followed FROM followers where follower_id = %s", (user_id,))
+        return cur.fetchone()
+
+def get_followed(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT user_id FROM followers where follower_id = %s", (user_id,))
+        return cur.fetchall()
+
+
 # UPDATE functions
 # Maybe we update the exercises associated with a post by deleting all of the posts exercises and just re-saving them?
 # Manually updating/deleting each exercise when a user 
@@ -122,10 +148,6 @@ def update_post(post_id, title, description):
     with get_db_cursor() as cur:
         cur.execute("UPDATE posts SET post_title = %s, post_description = %s WHERE post_id = %s", (title, description, post_id))
 
-def get_post(post_id):
-    with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM posts where post_id = %s", (post_id,))
-        return cur.fetchall()
 
 # DELETE functions
 
@@ -143,6 +165,13 @@ def delete_exercises_by_post(post_id):
     with get_db_cursor() as cur:
         cur.execute("DELETE FROM exercises WHERE post_id = %s", (post_id,))
 
+def unlike_post(post_id, user_id):
+    with get_db_cursor(True) as cur:
+        cur.execute("DELETE FROM likes WHERE post_id = %s and user_id = %s", (post_id, user_id))
+
+def unfollow(user_id, follower_id):
+    with get_db_cursor(True) as cur:
+        cur.execute("DELETE FROM followers WHERE user_id = %s and follower_id = %s", (user_id, follower_id))
 
 ########################## SEARCH #############################
 def search_user(text):

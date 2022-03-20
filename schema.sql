@@ -1,6 +1,5 @@
 drop table exercises;
 drop table following;
--- drop table images;
 drop table likes;
 drop table dislikes;
 drop table posts;
@@ -51,14 +50,12 @@ create table exercises (
 
 create table likes (
   post_id INT,
-  user_liked text,
-  UNIQUE (post_id, user_liked)
-);
-
-create table dislikes (
-  post_id INT,
-  user_disliked text,
-  UNIQUE (post_id, user_disliked)
+  user_id text,
+  UNIQUE (post_id, user_id),
+  CONSTRAINT fk_post
+    FOREIGN KEY(post_id) 
+  REFERENCES posts(post_id)
+  ON DELETE CASCADE
 );
 
 create table quotes_table (
