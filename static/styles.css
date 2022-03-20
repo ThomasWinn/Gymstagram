@@ -265,3 +265,9 @@ body {
     border-radius: 50%;
     padding-right: 0.3em;
 }
+.upload_button {
+    background-color: red;
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+  }

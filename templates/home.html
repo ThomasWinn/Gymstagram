@@ -31,86 +31,64 @@
                             <div class="post-top">
                                 <p>*Insert profile pic* *insert profile name*</p>
                             </div>
-                            <img class=" post-img pure-img" src="{{url_for("view_post_image", post_id=post['post_id'])}}">
-                            
-                            <table class="pure-table pure-table-horizontal post-table">
-                                <thead>
-                                    <tr>
-                                        <th>Exercise</th>
-                                        <th>Sets</th>
-                                        <th>Reps</th>
-                                        <th>Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for exercise in exercises %}
-                                    {% if exercise['post_id'] == post['post_id'] %}
-                                        <tr>
-                                            <td>{{exercise['exercise_name']}}</td>
-                                            <td>
-                                                {% if exercise['num_sets'] == None %}
-                                                    -
-                                                {% else %}
-                                                    {{exercise['num_sets']}}
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if exercise['num_reps'] == None %}
-                                                    -
-                                                {% else %}
-                                                    {{exercise['num_reps']}}
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if exercise['num_time'] == None %}
-                                                    -
-                                                {% else %}
-                                                    {{exercise['num_time']}} {{exercise['time_units']}}
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <!-- <table class="pure-table pure-table-horizontal post-table">
-                                <thead>
-                                    <tr>
-                                        <th>Exercise</th>
-                                        <th>Sets</th>
-                                        <th>Reps</th>
-                                        <th>Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Running</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>30</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bench Press</td>
-                                        <td>3</td>
-                                        <td>12</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Squats</td>
-                                        <td>5</td>
-                                        <td>8</td>
-                                        <td>-</td>
-                                    </tr>
-                                </tbody>
-                            </table> -->
-                            <p class="post-caption"><b>{{ post['user_id'] }}</b> {{ post['description'] }} </p>
+                            <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none">
+                                <div>
+                                    <img class=" post-img pure-img" src="{{url_for("view_post_image", post_id=post['post_id'])}}">
+                                    
+                                    <table class="pure-table pure-table-horizontal post-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Exercise</th>
+                                                <th>Sets</th>
+                                                <th>Reps</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for exercise in exercises %}
+                                            {% if exercise['post_id'] == post['post_id'] %}
+                                                <tr>
+                                                    <td>{{exercise['exercise_name']}}</td>
+                                                    <td>
+                                                        {% if exercise['num_sets'] == None %}
+                                                            -
+                                                        {% else %}
+                                                            {{exercise['num_sets']}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if exercise['num_reps'] == None %}
+                                                            -
+                                                        {% else %}
+                                                            {{exercise['num_reps']}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if exercise['num_time'] == None %}
+                                                            -
+                                                        {% else %}
+                                                            {{exercise['num_time']}} {{exercise['time_units']}}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                    <p class="post-caption"><b>{{ post['user_id'] }}</b> {{ post['description'] }} </p>
+
+                                </div>
+                            </a>
                             <div class="post-like-comment">
                                 <div>
                                     <i class="pure-button fa fa-thumbs-up"></i>
                                     <i class="pure-button fa fa-thumbs-down"></i>
                                 </div>
                                 <div>
-                                    <i class="pure-button fa fa-comments"></i>
+                                    <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none">
+                                        <i class="pure-button fa fa-comments"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
