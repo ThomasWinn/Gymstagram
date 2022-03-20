@@ -1,14 +1,14 @@
 drop table exercises;
 drop table following;
 drop table likes;
-drop table dislikes;
+drop table comments;
 drop table posts;
 drop table users;
 drop table quotes_table;
 
 create table users (
   user_id text PRIMARY KEY,
-  username varchar(255),
+  username varchar(255) DEFAULT 'Anonymous',
   first_name varchar(255),
   last_name varchar(255),
   full_name varchar(255)
@@ -52,6 +52,18 @@ create table likes (
   post_id INT,
   user_id text,
   UNIQUE (post_id, user_id),
+  CONSTRAINT fk_post
+    FOREIGN KEY(post_id) 
+  REFERENCES posts(post_id)
+  ON DELETE CASCADE
+);
+
+create table comments (
+  comment_id SERIAL PRIMARY KEY,
+  tstamp timestamp NOT NULL DEFAULT NOW(),
+  post_id INT,
+  user_id text,
+  comment text,
   CONSTRAINT fk_post
     FOREIGN KEY(post_id) 
   REFERENCES posts(post_id)

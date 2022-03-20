@@ -74,6 +74,11 @@ def follow_user(user_id, follower_id):
         current_app.logger.info("Adding Follower %s, %s", user_id, follower_id)
         cur.execute("INSERT INTO following (user_id, follower_id) VALUES (%s, %s)", (user_id, follower_id))
 
+def add_comment(post_id, user_id, comment):
+    with get_db_cursor(True) as cur:
+        current_app.logger.info("Adding Comment %s, %s, %s", post_id, user_id, comment)
+        cur.execute("INSERT INTO comments (post_id, user_id, comment) VALUES (%s, %s, %s)", (post_id, user_id, comment))
+
 # READ functions 
 
 # Probably need to call this in conjunction with get_post_exercises... running an inner/natural join between the exercises
@@ -120,6 +125,8 @@ def get_num_likes(post_id):
         cur.execute("SELECT COUNT(*) AS num_likes FROM likes where post_id = %s", (post_id,))
         return cur.fetchone()
 
+
+# Get Followers
 def get_num_followers(user_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT COUNT(*) AS num_followers FROM followers where user_id = %s", (user_id,))
@@ -141,28 +148,48 @@ def get_followed(user_id):
         return cur.fetchall()
 
 
+# Get Comments
+def get_post_comments(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM comments where post_id = %s ORDER BY tstamp DESC", (post_id,))
+        return cur.fetchall()
+
+def get_user_comments(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM comments where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_all_comments():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM comments")
+        return cur.fetchall()
+
 # UPDATE functions
 # Maybe we update the exercises associated with a post by deleting all of the posts exercises and just re-saving them?
 # Manually updating/deleting each exercise when a user 
+
 def update_post(post_id, title, description):
-    with get_db_cursor() as cur:
+    with get_db_cursor(True) as cur:
         cur.execute("UPDATE posts SET post_title = %s, post_description = %s WHERE post_id = %s", (title, description, post_id))
 
+def update_comment(comment_id, edited_comment):
+    with get_db_cursor(True) as cur:
+        cur.execute("UPDATE comments SET comment = %s WHERE comment_id = %s", (edited_comment, comment_id))
 
 # DELETE functions
 
 # post deletion will cascade and delete associated exercises
 def delete_post(post_id):
-    with get_db_cursor() as cur:
+    with get_db_cursor(True) as cur:
         cur.execute("DELETE FROM posts WHERE post_id = %s", (post_id,))
 
 def delete_exercise(exercise_id):
-    with get_db_cursor() as cur:
+    with get_db_cursor(True) as cur:
         cur.execute("DELETE FROM exercises WHERE exercise_id = %s", (exercise_id,))
 
 # delete all exercises associated with a post
 def delete_exercises_by_post(post_id):
-    with get_db_cursor() as cur:
+    with get_db_cursor(True) as cur:
         cur.execute("DELETE FROM exercises WHERE post_id = %s", (post_id,))
 
 def unlike_post(post_id, user_id):
@@ -172,6 +199,10 @@ def unlike_post(post_id, user_id):
 def unfollow(user_id, follower_id):
     with get_db_cursor(True) as cur:
         cur.execute("DELETE FROM followers WHERE user_id = %s and follower_id = %s", (user_id, follower_id))
+
+def delete_comment(comment_id):
+    with get_db_cursor(True) as cur:
+        cur.execute("DELETE FROM comments WHERE comment_id = %s", (comment_id,))
 
 ########################## SEARCH #############################
 def search_user(text):
