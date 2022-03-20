@@ -3,18 +3,24 @@
 {% endblock %}
 {% block title %}Searched{% endblock %}
 {% block content %}
-<div class="pure-g">
     <!-- IDK HOW TO CENTER ANYTHING OR DO ANYTHING FRONT END FOR SOME REASON -->
     <!-- user['user_id', 'username', 'first_name', 'last_name', 'full_name'] -->
     <!-- PLEASE CENTER AND PUT USERS IN A RECTANGLE JUST LIKE IG PRADGE -->
     <!-- use for redirection to x user profile ->        url_for('profile', 'id=users['user_id']') -->
 
+<div class="search-area">
+    <div class = "pure-g">
     {% for user in users %}
-    <div class="pure-u-1 pure-u-md-1-3">
-        <a href="{{ url_for('profile', id=user['user_id']) }}">
-            <p>{{ user['full_name'] }}</p>
-        </a>
-    </div>
+        <div class="pure-u-1-1">
+            <a href="{{ url_for('profile', id=user['user_id']) }}" style="text-decoration: none">
+                <div class="search-container">
+                        <img class="profile-pic" src="../static/images/gym_test4.jpg">
+                        <span>{{ user['full_name'] }}</span>
+                </div>
+            </a>
+        </div>
     {% endfor %}
+    </div>
 </div>
+    
 {% endblock %}
