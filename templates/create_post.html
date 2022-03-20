@@ -46,9 +46,9 @@
             <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form">
               <fieldset>
                 <p><img id="output" width="500" /></p>
-                <input type="file" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif" />
+                <input type="file" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif" required/>
                 <br><br>
-                  <textarea name = "text" rows = "5" cols = "50">Write a caption...</textarea>
+                  <textarea name = "text" rows = "5" cols = "50" placeholder="Write a caption..."></textarea>
                   <br><br>
 
                   <div class = "exercises_wrap">
