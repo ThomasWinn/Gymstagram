@@ -4,13 +4,13 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 ## App Info:
 
-* Team Name: TODO
-* App Name: TODO
+* Team Name: Team 7
+* App Name: Gymstagram
 * App Link: <https://TODO.heroku.com/>
 
 ### Students
 
-* First Last, x500@umn.edu
+* Jeffrey Jia, jiaxx215@umn.edu
 * ...
 
 
