@@ -63,8 +63,8 @@ def main_page():
 ########################## PROFILE #############################
 
 # return data containing necessary things for a profile
-@app.route('/profile')
-def profile():
+@app.route('/profile/<string:id>')
+def profile(id):
     data = {
         'username': '',
         'first_name': '',
