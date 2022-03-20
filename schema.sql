@@ -5,6 +5,7 @@ drop table likes;
 drop table dislikes;
 drop table posts;
 drop table users;
+drop table quotes_table;
 
 create table users (
   user_id text PRIMARY KEY,
@@ -58,6 +59,11 @@ create table dislikes (
   post_id INT,
   user_disliked text,
   UNIQUE (post_id, user_disliked)
+);
+
+create table quotes_table (
+  quote_id SERIAL PRIMARY KEY,
+  the_quote text
 );
 
 insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dlds12', 'liux2789', 'hughdan', 'liu', 'hughdan liu');

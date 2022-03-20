@@ -12,6 +12,8 @@ python-dotenv = "*"
 requests = "*"
 authlib = "*"
 six = "*"
+beautifulsoup4 = "*"
+html5lib = "*"
 
 [dev-packages]
 

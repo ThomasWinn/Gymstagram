@@ -160,3 +160,19 @@ def search_name(text):
         query = "%" + text + "%"
         cur.execute('SELECT * from users WHERE full_name like %s', (query,))
         return cur.fetchall()
+
+########################## QUOTES #############################
+def add_quotes(quotes):
+    with get_db_cursor(True) as cur:
+        for quote in quotes:
+            cur.execute('INSERT into quotes_table (the_quote) VALUES (%s)', (quote,))
+
+def get_all_quotes():
+    with get_db_cursor() as cur:
+        cur.execute('SELECT * FROM quotes_table')
+        return cur.fetchall()
+
+def get_quote(id):
+    with get_db_cursor() as cur:
+        cur.execute('SELECT the_quote FROM quotes_table WHERE quote_id=%s', (id,))
+        return cur.fetchall()
