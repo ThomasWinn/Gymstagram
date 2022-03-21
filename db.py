@@ -71,7 +71,7 @@ def like_post(post_id, user_id):
 def follow_user(user_id, follower_id):
     with get_db_cursor(True) as cur:
         current_app.logger.info("Adding Follower %s, %s", user_id, follower_id)
-        cur.execute("INSERT INTO following (user_id, follower_id) VALUES (%s, %s)", (user_id, follower_id))
+        cur.execute("INSERT INTO followers (user_id, follower_id) VALUES (%s, %s)", (user_id, follower_id))
 
 def add_comment(post_id, user_id, comment):
     with get_db_cursor(True) as cur:
@@ -198,6 +198,12 @@ def update_post(post_id, title, description):
 def update_comment(comment_id, edited_comment):
     with get_db_cursor(True) as cur:
         cur.execute("UPDATE comments SET comment = %s WHERE comment_id = %s", (edited_comment, comment_id))
+
+def update_user(user_id, username, first_name, last_name, bio):
+    with get_db_cursor(True) as cur:
+        fullname = first_name + " " + last_name
+        cur.execute("UPDATE users SET username = %s, first_name = %s, last_name = %s, full_name = %s, bio = %s WHERE user_id = %s", 
+        (username, first_name, last_name, fullname, bio, user_id))
 
 # DELETE functions
 
