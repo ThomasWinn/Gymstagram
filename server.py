@@ -99,6 +99,7 @@ def main_page():
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
 def display_tag_posts(tag_id):
+    all_exercises = db.get_all_exercises()
     post_id_arr = db.get_post_id_from_tag(tag_id)
     post_id_arr.sort(reverse=True) # sort descending order to show newer posts first
     all_posts = []
@@ -106,13 +107,9 @@ def display_tag_posts(tag_id):
     for id in post_id_arr:
         all_posts.append(db.get_post(id[0])[0])
     
-    # print(all_posts)
-    print(len(all_posts))
+    hashtag_name = db.get_hashtag_by_id(tag_id)[0][1]
 
-    # TODO: REDIRECT TO PAGE WITH ALL POSTS WITH THAT TAG
-    return redirect('/')
-    # return render_template('.html')
-    # get all posts from this 
+    return render_template('posts_by_tag.html', posts = all_posts, exercises=all_exercises, hashtag_name=hashtag_name)
 
 
 # Get all hashtags from a sentence

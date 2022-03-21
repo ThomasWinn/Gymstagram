@@ -3,21 +3,25 @@
 {% endblock %}
 {% block title %}Searched{% endblock %}
 {% block content %}
-    <!-- IDK HOW TO CENTER ANYTHING OR DO ANYTHING FRONT END FOR SOME REASON -->
-    <!-- user['user_id', 'username', 'first_name', 'last_name', 'full_name'] -->
-    <!-- PLEASE CENTER AND PUT USERS IN A RECTANGLE JUST LIKE IG PRADGE -->
-    <!-- use for redirection to x user profile ->        url_for('profile', 'id=users['user_id']') -->
-
 <div class="search-area">
     <div class = "pure-g">
     {% for tag in data %}
         <div class="pure-u-1-1">
-            <a href="{{ url_for('display_tag_posts', tag_id=tag[0][0]) }}" style="text-decoration: none">
+            <a href="{{ url_for('display_tag_posts', tag_id=tag[0][0]) }}" style="text-decoration: none; color: black;">
                 <div class="search-container">
-                        <img class="profile-pic" src="../static/images/hashtag.jpeg">
-                        <span>{{ tag[0][1] }}</span>
+                    <!-- <img class="profile-pic" src="../static/images/hashtag.png">
+                    <span>#{{ tag[0][1] }}</span>
+                    <span style="text-align: right;">{{ tag[1] }} posts</span> -->
+                    <img class="profile-pic" src="../static/images/hashtag.png">
+                    <div class="pure-g hash-post">
+                        <div class="pure-u-1-2">
+                            <span>#{{ tag[0][1] }}</span>
+                        </div>
+                        <div class="pure-u-1-2 num-hash-post">
+                            <span style="text-align: right;">{{ tag[1] }} posts</span>
+                        </div>
+                    </div>
                 </div>
-                <p>Number of Posts: {{ tag[1] }}</p>
             </a>
         </div>
     {% endfor %}
