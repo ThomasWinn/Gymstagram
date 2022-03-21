@@ -10,6 +10,9 @@ from flask import Flask, render_template, request, g, redirect, url_for, send_fi
 from bs4 import BeautifulSoup
 from scrape_quotes import *
 
+from html_sanitizer import Sanitizer
+sanitizer = Sanitizer()  # default configuration
+
 import os
 import db
 import io
@@ -111,6 +114,67 @@ def profile(id):
         'user_posts': [],
     }
     # user_profile = db.get_user_profile(session['profile']['user_id'])
+    data['username'] = db.get_username(id)
+    data['first_name'] = db.get_first_name(id)
+    data['last_name'] = db.get_last_name(id)
+    data['posts'] = db.get_num_posts(id)
+    data['followers'] = db.get_num_followers(id)
+    data['following'] = db.get_num_followed(id)
+    data['bio'] = db.get_bio(id)
+    data['user_posts'] = db.get_user_posts(id)
+
+    return render_template('profile.html', data=data)
+
+@app.route('/profile/<string:id>', methods=['POST'])
+def update_user_profile(id):
+    data = {
+        'user_id': id,
+        'username': '',
+        'first_name': '',
+        'last_name': '',
+        'posts': 0,
+        'followers': 0,
+        'following': 0,
+        'bio': '',
+        'user_posts': [],
+    }
+    new_username = request.form.get("update-username")
+    new_username = sanitizer.sanitize(new_username)
+    new_first_name = request.form.get("update-firstname")
+    new_first_name = sanitizer.sanitize(new_first_name)
+    new_last_name = request.form.get("update-lastname")
+    new_last_name = sanitizer.sanitize(new_last_name)
+    new_bio = request.form.get("update-bio")
+    new_bio = sanitizer.sanitize(new_bio)
+
+    db.update_user(id, new_username, new_first_name, new_last_name, new_bio)
+
+    # user_profile = db.get_user_profile(session['profile']['user_id'])
+    data['username'] = db.get_username(id)
+    data['first_name'] = db.get_first_name(id)
+    data['last_name'] = db.get_last_name(id)
+    data['posts'] = db.get_num_posts(id)
+    data['followers'] = db.get_num_followers(id)
+    data['following'] = db.get_num_followed(id)
+    data['bio'] = db.get_bio(id)
+    data['user_posts'] = db.get_user_posts(id)
+
+    return render_template('profile.html', data=data)
+
+@app.route('/profile/<string:id>/cancel', methods=['POST'])
+def cancel_update_user_profile(id):
+    data = {
+        'user_id': id,
+        'username': '',
+        'first_name': '',
+        'last_name': '',
+        'posts': 0,
+        'followers': 0,
+        'following': 0,
+        'bio': '',
+        'user_posts': [],
+    }
+
     data['username'] = db.get_username(id)
     data['first_name'] = db.get_first_name(id)
     data['last_name'] = db.get_last_name(id)

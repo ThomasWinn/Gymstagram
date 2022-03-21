@@ -11,133 +11,137 @@
     var loadFile = function(event) {
         var image = document.getElementById('output');
         image.src = URL.createObjectURL(event.target.files[0]);
-        // var input_image = document.getElementById('input_img').style.display = "none";
     };
-
 </script>
-    <div class="profile-area">
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <p><img id="output" width="500" /></p>
-                <img class=" post-img pure-img" src="../static/images/gym_test.jpg">
-                <label for="input_img" class="upload_button">Upload a profile picture</label>
-                <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif" />
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1-1">
-                <p>FirstName LastName</p>
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="outline pure-u-1-3">
-                <p>6</p>
-            </div>
-            <div class="outline pure-u-1-3">
-                <p>2</p>
-            </div>
-            <div class="outline pure-u-1-3">
-                <p>3</p>
-            </div>
-        </div>
-        <div class="pure-g">
-            <div class="pure-u-1-3">
-                <p>Posts</p>
-            </div>
-            <div class="pure-u-1-3">
-                <p>Followers</p>
-            </div>
-            <div class="pure-u-1-3">
-                <p>Following</p>
-            </div>
-        </div>
-    </div>
-    <div class="post-area">
-        <div class="pure-g">
-            <div class="pure-u-1-3">
-                <div class="profile-post">
-                    <div class="profile-post-trash">
-                        <div>
-                            <p>*Insert profile pic*</p>
-                        </div>
-                        <div>
-                            <i class="pure-button fa fa-trash"></i>
-                        </div>
-                    </div>
-                    <img class=" post-img pure-img" src="../static/images/gym_test.jpg">
-                </div>
-            </div>
-            <div class="pure-u-1-3">
-                <div class="profile-post">
-                    <div class="profile-post-trash">
-                        <div>
-                            <p>*Insert profile pic*</p>
-                        </div>
-                        <div>
-                            <i class="pure-button fa fa-trash"></i>
-                        </div>
-                    </div>
-                    <img class=" post-img pure-img" src="../static/images/gym_test2.jpg">
-                </div>
-            </div>
-            <div class="pure-u-1-3">
-                <div class="profile-post">
-                    <div class="profile-post-trash">
-                        <div>
-                            <p>*Insert profile pic*</p>
-                        </div>
-                        <div>
-                            <i class="pure-button fa fa-trash"></i>
-                        </div>
-                    </div>
-                    <img class=" post-img pure-img" src="../static/images/gym_test3.jpg">
-                </div>
-            </div>
-        </div>
-        <!-- row 2 -->
-        <!-- <div class="pure-g">
-            <div class="pure-u-1-3">
-                <div class="profile-post">
-                    <div class="profile-post-trash">
-                        <div>
-                            <p>*Insert profile pic*</p>
-                        </div>
-                        <div>
-                            <i class="pure-button fa fa-trash"></i>
-                        </div>
-                    </div>
-                    <img class=" post-img pure-img" src="../static/images/gym_test4.jpg">
-                </div>
-            </div>
-            <div class="pure-u-1-3">
-                <div class="profile-post">
-                    <div class="profile-post-trash">
-                        <div>
-                            <p>*Insert profile pic*</p>
-                        </div>
-                        <div>
-                            <i class="pure-button fa fa-trash"></i>
-                        </div>
-                    </div>
-                    <img class=" post-img pure-img" src="../static/images/gym_test5.jpg">
-                </div>
-            </div>
-            <div class="pure-u-1-3">
-                <div class="profile-post">
-                    <div class="profile-post-trash">
-                        <div>
-                            <p>*Insert profile pic*</p>
-                        </div>
-                        <div>
-                            <i class="pure-button fa fa-trash"></i>
-                        </div>
-                    </div>
-                    <img class=" post-img pure-img" src="../static/images/gym_test6.jpg">
-                </div>
-            </div>
-        </div>
-        -->
 
+<div class="profile-area">
+    <div class="pure-g">
+        <div class="pure-u-1-1">
+            <p><img id="output" class="profile-img" src="../static/images/guest.png"/></p>
+            <!-- <label for="input_img" class="upload_button">Upload a profile picture</label>
+            <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif"/> -->
+        </div>
     </div>
+    <div>
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <div id="edit-username">
+                    {{data['username'][0][0]|safe}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-stats-div">
+        <div class="pure-g">
+            <div class="pure-u-1-3">
+                <p>{{data['posts'][0]}} Posts</p>
+            </div>
+            <div class="pure-u-1-3">
+                <p>{{data['followers'][0]}} Followers</p>
+            </div>
+            <div class="pure-u-1-3">
+                <p>{{data['following'][0]}} Following</p>
+            </div>
+        </div>
+    </div>
+    <div class="profile-text-div">
+        <div class="pure-g">
+            <div class="pure-u-1-1">
+                <span>
+                    <div class="name-div">
+                        <div id="edit-first">
+                            {{data['first_name'][0][0]|safe}}
+                        </div>
+                    </div>
+                    <div class="name-div">
+                        <div id="edit-last">
+                            {{data['last_name'][0][0]|safe}}
+                        </div>
+                    </div>
+                </span>
+                <div id="edit-bio">
+                    {{data['bio'][0][0]|safe}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        {% if session['profile']['user_id'] == data['user_id'] %}
+        <div>
+            <button id="edit" class="button-edit pure-button">Edit Profile</button>
+            <button id="cancel-edit" class="button-edit pure-button">Cancel</button>
+            <button id="save-edit" class="button-follow pure-button">Save Changes</button>
+        </div>
+        <form id="edit-submit-form" action="{{url_for('update_user_profile', id=data['user_id'])}}" method="post">
+            <input type="hidden" name="update-username" id="update-username"/>
+            <input type="hidden" name="update-firstname" id="update-firstname"/>
+            <input type="hidden" name="update-lastname" id="update-lastname"/>
+            <input type="hidden" name="update-bio" id="update-bio"/>
+        </form>
+        <form id="cancel-submit-form" action="{{url_for('profile', id=data['user_id'])}}" >
+            <input type="hidden" name="cancel" id="cancel"/>
+        </form>
+        <script>
+            $("#cancel-edit").hide();
+            $("#save-edit").hide();
+        
+            $("#edit").click(function(){
+                $("#edit").hide();
+                
+                $("#cancel-edit").show();
+                $("#save-edit").show();
+
+                $("#edit-username").replaceWith("<input type='text' style='width: 8em;' id='new-username' value='{{data['username'][0][0]|safe}}'/>");
+
+                $("#edit-first").replaceWith("<input type='text' style='width: 5em;' id='new-firstname' value='{{data['first_name'][0][0]|safe}}'/>");
+                $("#edit-last").replaceWith("<input type='text' style='width: 5em;' id='new-lastname' value='{{data['last_name'][0][0]|safe}}'/>");
+
+
+                $("#edit-bio").replaceWith("<textarea name = 'text' rows = '5' cols = '35' style='max-width: 20em;' id='new-bio'>{{data['bio'][0][0]|safe}}</textarea>");
+              
+                $("#save-edit").click(function(){
+                    updated_username = document.getElementById("new-username").value;
+                    updated_firstname = document.getElementById("new-firstname").value;
+                    updated_lastname = document.getElementById("new-lastname").value;
+                    updated_bio = document.getElementById("new-bio").value;
+
+                    $("#update-username").val(updated_username);
+                    $("#update-firstname").val(updated_firstname);
+                    $("#update-lastname").val(updated_lastname);
+                    $("#update-bio").val(updated_bio);
+                    $("#edit-submit-form").submit();
+                });
+
+                $("#cancel-edit").click(function(){
+                    dummy = 'dummy';
+                    $("#cancel").val(dummy);
+                    $("#cancel-submit-form").submit();
+                });
+            });
+          </script>
+        {% else %}
+        <div>
+            <button class="button-follow pure-button">Follow</button>
+        </div>
+        {% endif %}
+        <label for="input_img" class="upload_button">Upload a profile picture</label>
+        <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif"/>
+    </div>
+</div>
+<div class="profile-post-area">
+    <div class = "pure-g">
+        {% for post in data['user_posts'] %}
+        <div class="pure-u-1-3">
+            <div class="profile-post">
+                <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none">
+                    <div>
+                        <img class="profile-post-img pure-img" src="{{url_for("view_post_image", post_id=post['post_id'])}}">
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
 
