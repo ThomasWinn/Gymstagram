@@ -405,8 +405,16 @@ def search_text():
 def view_post(post_id):
     current_post = db.get_post(post_id)[0]
     current_exercises = db.get_post_exercises(post_id)
-    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises)
+    all_comments = db.get_all_comments()
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments)
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):
 #     exercises = db.get_post_exercises(post_id)
 #     return render_template("home.html", exercises = exercises)
+@app.route('/add_comment', methods = ['POST'])
+def add_comment():
+    post_id = request.form['post_id']
+    user_id = request.form['user_id']
+    comment = request.form['comment']
+    db.add_comment(post_id,user_id,comment)
+    return jsonify(status = "OK")
