@@ -94,9 +94,23 @@ def main_page():
     return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote)
 
 ########################## TAG ##################################
-# @app.route('/tag/<int:tag_id>', methods=['GET'])
-# def display_tag_posts(tag_id):
-#     # get all posts from this 
+@app.route('/tag/<int:tag_id>', methods=['GET'])
+def display_tag_posts(tag_id):
+    post_id_arr = db.get_post_id_from_tag(tag_id)
+    post_id_arr.sort(reverse=True) # sort descending order to show newer posts first
+    all_posts = []
+    print(post_id_arr)
+    for id in post_id_arr:
+        all_posts.append(db.get_post(id[0])[0])
+    
+    # print(all_posts)
+    print(len(all_posts))
+
+    # TODO: REDIRECT TO PAGE WITH ALL POSTS WITH THAT TAG
+    return redirect('/')
+    # return render_template('.html')
+    # get all posts from this 
+
 
 # Get all hashtags from a sentence
 def get_all_hashtag(text):
@@ -254,19 +268,19 @@ def upload_post():
             # eliminates 'Lol', 'lol' dupes
             if hash.lower() not in lower_hash:
                 lower_hash.append(hash.lower())
-                # add post to hashtag list
-                # How do I connect this post to THIS hashtag
                 
-                if not db.has_hashtag(hash):
-                    db.add_hashtag(hash) # return tag ID like we do with post
-                    #todo
+                # if hashtag doesn't exist yet
+                if len(db.get_hashtag_by_text(hash)) == 0:
+                    tag_id = db.add_hashtag(hash) # return tag ID like we do with post
+                    print(tag_id[0])
+                    db.add_post_to_tag(post_id, tag_id[0])
                 # if tag exists we do some kinda connection between tag id and postid
                 else:
-                    # todo
-            
-            # add this hashtag 
-        
-        # print(post_id)
+                    db_tag = db.get_hashtag_by_text(hash)
+                    tag_id = db_tag[0][0]
+                    print(tag_id)
+                    db.add_post_to_tag(post_id, tag_id)
+
         text = request.form.getlist("text[]")
         exercises = []
         for x in range(0, len(text), 3):
@@ -299,7 +313,28 @@ def search_text():
         return render_template('searched.html', users=found_search)
     elif search_type == 'tag':
         found_search = db.search_tag(to_search)
-        return render_template('searched_tag.html', tags=found_search)
+        post_num = []
+        for ret_tag in found_search:
+            post_num.append(len(db.get_post_id_from_tag(ret_tag[0])))
+        
+        # # tag: num_posts
+        # ret_dic = {
+        #     "tag_data": [],
+        #     "num_posts": [],
+        # }
+        # for i in range(len(found_search)):
+        #     ret_dic['tag_data'].append(found_search[i])
+        #     ret_dic['num_posts'].append(post_num[i])
+        
+        ret_list = []
+        for i in range(len(found_search)):
+            temp = []
+            temp.append(found_search[i])
+            temp.append(post_num[i])
+            ret_list.append(temp)
+
+        print(ret_list) # works
+        return render_template('searched_tag.html', data=ret_list)
 
     
     # TODO: how to return back information without reloading the page?

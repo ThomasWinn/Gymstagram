@@ -225,27 +225,44 @@ def search_name(text):
 def search_tag(text):
     with get_db_cursor() as cur:
         text = text.lower()
-        query = "%" + text
+        query = text + "%"
         cur.execute('SELECT * FROM tags WHERE tag like %s', (query,))
         return cur.fetchall()
 
 ########################## TAGS #############################
 
-def get_all_tag(id):
+def get_hashtag_by_id(id):
     with get_db_cursor() as cur:
         cur.execute('SELECT * FROM tags WHERE tag_id=%s', (id,))
         return cur.fetchall()
 
-def has_hashtag(text):
+def get_hashtag_by_text(text):
     with get_db_cursor() as cur:
-        query = text
-        cur.execute('SELECT * FROM tags WHERE tag ilike %s', (query,))
+        query = text.lower()
+        cur.execute('SELECT * FROM tags WHERE tag=%s', (query,))
         return cur.fetchall()
+
+# def get_hashtag_by_text(text):
+#     with get_db_cursor() as cur:
+#         query = text
+#         cur.execute('SELECT * FROM tags WHERE tag ilike %s', (query,))
+#         return cur.fetchall()
+
+def add_post_to_tag(post_id, tag_id):
+    with get_db_cursor(True) as cur:
+        cur.execute('INSERT INTO post_tags (post_id, tag_id) VALUES (%s,%s)', (post_id, tag_id))
+
 
 def add_hashtag(text):
     with get_db_cursor(True) as cur:
         text = text.lower()
-        cur.execute('INSERT into tags (tag) VALUES (%s)', (text,))
+        cur.execute("INSERT INTO tags (tag) VALUES (%s) RETURNING tag_id", (text,))
+        return cur.fetchone()
+
+def get_post_id_from_tag(t_id):
+    with get_db_cursor() as cur:
+        cur.execute('SELECT post_id FROM post_tags WHERE tag_id=%s', (t_id,))
+        return cur.fetchall()
 
 # def add_post_to_tag(tag_id, post_id):
 #     with get_db_cursor(True) as cur:
