@@ -68,10 +68,10 @@ def like_post(post_id, user_id):
         current_app.logger.info("Adding Like %s, %s", post_id, user_id)
         cur.execute("INSERT INTO likes (post_id, user_id) VALUES (%s, %s)", (post_id, user_id))
 
-def follow_user(user_id, follower_id):
+def follow_user(followed_id, follower_id):
     with get_db_cursor(True) as cur:
-        current_app.logger.info("Adding Follower %s, %s", user_id, follower_id)
-        cur.execute("INSERT INTO followers (user_id, follower_id) VALUES (%s, %s)", (user_id, follower_id))
+        current_app.logger.info("Adding Follower %s, %s", followed_id, follower_id)
+        cur.execute("INSERT INTO followers (followed_id, follower_id) VALUES (%s, %s)", (followed_id, follower_id))
 
 def add_comment(post_id, user_id, comment):
     with get_db_cursor(True) as cur:
@@ -128,12 +128,12 @@ def get_num_likes(post_id):
 # Get Followers
 def get_num_followers(user_id):
     with get_db_cursor() as cur:
-        cur.execute("SELECT COUNT(*) AS num_followers FROM followers where user_id = %s", (user_id,))
+        cur.execute("SELECT COUNT(*) AS num_followers FROM followers where followed_id = %s", (user_id,))
         return cur.fetchone()
 
 def get_followers(user_id):
     with get_db_cursor() as cur:
-        cur.execute("SELECT follower_id FROM followers where user_id = %s", (user_id,))
+        cur.execute("SELECT user_id, username, full_name, bio FROM followers INNER JOIN users ON users.user_id = followers.follower_id WHERE followed_id = %s", (user_id,))
         return cur.fetchall()
 
 def get_num_followed(user_id):
@@ -143,7 +143,7 @@ def get_num_followed(user_id):
 
 def get_followed(user_id):
     with get_db_cursor() as cur:
-        cur.execute("SELECT user_id FROM followers where follower_id = %s", (user_id,))
+        cur.execute("SELECT user_id, username, full_name, bio FROM followers INNER JOIN users ON users.user_id = followers.followed_id WHERE follower_id = %s", (user_id,))
         return cur.fetchall()
 
 def get_num_posts(user_id):
@@ -229,9 +229,9 @@ def unlike_post(post_id, user_id):
     with get_db_cursor(True) as cur:
         cur.execute("DELETE FROM likes WHERE post_id = %s and user_id = %s", (post_id, user_id))
 
-def unfollow(user_id, follower_id):
+def unfollow(follower_id, followed_id):
     with get_db_cursor(True) as cur:
-        cur.execute("DELETE FROM followers WHERE user_id = %s and follower_id = %s", (user_id, follower_id))
+        cur.execute("DELETE FROM followers WHERE follower_id = %s and followed_id = %s", (follower_id, followed_id))
 
 def delete_comment(comment_id):
     with get_db_cursor(True) as cur:
