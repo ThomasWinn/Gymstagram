@@ -307,8 +307,11 @@ body {
     padding-right: 0.3em;
 }
 
-/* .profile-post img{
-    width:  100%;
-    height: 100%;
-    object-fit: cover;
-} */
+/* search by hashtag */
+.hash-post {
+    width: 100%;
+}
+
+.num-hash-post {
+    text-align: right;
+}
