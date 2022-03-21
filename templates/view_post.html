@@ -4,27 +4,6 @@
 {% block title %}Post {% endblock %}
 {% block content %}
 <script src=http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js></script>
-<script type = "text/javascript">
-    $(document).ready(function() {
-        var container         = $(".exercises_wrap");
-        var comment_button      = $(".add_comment"); //Plus sign id
-
-
-        var x = 0; //input field count intially
-        $(comment_button).click(function(e){         e.preventDefault();
-            if(x < max){ //maximum number of input field allowed
-                x++; //input field increment
-                $(container).append('<div class = "pure-u-1"> <textarea name = "text" rows = "5" cols = "50" placeholder="Write a caption..."></textarea> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
-            }
-        });
-
-        $(container).on("click",".delete_exercise", function(e){ //user click on remove text
-            e.preventDefault(); $(this).parent('div').remove(); x--;
-        })
-
-    });
-
-    </script>     
     
 <div class="post-area">  
                       <div class="post">
@@ -92,11 +71,14 @@
                                   <textarea name = "comment" id = "comment" rows = "5" cols = "50" placeholder="Comment"required></textarea>
                                   <button class = "pure-button" id  = "comment_button">Comment</button>
                                     <script>
-                                        var comment_form = $('#comment_form');
+                                        
         
                                         $('#comment_button').click(function(){
+                                            var container = $("#all_comments");
                                             var input_comment = $('#comment').val();
                                             console.log(input_comment)
+                                            $(container).append('<div>'+input_comment+'</div>'); //adding new input field
+
                                             $.ajax({
                                             url: "{{url_for('add_comment')}}",
                                             data: {
@@ -116,21 +98,15 @@
 
                             <div id="all_comments">
 
-                            {% for comment in all_comments %}
-                            {% if comment['post_id'] == current_post['post_id'] %}
-                            
-                                    <p>{{ comment['comment'] }}</p>
-                            {% endif %}
+                                {% for comment in all_comments %}
+                                {% if comment['post_id'] == current_post['post_id'] %}
+                                
+                                        <div>{{ comment['comment'] }}</div>
+                                {% endif %}
 
-                            {% endfor %}
+                                {% endfor %}
                             </div>
                         </div>
-
-                     
-                        
-                        <!-- <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form"> -->
-
-                        <!-- </form> -->
 
                       
   </div>
