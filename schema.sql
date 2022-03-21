@@ -20,9 +20,9 @@ create table users (
 );
 
 create table followers (
-  user_id text,
+  followed_id text,
   follower_id text,
-  UNIQUE (user_id, follower_id)
+  UNIQUE (followed_id, follower_id)
 );
 
 create table posts (
@@ -31,11 +31,11 @@ create table posts (
   description text NOT NULL,
   filename text,
   data bytea,
-  user_id text
-  -- CONSTRAINT fk_user
-  --   FOREIGN KEY(user_id)
-  -- REFERENCES users(user_id)
-  -- ON DELETE CASCADE
+  user_id text,
+  CONSTRAINT fk_user
+    FOREIGN KEY(user_id)
+  REFERENCES users(user_id)
+  ON DELETE CASCADE
 );
 
 create table exercises (
