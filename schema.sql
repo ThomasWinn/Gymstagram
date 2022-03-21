@@ -12,7 +12,9 @@ create table users (
   first_name varchar(255),
   last_name varchar(255),
   full_name varchar(255),
-  bio text DEFAULT 'Please write a bit about yourself and your fitness goals :)'
+  bio text DEFAULT 'Please write a bit about yourself and your fitness goals :)',
+  filename text,
+  data bytea
 );
 
 create table followers (
