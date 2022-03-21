@@ -1,5 +1,5 @@
 drop table exercises;
-drop table following;
+drop table followers;
 drop table likes;
 drop table comments;
 drop table posts;
@@ -11,10 +11,11 @@ create table users (
   username varchar(255) DEFAULT 'Anonymous',
   first_name varchar(255),
   last_name varchar(255),
-  full_name varchar(255)
+  full_name varchar(255),
+  bio text DEFAULT 'Please write a bit about yourself and your fitness goals :)'
 );
 
-create table following (
+create table followers (
   user_id text,
   follower_id text,
   UNIQUE (user_id, follower_id)

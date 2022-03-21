@@ -100,32 +100,27 @@ def main_page():
 @app.route('/profile/<string:id>')
 def profile(id):
     data = {
+        'user_id': id,
         'username': '',
         'first_name': '',
         'last_name': '',
+        'posts': 0,
         'followers': 0,
         'following': 0,
+        'bio': '',
+        'user_posts': [],
     }
-    # IF LOGGED IN return your profile page else return a blurred out page or soemthing where in middle says sign in / log in that directs to auth0
-    if 'profile' in session:
-        ####### maybe add in !!!!!
-        # retrieve stuff from db about user
-        # user_profile = db.get_user_profile(session['profile']['user_id'])
-        # data['username'] = user_profile[1]
-        # data['first_name'] = user_profile[2]
-        # data['last_name'] = user_profile[3]
-        # data['followers'] = user_profile[4]
-        # data['following'] = user_profile[5]
+    # user_profile = db.get_user_profile(session['profile']['user_id'])
+    data['username'] = db.get_username(id)
+    data['first_name'] = db.get_first_name(id)
+    data['last_name'] = db.get_last_name(id)
+    data['posts'] = db.get_num_posts(id)
+    data['followers'] = db.get_num_followers(id)
+    data['following'] = db.get_num_followed(id)
+    data['bio'] = db.get_bio(id)
+    data['user_posts'] = db.get_user_posts(id)
 
-        # user_posts = db.get_user_posts(session['profile']['user_id'])
-        # data['posts'] = user_posts
-
-        # return render_template('profile.html', data=data)
-        return render_template('profile.html')
-    # TODO: direct to new page
-    else:
-        # return render_template('no_profile.html', data=data)
-        return render_template('profile.html')
+    return render_template('profile.html', data=data)
 
 ########################## DM ######################################
 @app.route('/messages')
