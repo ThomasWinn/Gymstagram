@@ -96,6 +96,37 @@ def main_page():
 
     return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote)
 
+########################## TAG ##################################
+@app.route('/tag/<int:tag_id>', methods=['GET'])
+def display_tag_posts(tag_id):
+    post_id_arr = db.get_post_id_from_tag(tag_id)
+    post_id_arr.sort(reverse=True) # sort descending order to show newer posts first
+    all_posts = []
+    print(post_id_arr)
+    for id in post_id_arr:
+        all_posts.append(db.get_post(id[0])[0])
+    
+    # print(all_posts)
+    print(len(all_posts))
+
+    # TODO: REDIRECT TO PAGE WITH ALL POSTS WITH THAT TAG
+    return redirect('/')
+    # return render_template('.html')
+    # get all posts from this 
+
+
+# Get all hashtags from a sentence
+def get_all_hashtag(text):
+    ret = []
+
+    splitter = text.split()
+    
+    for word in splitter:
+        if word[0] == '#':
+            ret.append(word[1:])
+    
+    return ret
+
 
 ########################## PROFILE #############################
 
@@ -289,7 +320,26 @@ def upload_post():
         description = request.form.get("text")
         user_id = session['profile']['user_id']
         post_id = db.add_post(user_id, description, filename, data)[0]
-        # print(post_id)
+        all_hash = get_all_hashtag(description)
+        lower_hash = []
+        for hash in all_hash:
+            # 'lol', 'hype'
+            # eliminates 'Lol', 'lol' dupes
+            if hash.lower() not in lower_hash:
+                lower_hash.append(hash.lower())
+                
+                # if hashtag doesn't exist yet
+                if len(db.get_hashtag_by_text(hash)) == 0:
+                    tag_id = db.add_hashtag(hash) # return tag ID like we do with post
+                    print(tag_id[0])
+                    db.add_post_to_tag(post_id, tag_id[0])
+                # if tag exists we do some kinda connection between tag id and postid
+                else:
+                    db_tag = db.get_hashtag_by_text(hash)
+                    tag_id = db_tag[0][0]
+                    print(tag_id)
+                    db.add_post_to_tag(post_id, tag_id)
+
         text = request.form.getlist("text[]")
         exercises = []
         for x in range(0, len(text), 3):
@@ -316,16 +366,40 @@ def search_text():
     if search_type == 'name':
         # full_name search
         found_search = db.search_name(to_search)
+        return render_template('searched.html', users=found_search)
     elif search_type == 'username':
-        # TODO:
         found_search = db.search_user(to_search)
+        return render_template('searched.html', users=found_search)
     elif search_type == 'tag':
-        # TODO:
-        pass
+        found_search = db.search_tag(to_search)
+        post_num = []
+        for ret_tag in found_search:
+            post_num.append(len(db.get_post_id_from_tag(ret_tag[0])))
+        
+        # # tag: num_posts
+        # ret_dic = {
+        #     "tag_data": [],
+        #     "num_posts": [],
+        # }
+        # for i in range(len(found_search)):
+        #     ret_dic['tag_data'].append(found_search[i])
+        #     ret_dic['num_posts'].append(post_num[i])
+        
+        ret_list = []
+        for i in range(len(found_search)):
+            temp = []
+            temp.append(found_search[i])
+            temp.append(post_num[i])
+            ret_list.append(temp)
+
+        print(ret_list) # works
+        return render_template('searched_tag.html', data=ret_list)
+
     
     # TODO: how to return back information without reloading the page?
-    print(found_search)
-    return render_template('searched.html', users=found_search)
+
+    # print(found_search)
+    # return render_template('searched.html', users=found_search)
 
 @app.route('/view_post/<int:post_id>', methods=['GET'])
 def view_post(post_id):
