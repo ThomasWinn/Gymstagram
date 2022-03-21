@@ -57,12 +57,11 @@ def add_time_exercise(post_id, exercise_name, num_time, time_units):
 
 def add_user(user_id, fname, lname):
     with get_db_cursor(True) as cur:
-        blank = ''
         fname = fname.lower()
         lname = lname.lower()
         full_name = fname + ' ' + lname
         current_app.logger.info("Adding User %s, %s, %s, %s", user_id, fname, lname, full_name)
-        cur.execute("INSERT INTO users (user_id, username, first_name, last_name, full_name) VALUES (%s, %s, %s, %s, %s)", (user_id, blank, fname, lname, full_name))
+        cur.execute("INSERT INTO users (user_id, first_name, last_name, full_name) VALUES (%s, %s, %s, %s)", (user_id, fname, lname, full_name))
 
 def like_post(post_id, user_id):
     with get_db_cursor(True) as cur:
@@ -147,6 +146,30 @@ def get_followed(user_id):
         cur.execute("SELECT user_id FROM followers where follower_id = %s", (user_id,))
         return cur.fetchall()
 
+def get_num_posts(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT COUNT(*) AS num_posts FROM posts where user_id = %s", (user_id,))
+        return cur.fetchone()
+
+def get_first_name(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT first_name FROM users where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_last_name(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT last_name FROM users where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_username(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT username FROM users where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_bio(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT bio FROM users where user_id = %s", (user_id,))
+        return cur.fetchall()
 
 # Get Comments
 def get_post_comments(post_id):
