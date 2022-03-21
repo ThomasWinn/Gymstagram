@@ -89,10 +89,42 @@
                               </div>
                           </div>
                           <div class = "comments">
-                              <textarea name = "comment" rows = "5" cols = "50" placeholder="Comment"></textarea>
-                              <button type = "submit" class = "pure-button">Comment</button>
-                          </div>
-                      </div>
+                                  <textarea name = "comment" id = "comment" rows = "5" cols = "50" placeholder="Comment"required></textarea>
+                                  <button class = "pure-button" id  = "comment_button">Comment</button>
+                                    <script>
+                                        var comment_form = $('#comment_form');
+        
+                                        $('#comment_button').click(function(){
+                                            var input_comment = $('#comment').val();
+                                            console.log(input_comment)
+                                            $.ajax({
+                                            url: "{{url_for('add_comment')}}",
+                                            data: {
+                                                    post_id: {{ current_post['post_id'] }},
+                                                    user_id: "{{ current_post['user_id'] }}",
+                                                    comment: input_comment
+                                            },
+                                            success: function(response){
+                                                console.log("success");
+                                            },
+                                            type:'POST'
+                                            })
+                                        });
+                                    </script>
+                             </div>
+                        </div>
+
+                            <div id="all_comments">
+
+                            {% for comment in all_comments %}
+                            {% if comment['post_id'] == current_post['post_id'] %}
+                            
+                                    <p>{{ comment['comment'] }}</p>
+                            {% endif %}
+
+                            {% endfor %}
+                            </div>
+                        </div>
 
                      
                         
