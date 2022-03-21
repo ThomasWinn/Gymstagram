@@ -205,6 +205,10 @@ def update_user(user_id, username, first_name, last_name, bio):
         cur.execute("UPDATE users SET username = %s, first_name = %s, last_name = %s, full_name = %s, bio = %s WHERE user_id = %s", 
         (username, first_name, last_name, fullname, bio, user_id))
 
+def update_user_picture(user_id, filename, data):
+    with get_db_cursor(True) as cur:
+        cur.execute("UPDATE users SET filename = %s, data = %s WHERE user_id = %s", (filename, data, user_id))
+
 # DELETE functions
 
 # post deletion will cascade and delete associated exercises
