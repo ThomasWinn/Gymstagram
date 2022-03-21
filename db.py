@@ -208,18 +208,49 @@ def delete_comment(comment_id):
 def search_user(text):
     with get_db_cursor() as cur:
         # same thing as select all users where text in username HAVENT TRIED YET
-        text = text.lower()
+        # text = text.lower()
         query = "%" + text + "%"
-        cur.execute('SELECT * FROM users WHERE username like %s', (query,))
+        cur.execute('SELECT * FROM users WHERE username ilike %s', (query,))
         return cur.fetchall()
 
 # full_name search
 def search_name(text):
     with get_db_cursor() as cur:
-        text = text.lower()
+        # text = text.lower()
         query = "%" + text + "%"
-        cur.execute('SELECT * from users WHERE full_name like %s', (query,))
+        cur.execute('SELECT * FROM users WHERE full_name ilike %s', (query,))
         return cur.fetchall()
+
+# Search for tags which start from the tag
+def search_tag(text):
+    with get_db_cursor() as cur:
+        text = text.lower()
+        query = "%" + text
+        cur.execute('SELECT * FROM tags WHERE tag like %s', (query,))
+        return cur.fetchall()
+
+########################## TAGS #############################
+
+def get_all_tag(id):
+    with get_db_cursor() as cur:
+        cur.execute('SELECT * FROM tags WHERE tag_id=%s', (id,))
+        return cur.fetchall()
+
+def has_hashtag(text):
+    with get_db_cursor() as cur:
+        query = text
+        cur.execute('SELECT * FROM tags WHERE tag ilike %s', (query,))
+        return cur.fetchall()
+
+def add_hashtag(text):
+    with get_db_cursor(True) as cur:
+        text = text.lower()
+        cur.execute('INSERT into tags (tag) VALUES (%s)', (text,))
+
+# def add_post_to_tag(tag_id, post_id):
+#     with get_db_cursor(True) as cur:
+#         current_app.logger.info("Adding Tag %s, %s", tag_id, post_id)
+#         cur.execute("INSERT INTO tags (post_id, user_id, comment) VALUES (%s, %s, %s)", (post_id, user_id, comment))
 
 ########################## QUOTES #############################
 def add_quotes(quotes):

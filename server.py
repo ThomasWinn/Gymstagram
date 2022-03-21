@@ -93,6 +93,23 @@ def main_page():
 
     return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote)
 
+########################## TAG ##################################
+# @app.route('/tag/<int:tag_id>', methods=['GET'])
+# def display_tag_posts(tag_id):
+#     # get all posts from this 
+
+# Get all hashtags from a sentence
+def get_all_hashtag(text):
+    ret = []
+
+    splitter = text.split()
+    
+    for word in splitter:
+        if word[0] == '#':
+            ret.append(word[1:])
+    
+    return ret
+
 
 ########################## PROFILE #############################
 
@@ -230,6 +247,25 @@ def upload_post():
         description = request.form.get("text")
         user_id = session['profile']['user_id']
         post_id = db.add_post(user_id, description, filename, data)[0]
+        all_hash = get_all_hashtag(description)
+        lower_hash = []
+        for hash in all_hash:
+            # 'lol', 'hype'
+            # eliminates 'Lol', 'lol' dupes
+            if hash.lower() not in lower_hash:
+                lower_hash.append(hash.lower())
+                # add post to hashtag list
+                # How do I connect this post to THIS hashtag
+                
+                if not db.has_hashtag(hash):
+                    db.add_hashtag(hash) # return tag ID like we do with post
+                    #todo
+                # if tag exists we do some kinda connection between tag id and postid
+                else:
+                    # todo
+            
+            # add this hashtag 
+        
         # print(post_id)
         text = request.form.getlist("text[]")
         exercises = []
@@ -257,16 +293,19 @@ def search_text():
     if search_type == 'name':
         # full_name search
         found_search = db.search_name(to_search)
+        return render_template('searched.html', users=found_search)
     elif search_type == 'username':
-        # TODO:
         found_search = db.search_user(to_search)
+        return render_template('searched.html', users=found_search)
     elif search_type == 'tag':
-        # TODO:
-        pass
+        found_search = db.search_tag(to_search)
+        return render_template('searched_tag.html', tags=found_search)
+
     
     # TODO: how to return back information without reloading the page?
-    print(found_search)
-    return render_template('searched.html', users=found_search)
+
+    # print(found_search)
+    # return render_template('searched.html', users=found_search)
 
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):

@@ -1,0 +1,26 @@
+{% extends "parent.html" %}
+{% block header %}
+{% endblock %}
+{% block title %}Searched{% endblock %}
+{% block content %}
+    <!-- IDK HOW TO CENTER ANYTHING OR DO ANYTHING FRONT END FOR SOME REASON -->
+    <!-- user['user_id', 'username', 'first_name', 'last_name', 'full_name'] -->
+    <!-- PLEASE CENTER AND PUT USERS IN A RECTANGLE JUST LIKE IG PRADGE -->
+    <!-- use for redirection to x user profile ->        url_for('profile', 'id=users['user_id']') -->
+
+<div class="search-area">
+    <div class = "pure-g">
+    {% for tag in tags %}
+        <div class="pure-u-1-1">
+            <a href="{{ url_for('display_tag_posts', tag_id=tag['tag_id']) }}" style="text-decoration: none">
+                <div class="search-container">
+                        <img class="profile-pic" src="../static/images/hashtag.jpeg">
+                        <span>{{ tag['tag'] }}</span>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+    
+{% endblock %}
