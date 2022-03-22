@@ -404,6 +404,12 @@ def view_post(post_id):
     current_exercises = db.get_post_exercises(post_id)
     all_comments = db.get_all_comments()
     return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments)
+
+@app.route('/view_post/<int:post_id>/delete', methods=['POST'])
+@requires_auth
+def delete_post(post_id):
+    db.delete_post(post_id)
+    return redirect(url_for("profile", id=session['profile']['user_id']))
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):
 #     exercises = db.get_post_exercises(post_id)
