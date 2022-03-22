@@ -84,6 +84,10 @@ def initialize():
         quotes = generate_quotes()
         db.add_quotes(quotes)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.route('/')
 def main_page():
     all_posts = db.get_all_posts()
