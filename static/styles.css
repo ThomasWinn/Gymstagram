@@ -170,6 +170,7 @@ body {
     border:none; 
     position: absolute; 
     cursor: pointer;
+    transition: 0.3s;
     opacity: 0.6;
     top:0px; 
     right:21px; 
@@ -186,6 +187,7 @@ body {
     border:none; 
     position: absolute; 
     cursor: pointer;
+    transition: 0.3s;
     opacity: 0.6;
     top:0px; 
     right:1px; 
@@ -195,6 +197,14 @@ body {
 
 .delete-post-button:hover {
     opacity: 1
+}
+
+.delete-exercise-icon {
+    padding-left:0.4em;
+    color:red;  
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%);
 }
 
 .post-icon {
