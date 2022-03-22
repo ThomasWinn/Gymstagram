@@ -93,6 +93,11 @@ def get_all_posts():
         cur.execute("SELECT * FROM posts ORDER BY tstamp DESC")
         return cur.fetchall()
 
+def get_all_users():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM users")
+        return cur.fetchall()
+
 def get_all_posts_reverse():
     with get_db_cursor() as cur:
         cur.execute("SELECT * FROM posts ORDER BY tstamp ASC")

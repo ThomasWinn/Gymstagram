@@ -88,13 +88,14 @@ def initialize():
 def main_page():
     all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
+    all_users = db.get_all_users()
     rand = random.randint(1, 49)
     chosen_quote = db.get_quote(rand)
     la_quote = chosen_quote[0][0]
     if 'Erin' in la_quote:
         la_quote.replace('- -', '-')
 
-    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote)
+    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users)
 
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
@@ -403,13 +404,16 @@ def view_post(post_id):
     current_post = db.get_post(post_id)[0]
     current_exercises = db.get_post_exercises(post_id)
     all_comments = db.get_all_comments()
-    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments)
+    all_users = db.get_all_users()
+    num_likes = db.get_num_likes(post_id)
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes)
 
 @app.route('/view_post/<int:post_id>/delete', methods=['POST'])
 @requires_auth
 def delete_post(post_id):
     db.delete_post(post_id)
     return redirect(url_for("profile", id=session['profile']['user_id']))
+  
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):
 #     exercises = db.get_post_exercises(post_id)
@@ -420,4 +424,11 @@ def add_comment():
     user_id = request.form['user_id']
     comment = request.form['comment']
     db.add_comment(post_id,user_id,comment)
+    return jsonify(status = "OK")
+
+@app.route('/like_post', methods = ['POST'])
+def like_post():
+    post_id = request.form['post_id']
+    user_id = request.form['user_id']
+    db.like_post(post_id, user_id)
     return jsonify(status = "OK")

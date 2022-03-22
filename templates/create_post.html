@@ -15,13 +15,13 @@
         $(exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise"/> <input type="number" name="text[]" placeholder = "Enter in # of sets"/> <input type="number" name="text[]" placeholder = "Enter in # of reps"/> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise required"/> <input type="number" name="text[]" placeholder = "Enter in # of sets" required/> <input type="number" name="text[]" placeholder = "Enter in # of reps" required/> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
             }
         });
         $(time_exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise"/> <input type="number" name="text[]" placeholder = "Enter in time spent"/><select name="text[]" id="time"><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select><a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise required"/> <input type="number" name="text[]" placeholder = "Enter in time spent"/><select name="text[]" id="time" required><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select><a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
             }
         });
 
@@ -48,10 +48,12 @@
                 <p><img id="output" width="500"/></p>
                 <input type="file" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif" required/>
                 <br><br>
-                  <textarea name = "text" rows = "5" cols = "50" placeholder="Write a caption..."></textarea>
+                  <textarea name = "text" rows = "5" cols = "50" placeholder="Write a caption..." required></textarea>
                   <br><br>
 
                   <div class = "exercises_wrap">
+                    <div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise" required/> <input type="number" name="text[]" placeholder = "Enter in # of sets" required/> <input type="number" name="text[]" placeholder = "Enter in # of reps" required/> <a href="#" class="delete_exercise">delete</a></div>
+                    <div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise" required/> <input type="number" name="text[]" placeholder = "Enter in time spent" required/><select name="text[]" id="time"><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select><a href="#" class="delete_time_exercise">delete</a></div>
                     <div> <button class="add_exercise pure-button">Add Sets/Reps Exercise</button></div>
                     <div> <button class="time_exercise pure-button">Add Timed Exercise</button></div>
                   </div>

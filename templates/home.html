@@ -28,9 +28,7 @@
                 <div class="pure-u-xl-1-1 pure-u-lg-1-1 pure-u-md-1-1 pure-u-sm-1-1">
                     <div class="post">
                         <div class="post-top">
-                            <a href="{{ url_for('profile', id=post['user_id']) }}" style="text-decoration: none; color: black;">
-                                <p>*Insert profile pic* *insert profile name*</p>
-                            </a>
+
                         </div>
                         <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none; color: black;">
                             <div>
@@ -76,15 +74,26 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
-
-                                <p class="post-caption"><b>{{ post['user_id'] }}</b> {{ post['description'] }} </p>
-
                             </div>
                         </a>
+                                <p class="post-caption">
+                                  <b>
+                                      
+                                        {% for user in all_users %}
+                                            {% if user['user_id'] == post['user_id'] %}
+                                            <a href="{{ url_for('profile', id=post['user_id']) }}" style="text-decoration: none; color: black;">
+                                                <p>@{{ user['username'] }}
+                                            </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                      
+                                  </b> {{ post['description'] }} <i>{{ post['tstamp'] }}</i></p>
+                                  
+
+
                         <div class="post-like-comment">
                             <div>
                                 <i class="pure-button fa fa-thumbs-up"></i>
-                                <i class="pure-button fa fa-thumbs-down"></i>
                             </div>
                             <div>
                                 <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none">
