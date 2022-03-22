@@ -472,7 +472,7 @@ def upload_post():
 
 ########################## LIKE / DISLIKE ##################################
 # I'm confused how the heck we are going to do this
-# TODO: I need to understand and populate shit into the db first to test.
+# TODO: I need to understand aredirect(url_for("main_page"nd populate shit into the db first to test.
 
 ########################## SEARCH ##################################
 @app.route('/search', methods=['POST'])
@@ -559,9 +559,26 @@ def like_post():
     db.like_post(post_id, user_id)
     return jsonify(status = "OK")
 
+@app.route('/edit/<int:post_id>', methods=['GET'])
+@requires_auth
+def view_edit_post(post_id):
+    current_post = db.get_post(post_id)[0]
+    if not current_post['user_id'] == session['profile']['user_id']:
+        return redirect(url_for("main_page"))
+    current_exercises = db.get_post_exercises(post_id)
+    return render_template('edit_post.html', current_post = current_post, current_exercises = current_exercises)
+
+@app.route('/edit/<int:post_id>', methods=['POST'])
+@requires_auth
+def edit_post(post_id):
+    description = request.form['description']
+    db.update_post(post_id, description)
+    return redirect(url_for("view_post", post_id=post_id))
+
 @app.route('/unlike_post', methods = ['POST'])
 def unlike_post():
     post_id = request.form['post_id']
     user_id = request.form['user_id']
     db.unlike_post(post_id, user_id)
     return jsonify(status = "OK")
+
