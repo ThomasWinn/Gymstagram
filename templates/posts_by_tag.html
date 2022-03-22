@@ -3,16 +3,11 @@
 {% endblock %}
 {% block title %}Home{% endblock %}
 {% block content %}
-
-    <p class="daily-quote">{{quote}}</p>
-    {% if not session["profile"] %}
     <div class="pure-g">
         <div class="button-center pure-u-1-1">
-            <a class=" pure-button" href="">Explore</a>
+            <p>{{hashtag_name}}</p>
         </div>
     </div>
-    {% endif %}
-    <p>{{hashtag_name}}</p>
     <div class="post-area">
         <div class = "pure-g">
             {% for post in posts %}

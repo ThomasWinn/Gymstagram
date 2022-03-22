@@ -91,6 +91,11 @@ def get_all_posts():
         cur.execute("SELECT * FROM posts ORDER BY tstamp DESC")
         return cur.fetchall()
 
+def get_all_users():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM users")
+        return cur.fetchall()
+
 def get_all_posts_reverse():
     with get_db_cursor() as cur:
         cur.execute("SELECT * FROM posts ORDER BY tstamp ASC")
@@ -134,6 +139,11 @@ def get_followers(user_id):
         cur.execute("SELECT user_id, username, full_name, bio FROM followers INNER JOIN users ON users.user_id = followers.follower_id WHERE followed_id = %s", (user_id,))
         return cur.fetchall()
 
+def get_followers_user_id(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT user_id FROM followers INNER JOIN users ON users.user_id = followers.follower_id WHERE followed_id = %s", (user_id,))
+        return cur.fetchall()
+
 def get_num_followed(user_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT COUNT(*) AS num_followed FROM followers where follower_id = %s", (user_id,))
@@ -142,6 +152,11 @@ def get_num_followed(user_id):
 def get_followed(user_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT user_id, username, full_name, bio FROM followers INNER JOIN users ON users.user_id = followers.followed_id WHERE follower_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_followed_user_id(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT user_id FROM followers INNER JOIN users ON users.user_id = followers.followed_id WHERE follower_id = %s", (user_id,))
         return cur.fetchall()
 
 def get_num_posts(user_id):

@@ -88,17 +88,22 @@ def initialize():
         quotes = generate_quotes()
         db.add_quotes(quotes)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.route('/')
 def main_page():
     all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
+    all_users = db.get_all_users()
     rand = random.randint(1, 49)
     chosen_quote = db.get_quote(rand)
     la_quote = chosen_quote[0][0]
     if 'Erin' in la_quote:
         la_quote.replace('- -', '-')
 
-    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote)
+    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users)
 
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
@@ -143,7 +148,8 @@ def view_pp(user_id):
 # return data containing necessary things for a profile
 @app.route('/profile/<string:id>')
 def profile(id):
-    print('here')
+    if not db.get_user_profile(id):
+        return redirect(url_for("main_page"))
     data = {
         'user_id': id,
         'username': '',
@@ -151,7 +157,9 @@ def profile(id):
         'last_name': '',
         'posts': 0,
         'followers': 0,
+        'followers_list': [],
         'following': 0,
+        'following_list': [],
         'bio': '',
         'user_posts': [],
         'filename': ''
@@ -162,10 +170,27 @@ def profile(id):
     data['last_name'] = db.get_last_name(id)
     data['posts'] = db.get_num_posts(id)
     data['followers'] = db.get_num_followers(id)
+    # data['followers_list'] = db.get_followers(id)
     data['following'] = db.get_num_followed(id)
+    # data['following_list'] = db.get_followed(id)
     data['bio'] = db.get_bio(id)
     data['user_posts'] = db.get_user_posts(id)
     data['filename'] = db.get_profile_pic_text(id)[0][0]
+
+    followers_list_final = []
+    followers_list_temp = db.get_followers(id)
+    for i in followers_list_temp:
+        followers_list_final.append(i[0])
+    
+    data['followers_list'] = followers_list_final
+
+    
+    following_list_final = []
+    following_list_temp = db.get_followed(id)
+    for i in following_list_temp:
+        following_list_final.append(i[0])
+
+    data['following_list'] = following_list_final
 
     return render_template('profile.html', data=data)
 
@@ -191,7 +216,9 @@ def update_user_profile(id):
         'last_name': '',
         'posts': 0,
         'followers': 0,
+        'followers_list': [],
         'following': 0,
+        'following_list': [],
         'bio': '',
         'user_posts': [],
         'filename': ''
@@ -217,39 +244,88 @@ def update_user_profile(id):
     data['last_name'] = db.get_last_name(id)
     data['posts'] = db.get_num_posts(id)
     data['followers'] = db.get_num_followers(id)
+    data['followers_list'] = db.get_followers(id)
     data['following'] = db.get_num_followed(id)
+    data['following_list'] = db.get_followed(id)
     data['bio'] = db.get_bio(id)
     data['user_posts'] = db.get_user_posts(id)
     data['filename'] = db.get_profile_pic_text(id)[0][0]
 
-    return render_template('profile.html', data=data)
-
-@app.route('/profile/<string:id>/cancel', methods=['POST'])
-def cancel_update_user_profile(id):
-    data = {
-        'user_id': id,
-        'username': '',
-        'first_name': '',
-        'last_name': '',
-        'posts': 0,
-        'followers': 0,
-        'following': 0,
-        'bio': '',
-        'user_posts': [],
-        'filename': ''
-    }
-
-    data['username'] = db.get_username(id)
-    data['first_name'] = db.get_first_name(id)
-    data['last_name'] = db.get_last_name(id)
-    data['posts'] = db.get_num_posts(id)
-    data['followers'] = db.get_num_followers(id)
-    data['following'] = db.get_num_followed(id)
-    data['bio'] = db.get_bio(id)
-    data['user_posts'] = db.get_user_posts(id)
-    data['filename'] = db.get_profile_pic_text(id)[0][0]
+    current_app.logger.info(data['followers_list'])
 
     return render_template('profile.html', data=data)
+
+
+@app.route('/follow', methods = ['POST'])
+def follow_user():
+    my_id = request.form['my_id']
+    follow_user_id = request.form['follow_user_id']
+    db.follow_user(follow_user_id, my_id)
+    return jsonify(status = "OK")
+
+@app.route('/unfollow', methods = ['POST'])
+def unfollow_user():
+    my_id = request.form['my_id']
+    follow_user_id = request.form['follow_user_id']
+    db.unfollow(my_id, follow_user_id)
+    return jsonify(status = "OK")
+
+# @app.route('/profile/<string:about_to_follow_id>/follow', methods=['POST'])
+# def follow_user(my_id, follow_user_id):
+#     data = {
+#         'user_id': about_to_follow_id,
+#         'username': '',
+#         'first_name': '',
+#         'last_name': '',
+#         'posts': 0,
+#         'followers': 0,
+#         'following': 0,
+#         'following_list': [],
+#         'bio': '',
+#         'user_posts': [],
+#     }
+#     print(my_id)
+
+#     data['username'] = db.get_username(about_to_follow_id)
+#     data['first_name'] = db.get_first_name(about_to_follow_id)
+#     data['last_name'] = db.get_last_name(about_to_follow_id)
+#     data['posts'] = db.get_num_posts(about_to_follow_id)
+#     data['followers'] = db.get_num_followers(about_to_follow_id)
+#     data['followers_list'] = db.get_followers(about_to_follow_id)
+#     data['following'] = db.get_num_followed(about_to_follow_id)
+#     data['following_list'] = db.get_followed(about_to_follow_id)
+#     data['bio'] = db.get_bio(about_to_follow_id)
+#     data['user_posts'] = db.get_user_posts(about_to_follow_id)
+
+#     return render_template('profile.html', data=data)
+
+# @app.route('/profile/<string:about_to_follow_id>/unfollowed')
+# def unfollow_user(my_id, about_to_follow_id):
+#     data = {
+#         'user_id': about_to_follow_id,
+#         'username': '',
+#         'first_name': '',
+#         'last_name': '',
+#         'posts': 0,
+#         'followers': 0,
+#         'following': 0,
+#         'following_list': [],
+#         'bio': '',
+#         'user_posts': [],
+#     }
+
+#     data['username'] = db.get_username(id)
+#     data['first_name'] = db.get_first_name(id)
+#     data['last_name'] = db.get_last_name(id)
+#     data['posts'] = db.get_num_posts(id)
+#     data['followers'] = db.get_num_followers(id)
+#     data['followers_list'] = db.get_followers(id)
+#     data['following'] = db.get_num_followed(id)
+#     data['following_list'] = db.get_followed(id)
+#     data['bio'] = db.get_bio(id)
+#     data['user_posts'] = db.get_user_posts(id)
+
+#     return render_template('profile.html', data=data)
 
 ########################## DM ######################################
 @app.route('/messages')
@@ -436,7 +512,16 @@ def view_post(post_id):
     current_post = db.get_post(post_id)[0]
     current_exercises = db.get_post_exercises(post_id)
     all_comments = db.get_all_comments()
-    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments)
+    all_users = db.get_all_users()
+    num_likes = db.get_num_likes(post_id)
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes)
+
+@app.route('/view_post/<int:post_id>/delete', methods=['POST'])
+@requires_auth
+def delete_post(post_id):
+    db.delete_post(post_id)
+    return redirect(url_for("profile", id=session['profile']['user_id']))
+  
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):
 #     exercises = db.get_post_exercises(post_id)
@@ -447,4 +532,11 @@ def add_comment():
     user_id = request.form['user_id']
     comment = request.form['comment']
     db.add_comment(post_id,user_id,comment)
+    return jsonify(status = "OK")
+
+@app.route('/like_post', methods = ['POST'])
+def like_post():
+    post_id = request.form['post_id']
+    user_id = request.form['user_id']
+    db.like_post(post_id, user_id)
     return jsonify(status = "OK")
