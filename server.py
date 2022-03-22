@@ -135,6 +135,8 @@ def get_all_hashtag(text):
 # return data containing necessary things for a profile
 @app.route('/profile/<string:id>')
 def profile(id):
+    if not db.get_user_profile(id):
+        return redirect(url_for("main_page"))
     data = {
         'user_id': id,
         'username': '',
