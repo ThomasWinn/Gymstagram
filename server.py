@@ -42,6 +42,10 @@ app.secret_key = env['CLIENT_SECRET']
 #     extensions=['jinja2.ext.do']
 # )
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
+
 oauth = OAuth(app)
 
 def fetch_token(name, request):
@@ -83,6 +87,10 @@ def initialize():
         # Scrape 
         quotes = generate_quotes()
         db.add_quotes(quotes)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 @app.route('/')
 def main_page():
@@ -141,9 +149,20 @@ def get_all_hashtag(text):
 
 ########################## PROFILE #############################
 
+# view profile picture
+@app.route('/profile/pp/<string:user_id>')
+def view_pp(user_id):
+    print('here2')
+    pp = db.get_user_profile(user_id)[0]
+    stream = io.BytesIO(pp[7])
+    # use special "send_file" function
+    return send_file(stream, attachment_filename=pp[6]) 
+
 # return data containing necessary things for a profile
 @app.route('/profile/<string:id>')
 def profile(id):
+    if not db.get_user_profile(id):
+        return redirect(url_for("main_page"))
     data = {
         'user_id': id,
         'username': '',
@@ -156,6 +175,7 @@ def profile(id):
         'following_list': [],
         'bio': '',
         'user_posts': [],
+        'filename': ''
     }
     # user_profile = db.get_user_profile(session['profile']['user_id'])
     data['username'] = db.get_username(id)
@@ -168,6 +188,7 @@ def profile(id):
     # data['following_list'] = db.get_followed(id)
     data['bio'] = db.get_bio(id)
     data['user_posts'] = db.get_user_posts(id)
+    data['filename'] = db.get_profile_pic_text(id)[0][0]
 
     followers_list_final = []
     followers_list_temp = db.get_followers(id)
@@ -188,6 +209,19 @@ def profile(id):
 
 @app.route('/profile/<string:id>', methods=['POST'])
 def update_user_profile(id):
+    img_flag = 0
+    file = request.files['image']
+    # if we detect an image is added
+    if file and allowed_file(file.filename):
+        # if the img is bad
+        if 'image' not in request.files:
+            return redirect(url_for("profile", id=id))
+        if file.filename == '':
+            return redirect(url_for("profile", id=id))
+        img_filename = secure_filename(file.filename)
+        img_data = file.read()
+        img_flag = 1
+    
     data = {
         'user_id': id,
         'username': '',
@@ -200,6 +234,7 @@ def update_user_profile(id):
         'following_list': [],
         'bio': '',
         'user_posts': [],
+        'filename': ''
     }
     new_username = request.form.get("update-username")
     new_username = sanitizer.sanitize(new_username)
@@ -210,7 +245,11 @@ def update_user_profile(id):
     new_bio = request.form.get("update-bio")
     new_bio = sanitizer.sanitize(new_bio)
 
+
     db.update_user(id, new_username, new_first_name, new_last_name, new_bio)
+    if img_flag == 1:
+        db.update_user_picture(id, img_filename, img_data)
+        
 
     # user_profile = db.get_user_profile(session['profile']['user_id'])
     data['username'] = db.get_username(id)
@@ -223,10 +262,12 @@ def update_user_profile(id):
     data['following_list'] = db.get_followed(id)
     data['bio'] = db.get_bio(id)
     data['user_posts'] = db.get_user_posts(id)
+    data['filename'] = db.get_profile_pic_text(id)[0][0]
 
     current_app.logger.info(data['followers_list'])
 
     return render_template('profile.html', data=data)
+
 
 @app.route('/follow', methods = ['POST'])
 def follow_user():
@@ -383,10 +424,6 @@ def view_post_image(post_id):
     stream = io.BytesIO(image_row[4])
     # use special "send_file" function
     return send_file(stream, attachment_filename=image_row["filename"]) 
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
 
 @app.route('/create_post', methods=['POST'])
 @requires_auth

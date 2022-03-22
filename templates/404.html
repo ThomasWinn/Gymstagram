@@ -1,0 +1,12 @@
+{% extends "parent.html" %}
+{% block header %}
+{% endblock %}
+{% block title %}404{% endblock %}
+{% block content %}
+<a href="{{ url_for('main_page') }}">
+    <img class="centered" src="/static/images/tiger_working_out.gif">
+</a>
+<b>
+    <h2 style="text-align: center;"> Oops! Looks like you're a little bit lost. Click on the tiger to return to the home page :)</h2>
+</b>
+{% endblock %}
