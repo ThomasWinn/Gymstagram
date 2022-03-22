@@ -8,17 +8,17 @@
     {% if not session["profile"] %}
     <div class="pure-g">
         <div class="button-center pure-u-1-1">
-            <a class=" pure-button" href="">Explore</a>
+            <a class=" pure-button active-button" href="">Explore</a>
         </div>
     </div>
     {% endif %}
     {% if session["profile"] %}
         <div class="pure-g">
             <div class="button-left pure-u-1-2">
-                <a class="pure-button" href="">Following</a>
+                <a class="pure-button" style="width: 6em;" href="{{ url_for('following_page') }}">Following</a>
             </div>
             <div class="button-right pure-u-1-2">
-                <a class=" pure-button" href="">Explore</a>
+                <a class="pure-button active-button" style="width: 6em;" href="">Explore</a>
             </div>
         </div>
     {% endif %}

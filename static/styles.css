@@ -270,6 +270,11 @@ body {
     font-size: 24px;
 }
 
+.active-button {
+    background-color: blue;
+    color: white;
+}
+
 
 /* profile css */
 .profile-area {
@@ -385,7 +390,7 @@ body {
 }
 
 /* popup */
-.modal-window {
+/* .modal-window {
     position: fixed;
     background-color: rgba(200, 200, 200, 0.75);
     top: 0;
@@ -437,4 +442,4 @@ body {
   .modal-window h1 {
     font-size: 150%;
     margin: 0 0 15px;
-  }
+  } */

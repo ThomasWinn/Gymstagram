@@ -106,17 +106,66 @@ def main_page():
             likes_dict[i[0]] = 1
         else:
             likes_dict[i[0]] += 1
-    user_likes = []
-    for i in all_likes:
-        if session['profile']['user_id'] == i[1]:
-            user_likes.append(i[0])
+    # user_likes = []
+    # for i in all_likes:
+    #     if session['profile']['user_id'] == i[1]:
+    #         user_likes.append(i[0])
+    
+    if 'profile' not in session:
+        user_likes = []
+        following_list_final = []
+    else:
+        following_list_final = []
+        following_list_temp = db.get_followed(session['profile']['user_id'])
+        for i in following_list_temp:
+            following_list_final.append(i[0])
+        user_likes = []
+        for i in all_likes:
+            if session['profile']['user_id'] == i[1]:
+                user_likes.append(i[0])
+
     rand = random.randint(1, 49)
     chosen_quote = db.get_quote(rand)
     la_quote = chosen_quote[0][0]
     if 'Erin' in la_quote:
         la_quote.replace('- -', '-')
 
-    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes)
+    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes, following_list = following_list_final)
+
+@app.route('/following')
+def following_page():
+    all_posts = db.get_all_posts()
+    all_exercises = db.get_all_exercises()
+    all_users = db.get_all_users()
+    all_likes = db.get_all_likes()
+    likes_dict = {}
+    for i in all_posts:
+        likes_dict[i[0]] = 0
+    for i in all_likes:
+        if i[0] not in likes_dict:
+            likes_dict[i[0]] = 1
+        else:
+            likes_dict[i[0]] += 1
+    user_likes = []
+    for i in all_likes:
+        if session['profile']['user_id'] == i[1]:
+            user_likes.append(i[0])
+
+    if 'profile' not in session:
+        following_list_final = []
+    else:
+        following_list_final = []
+        following_list_temp = db.get_followed(session['profile']['user_id'])
+        for i in following_list_temp:
+            following_list_final.append(i[0])
+
+    rand = random.randint(1, 49)
+    chosen_quote = db.get_quote(rand)
+    la_quote = chosen_quote[0][0]
+    if 'Erin' in la_quote:
+        la_quote.replace('- -', '-')
+
+    return render_template('following.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes, following_list = following_list_final)
 
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
