@@ -27,7 +27,7 @@
             {% if following_list == [] %}
                 <div class="pure-u-1-1" style="text-align: center;">
                     <p>Follow some users to populate this page!!<p>
-                <div>
+                </div>
             {% endif %}
             {% for post in posts %}
                 {% if post['user_id'] in following_list %}
