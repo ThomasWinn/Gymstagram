@@ -80,7 +80,6 @@
         <form id="cancel-submit-form" action="{{url_for('profile', id=data['user_id'])}}" >
             <input type="hidden" name="cancel" id="cancel"/>
         </form>
-        <p> {{data['following_list']}} </p>
         <script>
             $("#cancel-edit").hide();
             $("#save-edit").hide();
