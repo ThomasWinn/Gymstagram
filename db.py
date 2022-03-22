@@ -122,11 +122,20 @@ def get_all_exercises():
         cur.execute("SELECT * FROM exercises")
         return cur.fetchall()
 
+def get_all_likes():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM likes")
+        return cur.fetchall()
+
 def get_num_likes(post_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT COUNT(*) AS num_likes FROM likes where post_id = %s", (post_id,))
         return cur.fetchone()
 
+def get_post_likes(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM likes where post_id = %s", (post_id,))
+        return cur.fetchall()
 
 # Get Followers
 def get_num_followers(user_id):
