@@ -32,7 +32,7 @@
                         </div>
                         <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none; color: black;">
                             <div>
-                                <img class=" post-img pure-img" src="{{url_for("view_post_image", post_id=post['post_id'])}}">
+                                <img class=" post-img pure-img" src="{{url_for('view_post_image', post_id=post['post_id'])}}">
                                 
                                 <table class="pure-table pure-table-horizontal post-table">
                                     <thead>

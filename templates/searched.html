@@ -14,8 +14,12 @@
         <div class="pure-u-1-1">
             <a href="{{ url_for('profile', id=user['user_id']) }}" style="text-decoration: none; color: black;">
                 <div class="search-container">
-                        <img class="profile-pic" src="../static/images/gym_test4.jpg">
-                        <span>{{ user['full_name'] }}</span>
+                    {% if user['filename'] == "Anonymous" %}
+                        <img class="profile-pic" src="../static/images/guest.png">
+                    {% else %}
+                        <img class="profile-pic" src="{{ url_for('view_pp', user_id=user['user_id']) }}">
+                    {% endif %}
+                    <span>{{ user['full_name'] }}</span>
                 </div>
             </a>
         </div>
