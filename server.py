@@ -89,13 +89,26 @@ def main_page():
     all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
     all_users = db.get_all_users()
+    all_likes = db.get_all_likes()
+    likes_dict = {}
+    for i in all_posts:
+        likes_dict[i[0]] = 0
+    for i in all_likes:
+        if i[0] not in likes_dict:
+            likes_dict[i[0]] = 1
+        else:
+            likes_dict[i[0]] += 1
+    user_likes = []
+    for i in all_likes:
+        if session['profile']['user_id'] == i[1]:
+            user_likes.append(i[0])
     rand = random.randint(1, 49)
     chosen_quote = db.get_quote(rand)
     la_quote = chosen_quote[0][0]
     if 'Erin' in la_quote:
         la_quote.replace('- -', '-')
 
-    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users)
+    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes)
 
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
@@ -477,7 +490,12 @@ def view_post(post_id):
     all_comments = db.get_all_comments()
     all_users = db.get_all_users()
     num_likes = db.get_num_likes(post_id)
-    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes)
+    # post_likes = db.get_post_likes(post_id)
+    temp_post_likes = db.get_post_likes(post_id)
+    post_likes = []
+    for post in temp_post_likes:
+        post_likes.append(post[1])
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes, post_likes = post_likes)
 
 @app.route('/view_post/<int:post_id>/delete', methods=['POST'])
 @requires_auth
@@ -502,4 +520,11 @@ def like_post():
     post_id = request.form['post_id']
     user_id = request.form['user_id']
     db.like_post(post_id, user_id)
+    return jsonify(status = "OK")
+
+@app.route('/unlike_post', methods = ['POST'])
+def unlike_post():
+    post_id = request.form['post_id']
+    user_id = request.form['user_id']
+    db.unlike_post(post_id, user_id)
     return jsonify(status = "OK")
