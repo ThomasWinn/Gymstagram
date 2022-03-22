@@ -1,0 +1,66 @@
+{% extends "parent.html" %}
+{% block header %}
+{% endblock %}
+{% block title %}Edit Post {% endblock %}
+{% block content %}
+<script src=http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js></script>
+<link href='https://css.gg/trash.css' rel='stylesheet'>
+<div class="post-area">  
+    <div class="post">
+        <div>
+            <img class=" post-img pure-img" style="display: block;" src="{{url_for("view_post_image", post_id=current_post['post_id'])}}">
+            <table class="pure-table pure-table-horizontal post-table">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for exercise in current_exercises %}
+                    {% if exercise['post_id'] == current_post['post_id'] %}
+                        <tr>
+                            <td>{{exercise['exercise_name']}}</td>
+                            <td>
+                                {% if exercise['num_sets'] == None %}
+                                    -
+                                {% else %}
+                                    {{exercise['num_sets']}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if exercise['num_reps'] == None %}
+                                    -
+                                {% else %}
+                                    {{exercise['num_reps']}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if exercise['num_time'] == None %}
+                                    -
+                                {% else %}
+                                    {{exercise['num_time']}} {{exercise['time_units']}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <p class="post-caption">
+                <form class="test_center">
+                    <div style="text-align: center;">
+                        <textarea style="width:90%" name="description" required>{{ current_post['description'] }}</textarea>
+                        <br>
+                        <button formaction="{{ url_for('edit_post', post_id=current_post['post_id']) }}" formmethod="post" class="pure-button pure-button-primary">Save Changes</button>
+                        <button formaction="{{ url_for('delete_post', post_id=current_post['post_id']) }}" formmethod="post" class="button-error pure-button">Delete Post</button>
+                    </div>
+                </form>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -206,9 +206,9 @@ def get_all_comments():
 # Maybe we update the exercises associated with a post by deleting all of the posts exercises and just re-saving them?
 # Manually updating/deleting each exercise when a user 
 
-def update_post(post_id, title, description):
+def update_post(post_id, description):
     with get_db_cursor(True) as cur:
-        cur.execute("UPDATE posts SET post_title = %s, post_description = %s WHERE post_id = %s", (title, description, post_id))
+        cur.execute("UPDATE posts SET description = %s WHERE post_id = %s", (description, post_id))
 
 def update_comment(comment_id, edited_comment):
     with get_db_cursor(True) as cur:

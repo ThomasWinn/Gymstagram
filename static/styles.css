@@ -1,6 +1,13 @@
 body {
     background: lightgray;
 }
+
+.button-error {
+    background: rgb(202, 60, 60);
+    color: white;
+    /* this is a maroon */
+}
+
 .content-padding {
     padding-top: 3em;
     padding-bottom: 3em;
@@ -156,6 +163,46 @@ body {
 .daily-quote {
     text-align: center;
     font-size: 28px;
+}
+
+.edit-post-button {
+    background: blue; 
+    border:none; 
+    position: absolute; 
+    cursor: pointer;
+    opacity: 0.6;
+    top:0px; 
+    right:21px; 
+    width:20px; 
+    height:20px
+}
+
+.edit-post-button:hover {
+    opacity: 1
+}
+
+.delete-post-button {
+    background: red; 
+    border:none; 
+    position: absolute; 
+    cursor: pointer;
+    opacity: 0.6;
+    top:0px; 
+    right:1px; 
+    width:20px; 
+    height:20px
+}
+
+.delete-post-button:hover {
+    opacity: 1
+}
+
+.post-icon {
+    font-size: 0.3em;
+    position: absolute;
+    top:2px;
+    right:3px;
+    color:white;
 }
 
 .post-area {

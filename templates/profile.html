@@ -225,9 +225,12 @@
                     <div style="position: relative;">
                         <img class="profile-post-img pure-img" style="display: block;" src="{{url_for("view_post_image", post_id=post['post_id'])}}">
                         {% if session['profile'] and session['profile']['user_id'] == post['user_id'] %}
-                        <form action="{{ url_for('delete_post', post_id=post['post_id']) }}" method=post>
-                            <button type="submit" style="background: red; border:none; position: absolute; top:0px; right:5px; width:20px; height:21px">
-                                <i style="position: absolute; top:2px; right:5px; color:white;" class="gg-trash"></i>
+                        <form>
+                            <button formaction="{{ url_for('view_edit_post', post_id=post['post_id']) }}" formmethod="get" class="edit-post-button">
+                                <i class="post-icon fa fa-pencil"></i>
+                            </button>
+                            <button formaction="{{ url_for('delete_post', post_id=post['post_id']) }}" formmethod="post" class="delete-post-button">
+                                <i class="post-icon fa fa-trash"></i>
                             </button>
                         </form>
                         {% endif %}
