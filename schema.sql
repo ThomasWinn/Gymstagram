@@ -15,7 +15,7 @@ create table users (
   last_name varchar(255),
   full_name varchar(255),
   bio text DEFAULT 'Please write a bit about yourself and your fitness goals :)',
-  filename text,
+  filename text DEFAULT 'Anonymous',
   data bytea
 );
 
@@ -94,11 +94,11 @@ create table post_tags (
 
 
 -- why can't i add anything to anon
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dlds12', 'Anonyomous', 'hughdan', 'liu', 'hughdan liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjkd', 'Anon', 'thom', 'liu', 'thom liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dfj2', 'anon', 't', 'liu', 't liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsalfkjsaf12', 'JEFF', 'jeff', 'liu', 'jeff liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKla3Dlds12', 'Calvinliu', 'calvin', 'liu', 'calvin liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dlds12', 'Anonyomous', 'Hughdan', 'Liu', 'Hughdan Liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjkd', 'Anon', 'Thom', 'Liu', 'Thom Liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dfj2', 'anon', 'T', 'Liu', 'T Liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKsalfkjsaf12', 'JEFF', 'Jeff', 'Liu', 'Jeff Liu');
+insert into users (user_id, username, first_name, last_name, full_name) values ('lKla3Dlds12', 'Calvinliu', 'Calvin', 'Liu', 'Calvin Liu');
 
 -- insert into tags (tag) values ('LOL');
 -- insert into tags (tag) values ('lol');

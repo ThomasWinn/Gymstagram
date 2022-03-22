@@ -57,8 +57,6 @@ def add_time_exercise(post_id, exercise_name, num_time, time_units):
 
 def add_user(user_id, fname, lname):
     with get_db_cursor(True) as cur:
-        fname = fname.lower()
-        lname = lname.lower()
         full_name = fname + ' ' + lname
         current_app.logger.info("Adding User %s, %s, %s, %s", user_id, fname, lname, full_name)
         cur.execute("INSERT INTO users (user_id, first_name, last_name, full_name) VALUES (%s, %s, %s, %s)", (user_id, fname, lname, full_name))
@@ -124,11 +122,20 @@ def get_all_exercises():
         cur.execute("SELECT * FROM exercises")
         return cur.fetchall()
 
+def get_all_likes():
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM likes")
+        return cur.fetchall()
+
 def get_num_likes(post_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT COUNT(*) AS num_likes FROM likes where post_id = %s", (post_id,))
         return cur.fetchone()
 
+def get_post_likes(post_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT * FROM likes where post_id = %s", (post_id,))
+        return cur.fetchall()
 
 # Get Followers
 def get_num_followers(user_id):
@@ -165,6 +172,16 @@ def get_num_posts(user_id):
     with get_db_cursor() as cur:
         cur.execute("SELECT COUNT(*) AS num_posts FROM posts where user_id = %s", (user_id,))
         return cur.fetchone()
+
+def get_profile_pic_text(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT filename FROM users where user_id = %s", (user_id,))
+        return cur.fetchall()
+
+def get_profile_pic_bytea(user_id):
+    with get_db_cursor() as cur:
+        cur.execute("SELECT data FROM users where user_id = %s", (user_id,))
+        return cur.fetchall()
 
 def get_first_name(user_id):
     with get_db_cursor() as cur:

@@ -18,14 +18,26 @@
 <div class="profile-area">
     <div class="pure-g">
         <div class="pure-u-1-1">
-            <p><img id="output" class="profile-img" src="../static/images/guest.png"/></p>
+            <div class="img-upload" id="change-pp" style="display: none;">
+                <label for="input_img" class="upload_button">
+                    <p style="color: red;" style="font-size: 8em;">Click on the plus button to change your profile picture!</p>
+                    <p>
+                        <img id="output" class="profile-img" src="../static/images/plus.svg.png"/>
+                    </p>
+                </label>
+            </div>
+            {% if data['filename'] == 'Anonymous' %}
+            <p id="to-change"><img class="profile-img" src="../static/images/guest.png"/></p>
+            {% else %}
+            <p id="to-change"><img class="profile-img" src="{{ url_for("view_pp", user_id=data['user_id']) }}"/></p>
+            {% endif %}
         </div>
     </div>
     <div>
         <div class="pure-g">
             <div class="pure-u-1-1">
                 <div id="edit-username">
-                    {{data['username'][0][0]|safe}}
+                    @{{data['username'][0][0]|safe}}
                 </div>
             </div>
         </div>
@@ -71,11 +83,12 @@
             <button id="cancel-edit" class="button-edit pure-button">Cancel</button>
             <button id="save-edit" class="button-follow pure-button">Save Changes</button>
         </div>
-        <form id="edit-submit-form" action="{{url_for('update_user_profile', id=data['user_id'])}}" method="post">
+        <form id="edit-submit-form" enctype="multipart/form-data" action="{{url_for('update_user_profile', id=data['user_id'])}}" method="post">
             <input type="hidden" name="update-username" id="update-username"/>
             <input type="hidden" name="update-firstname" id="update-firstname"/>
             <input type="hidden" name="update-lastname" id="update-lastname"/>
             <input type="hidden" name="update-bio" id="update-bio"/>
+            <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif"/>
         </form>
         <form id="cancel-submit-form" action="{{url_for('profile', id=data['user_id'])}}" >
             <input type="hidden" name="cancel" id="cancel"/>
@@ -89,6 +102,9 @@
                 
                 $("#cancel-edit").show();
                 $("#save-edit").show();
+
+                $("#to-change").hide();
+                $("#change-pp").show();
 
                 $("#edit-username").replaceWith("<input type='text' style='width: 8em;' id='new-username' value='{{data['username'][0][0]|safe}}'/>");
 
@@ -210,8 +226,6 @@
         });
         </script>
         {% endif %}
-        <label for="input_img" class="upload_button">Upload a profile picture</label>
-        <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif"/>
     </div>
 </div>
 <div class="profile-post-area">

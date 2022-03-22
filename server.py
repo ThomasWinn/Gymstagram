@@ -42,6 +42,10 @@ app.secret_key = env['CLIENT_SECRET']
 #     extensions=['jinja2.ext.do']
 # )
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
+
 oauth = OAuth(app)
 
 def fetch_token(name, request):
@@ -93,13 +97,26 @@ def main_page():
     all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
     all_users = db.get_all_users()
+    all_likes = db.get_all_likes()
+    likes_dict = {}
+    for i in all_posts:
+        likes_dict[i[0]] = 0
+    for i in all_likes:
+        if i[0] not in likes_dict:
+            likes_dict[i[0]] = 1
+        else:
+            likes_dict[i[0]] += 1
+    user_likes = []
+    for i in all_likes:
+        if session['profile']['user_id'] == i[1]:
+            user_likes.append(i[0])
     rand = random.randint(1, 49)
     chosen_quote = db.get_quote(rand)
     la_quote = chosen_quote[0][0]
     if 'Erin' in la_quote:
         la_quote.replace('- -', '-')
 
-    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users)
+    return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes)
 
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
@@ -132,6 +149,15 @@ def get_all_hashtag(text):
 
 ########################## PROFILE #############################
 
+# view profile picture
+@app.route('/profile/pp/<string:user_id>')
+def view_pp(user_id):
+    print('here2')
+    pp = db.get_user_profile(user_id)[0]
+    stream = io.BytesIO(pp[7])
+    # use special "send_file" function
+    return send_file(stream, attachment_filename=pp[6]) 
+
 # return data containing necessary things for a profile
 @app.route('/profile/<string:id>')
 def profile(id):
@@ -149,6 +175,7 @@ def profile(id):
         'following_list': [],
         'bio': '',
         'user_posts': [],
+        'filename': ''
     }
     # user_profile = db.get_user_profile(session['profile']['user_id'])
     data['username'] = db.get_username(id)
@@ -161,6 +188,7 @@ def profile(id):
     # data['following_list'] = db.get_followed(id)
     data['bio'] = db.get_bio(id)
     data['user_posts'] = db.get_user_posts(id)
+    data['filename'] = db.get_profile_pic_text(id)[0][0]
 
     followers_list_final = []
     followers_list_temp = db.get_followers(id)
@@ -181,6 +209,19 @@ def profile(id):
 
 @app.route('/profile/<string:id>', methods=['POST'])
 def update_user_profile(id):
+    img_flag = 0
+    file = request.files['image']
+    # if we detect an image is added
+    if file and allowed_file(file.filename):
+        # if the img is bad
+        if 'image' not in request.files:
+            return redirect(url_for("profile", id=id))
+        if file.filename == '':
+            return redirect(url_for("profile", id=id))
+        img_filename = secure_filename(file.filename)
+        img_data = file.read()
+        img_flag = 1
+    
     data = {
         'user_id': id,
         'username': '',
@@ -193,6 +234,7 @@ def update_user_profile(id):
         'following_list': [],
         'bio': '',
         'user_posts': [],
+        'filename': ''
     }
     new_username = request.form.get("update-username")
     new_username = sanitizer.sanitize(new_username)
@@ -203,7 +245,11 @@ def update_user_profile(id):
     new_bio = request.form.get("update-bio")
     new_bio = sanitizer.sanitize(new_bio)
 
+
     db.update_user(id, new_username, new_first_name, new_last_name, new_bio)
+    if img_flag == 1:
+        db.update_user_picture(id, img_filename, img_data)
+        
 
     # user_profile = db.get_user_profile(session['profile']['user_id'])
     data['username'] = db.get_username(id)
@@ -216,10 +262,12 @@ def update_user_profile(id):
     data['following_list'] = db.get_followed(id)
     data['bio'] = db.get_bio(id)
     data['user_posts'] = db.get_user_posts(id)
+    data['filename'] = db.get_profile_pic_text(id)[0][0]
 
     current_app.logger.info(data['followers_list'])
 
     return render_template('profile.html', data=data)
+
 
 @app.route('/follow', methods = ['POST'])
 def follow_user():
@@ -377,10 +425,6 @@ def view_post_image(post_id):
     # use special "send_file" function
     return send_file(stream, attachment_filename=image_row["filename"]) 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', "gif"]
-
 @app.route('/create_post', methods=['POST'])
 @requires_auth
 def upload_post():
@@ -483,7 +527,12 @@ def view_post(post_id):
     all_comments = db.get_all_comments()
     all_users = db.get_all_users()
     num_likes = db.get_num_likes(post_id)
-    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes)
+    # post_likes = db.get_post_likes(post_id)
+    temp_post_likes = db.get_post_likes(post_id)
+    post_likes = []
+    for post in temp_post_likes:
+        post_likes.append(post[1])
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes, post_likes = post_likes)
 
 @app.route('/view_post/<int:post_id>/delete', methods=['POST'])
 @requires_auth
@@ -510,7 +559,6 @@ def like_post():
     db.like_post(post_id, user_id)
     return jsonify(status = "OK")
 
-
 @app.route('/edit/<int:post_id>', methods=['GET'])
 @requires_auth
 def view_edit_post(post_id):
@@ -526,4 +574,11 @@ def edit_post(post_id):
     description = request.form['description']
     db.update_post(post_id, description)
     return redirect(url_for("view_post", post_id=post_id))
+
+@app.route('/unlike_post', methods = ['POST'])
+def unlike_post():
+    post_id = request.form['post_id']
+    user_id = request.form['user_id']
+    db.unlike_post(post_id, user_id)
+    return jsonify(status = "OK")
 
