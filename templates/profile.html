@@ -19,8 +19,6 @@
     <div class="pure-g">
         <div class="pure-u-1-1">
             <p><img id="output" class="profile-img" src="../static/images/guest.png"/></p>
-            <!-- <label for="input_img" class="upload_button">Upload a profile picture</label>
-            <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif"/> -->
         </div>
     </div>
     <div>
@@ -38,7 +36,7 @@
                 <p>{{data['posts'][0]}} Posts</p>
             </div>
             <div class="pure-u-1-3">
-                <p>{{data['followers'][0]}} Followers</p>
+                <p id="num_followers">{{data['followers'][0]}} Followers</p>
             </div>
             <div class="pure-u-1-3">
                 <p>{{data['following'][0]}} Following</p>
@@ -82,6 +80,7 @@
         <form id="cancel-submit-form" action="{{url_for('profile', id=data['user_id'])}}" >
             <input type="hidden" name="cancel" id="cancel"/>
         </form>
+        <p> {{data['following_list']}} </p>
         <script>
             $("#cancel-edit").hide();
             $("#save-edit").hide();
@@ -114,7 +113,7 @@
                 });
 
                 $("#cancel-edit").click(function(){
-                    dummy = 'dummy';
+                    dummy = 'cancelled';
                     $("#cancel").val(dummy);
                     $("#cancel-submit-form").submit();
                 });
@@ -122,8 +121,95 @@
           </script>
         {% else %}
         <div>
-            <button class="button-follow pure-button">Follow</button>
+            {% if session['profile']['user_id'] in data['followers_list'] %}
+                <button id="unfollow-button" class="button-edit pure-button">Unfollow</button>
+                <button id="follow-button-temp" class="button-follow pure-button">Follow</button>
+            {% else %}
+                <button id="follow-button" class="button-follow pure-button">Follow</button>
+                <button id="unfollow-button-temp" class="button-edit pure-button">Unfollow</button>
+            {% endif %}
         </div>
+        <script>
+        $("#follow-button-temp").hide();
+        $("#unfollow-button-temp").hide();
+
+        $("#follow-button").click(function(){
+            $("#follow-button").hide();    
+            $("#unfollow-button-temp").show();
+
+            var num_follower_temp = Number({{data['followers'][0]}}) + 1;
+            $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+
+            $.ajax({
+                url: "{{url_for('follow_user')}}",
+                data: {
+                    my_id: "{{ session['profile']['user_id'] }}",
+                    follow_user_id: "{{ data['user_id'] }}",
+                },
+                success: function(response){
+                    console.log("success");
+                },
+                type:'POST'
+            })
+        });
+        $("#unfollow-button-temp").click(function(){
+            $("#unfollow-button-temp").hide();
+            $("#follow-button").show();
+
+            var num_follower_temp = Number({{data['followers'][0]}});
+            $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+
+            $.ajax({
+                url: "{{url_for('unfollow_user')}}",
+                data: {
+                    my_id: "{{ session['profile']['user_id'] }}",
+                    follow_user_id: "{{ data['user_id'] }}",
+                },
+                success: function(response){
+                    console.log("success");
+                },
+                type:'POST'
+            })
+        });
+        $("#unfollow-button").click(function(){
+            $("#unfollow-button").hide();    
+            $("#follow-button-temp").show();
+
+            var num_follower_temp = Number({{data['followers'][0]}}) - 1;
+            $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+
+            $.ajax({
+                url: "{{url_for('unfollow_user')}}",
+                data: {
+                    my_id: "{{ session['profile']['user_id'] }}",
+                    follow_user_id: "{{ data['user_id'] }}",
+                },
+                success: function(response){
+                    console.log("success");
+                },
+                type:'POST'
+            })
+        });
+        $("#follow-button-temp").click(function(){
+            $("#follow-button-temp").hide();
+            $("#unfollow-button").show();
+
+            var num_follower_temp = Number({{data['followers'][0]}});
+            $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+
+            $.ajax({
+                url: "{{url_for('follow_user')}}",
+                data: {
+                    my_id: "{{ session['profile']['user_id'] }}",
+                    follow_user_id: "{{ data['user_id'] }}",
+                },
+                success: function(response){
+                    console.log("success");
+                },
+                type:'POST'
+            })
+        });
+        </script>
         {% endif %}
         <label for="input_img" class="upload_button">Upload a profile picture</label>
         <input type="file" style="visibility:hidden;" id="input_img" name="image" onchange="loadFile(event)" style="display: inline;" accept="image/jpeg,image/png,image/gif"/>
