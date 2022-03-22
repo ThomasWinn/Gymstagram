@@ -76,6 +76,7 @@
                           <div class="post-like-comment">
                               <div>
                                   <p><p id = "num_likes">{{ num_likes[0] }}</p>
+                                  {% if session["profile"] %}
                                         {% if session['profile']['user_id'] in post_likes %}
                                             <button id  = "like_button_temp">
                                                 <i class="fa fa-thumbs-up"></i>
@@ -91,10 +92,11 @@
                                                 <i class="fa fa-thumbs-down"></i>
                                             </button>
                                         {% endif %}
+                                    {% endif %}
                               
                                   </p>
 
-                                  
+                                  {% if session["profile"] %}
                                   <script>
                                     $("#like_button_temp").hide();
                                     $("#unlike_button_temp").hide();
@@ -181,6 +183,7 @@
                                         })
                                     });
                                   </script>
+                                  {% endif %}
                               </div>
                               <div>
                               </div>
@@ -193,12 +196,66 @@
                                         {% if comment['post_id'] == current_post['post_id'] %}
                                             {% if user['user_id'] == comment['user_id'] %}
                                         
-                                                <div>{{ comment['comment'] }} <b>@{{ user['username'] }}</b> <i>{{ comment['tstamp'] }}</i>  </div>
+                                                <div>
+                                                    <b>@{{ user['username'] }}</b> <p id = "comment_text_{{ comment['comment_id'] }}" style = "display:inline">{{ comment['comment'] }}</p>  <i>{{ comment['tstamp'] }}</i> <br>
+                                                    {% if session['profile'] and session['profile']['user_id'] == comment['user_id'] %}
+                                                         <span>   
+                                                                <button class="submit_comment_edit" id = "submit_comment_edit_{{ comment['comment_id'] }}">
+                                                                    Save Changes
+                                                                </button>
+                                                                <button class="edit_comment_button" id = "edit_comment_button_{{ comment['comment_id'] }}">
+                                                                    Edit
+                                                                </button>
+                                                            <form style = "display: inline">
+                                                                <button formaction="{{ url_for('delete_comment', post_id=current_post['post_id'], comment_id = comment['comment_id']) }}" formmethod="post" class="delete-comment-button">
+                                                                    Delete
+                                                                </button>
+                                                            </form>
+                                                         </span>
+                                                        <script>
+                                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
+                                                            var temp_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
+
+                                                            $("#edit_comment_button_{{ comment['comment_id'] }}").click(function() {
+                                                                $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<input type='text' id = 'comment_text_{{ comment['comment_id'] }}' value ='{{comment['comment']}}'>");
+                                                                $("#submit_comment_edit_{{ comment['comment_id'] }}").show();
+                                                                $("#edit_comment_button_{{ comment['comment_id'] }}").hide();
+                                                            });
+
+
+                                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").click(function() {
+                                                                $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
+                                                                $("#edit_comment_button_{{ comment['comment_id'] }}").show();
+                                                                
+                                                                var new_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
+
+                                                                $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<p id = 'comment_text_{{ comment['comment_id'] }}'>"+ new_comment + "</p>");
+
+                                                                
+                                                                $.ajax({
+                                                                url: "{{url_for('edit_comment')}}",
+                                                                data: {
+                                                                        post_id: {{ current_post['post_id'] }},
+                                                                        comment_id: {{ comment['comment_id'] }},
+                                                                        new_comment: new_comment
+                                                                },
+                                                                success: function(response){
+                                                                    console.log("success");
+                                                                },
+                                                                type:'POST'
+                                                                })
+                                                            });
+                                                            
+                                                        </script>
+                                                        
+                                                    {% endif %}
+                                                </div>
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                 {% endfor %}
                             </div>
+                                {% if session["profile"] %}
                                   <textarea name = "comment" id = "comment" rows = "5" cols = "50" placeholder="Comment"required></textarea>
                                   <button class = "pure-button" id  = "comment_button">Comment</button>
                                     <script>
@@ -207,6 +264,7 @@
                                         $('#comment_button').click(function(){
                                             var container = $("#all_comments");
                                             var input_comment = $('#comment').val();
+                                            
                                             console.log(input_comment)
                                             $(container).append('<div>'+input_comment+'</div>'); //adding new input field
 
@@ -222,8 +280,10 @@
                                             },
                                             type:'POST'
                                             })
+                                            $("#comment").val("");
                                         });
                                     </script>
+                                {% endif %}
                              </div>
 
                         </div>
