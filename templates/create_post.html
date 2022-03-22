@@ -4,6 +4,7 @@
 {% block title %} Create Post {% endblock %}
 {% block content %}
 <script src=http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script type = "text/javascript">
     $(document).ready(function() {
         var max      = 10; //maximum input boxes allowed
@@ -15,13 +16,13 @@
         $(exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise required"/> <input type="number" name="text[]" placeholder = "Enter in # of sets" required/> <input type="number" name="text[]" placeholder = "Enter in # of reps" required/> <a href="#" class="delete_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input style="width: 16em;" type="text" name="text[]" placeholder = "Enter in exercise" required/> <input style="width: 12em;" type="number" name="text[]" placeholder = "Enter in # of sets" required/> <input style="width: 10em;" type="number" name="text[]" placeholder = "Enter in # of reps" required/> <a style="position:relative;" href="#" class="delete_time_exercise"><i class="fa fa-remove delete-exercise-icon" style="font-size:1.5em;"></i></a>'); //adding new input field
             }
         });
         $(time_exercise).click(function(e){         e.preventDefault();
             if(x < max){ //maximum number of input field allowed
                 x++; //input field increment
-                $(container).append('<div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise required"/> <input type="number" name="text[]" placeholder = "Enter in time spent"/><select name="text[]" id="time" required><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select><a href="#" class="delete_time_exercise">delete</a></div>'); //adding new input field
+                $(container).append('<div class = "pure-u-1"><input style="width: 16em;" type="text" name="text[]" placeholder = "Add timed exercise" required/> <input style="width: 12em;" type="number" name="text[]" placeholder = "Enter in time spent" required/> <select style="width: 10em;" name="text[]" id="time" required><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select> <a style="position:relative;" href="#" class="delete_time_exercise"><i class="fa fa-remove delete-exercise-icon" style="font-size:1.5em;"></i></a>'); //adding new input field
             }
         });
 
@@ -31,6 +32,15 @@
         $(container).on("click",".delete_time_exercise", function(e){ //user click on remove text
             e.preventDefault(); $(this).parent('div').remove(); x--;
         })
+
+        // prevent duplication of posts from spam clicking submit
+        $("body").on("submit", "form", function() {
+            $(this).submit(function() {
+                return false;
+            });
+            return true;
+        });
+
     });
 
     var loadFile = function(event) {
@@ -52,12 +62,32 @@
                   <br><br>
 
                   <div class = "exercises_wrap">
-                    <div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Enter in exercise" required/> <input type="number" name="text[]" placeholder = "Enter in # of sets" required/> <input type="number" name="text[]" placeholder = "Enter in # of reps" required/> <a href="#" class="delete_exercise">delete</a></div>
-                    <div class = "pure-u-1"><input type="text" name="text[]" placeholder = "Add timed exercise" required/> <input type="number" name="text[]" placeholder = "Enter in time spent" required/><select name="text[]" id="time"><option value="seconds">Seconds</option><option value="Minutes">Minutes</option><option value="hours">Hours</option></select><a href="#" class="delete_time_exercise">delete</a></div>
-                    <div> <button class="add_exercise pure-button">Add Sets/Reps Exercise</button></div>
-                    <div> <button class="time_exercise pure-button">Add Timed Exercise</button></div>
+                    <div class = "pure-u-1">
+                        <input style="width: 16em;" type="text" name="text[]" placeholder = "Enter in exercise" required/> 
+                        <input style="width: 12em;" type="number" name="text[]" placeholder = "Enter in # of sets" required/> 
+                        <input style="width: 10em;" type="number" name="text[]" placeholder = "Enter in # of reps" required/> 
+                        <a style="position:relative;" href="#" class="delete_time_exercise">
+                            <i class="fa fa-remove delete-exercise-icon" style="font-size:1.5em;"></i>
+                        </a>
+                    </div>
+                    <div class = "pure-u-1">
+                        <input style="width: 16em;" type="text" name="text[]" placeholder = "Add timed exercise" required/> 
+                        <input style="width: 12em;" type="number" name="text[]" placeholder = "Enter in time spent" required/>
+                        <select style="width: 10em;" name="text[]" id="time">
+                            <option value="seconds">Seconds</option>
+                            <option value="Minutes">Minutes</option>
+                            <option value="hours">Hours</option>
+                        </select>
+                        <a style="position:relative;" href="#" class="delete_time_exercise">
+                            <i class="fa fa-remove delete-exercise-icon" style="font-size:1.5em;"></i>
+                        </a>
+                    </div>
                   </div>
-                  <button type="submit" class="pure-button pure-button-primary">Submit</button>
+                <div> 
+                    <button class="add_exercise pure-button">Add Sets/Reps Exercise</button>
+                    <button class="time_exercise pure-button">Add Timed Exercise</button>
+                </div>
+                  <button id="add_post" onclick="disable()" type="submit" class="pure-button pure-button-primary">Create Post</button>
               </fieldset>
             </form>
         </div>
