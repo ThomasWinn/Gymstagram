@@ -539,6 +539,21 @@ def view_post(post_id):
 def delete_post(post_id):
     db.delete_post(post_id)
     return redirect(url_for("profile", id=session['profile']['user_id']))
+
+@app.route('/delete_comment/<int:post_id>/<int:comment_id>', methods = ['POST'])
+@requires_auth
+def delete_comment(post_id, comment_id):
+    db.delete_comment(comment_id)
+    return redirect(url_for("view_post", post_id = post_id))
+
+@app.route('/edit_comment', methods = ['POST'])
+@requires_auth
+def edit_comment():
+    post_id = request.form['post_id']
+    comment_id = request.form['comment_id']
+    new_comment = request.form['new_comment']
+    db.update_comment(comment_id, new_comment)
+    return redirect(url_for("view_post", post_id = post_id))
   
 # @app.route('/posts/<post_id>', methods=['GET'])
 # def get_post_exercises(post_id):
