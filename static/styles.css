@@ -2,7 +2,27 @@ body {
     background: lightgray;
     /* font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif; */
 }
+* {
+    font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+}
 
+
+.overlap-text {
+
+position: absolute;
+top: 23%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-size: large;
+color: black;
+font-weight:bold;
+border-radius: 25px;
+padding: 10px;
+background-color: lightgray;
+opacity: .7;
+      
+}
 /* p, div, span, a, button, input {
     font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
 } */
