@@ -400,11 +400,14 @@ def messages():
 def first_time_user(session):
     # for some reason, it'll get a profile from the db, but when I look in the db, the user was never added...
     current_app.logger.info(db.get_user_profile(session['user_id']))
-    if len(db.get_user_profile(session['user_id'])) == 0:
-        full_name = session['name'].split(' ')
-        fname = full_name[0]
-        lname = full_name[1]
-        db.add_user(session['user_id'], fname, lname)
+    if not db.get_user_profile(session['user_id']):
+        if session['name']:
+            full_name = session['name'].split(' ')
+            fname = full_name[0]
+            lname = full_name[1]
+            db.add_user(session['user_id'], fname, lname)
+        else:
+            db.add_user(session['user_id'], 'FirstName', 'LastName')
         return True
     else:
         return False
