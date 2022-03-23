@@ -22,17 +22,17 @@
                     <!-- <p style="color: red;" style="font-size: 8em;">Click on the plus button to change your profile picture!</p> -->
                     <p>
                         {% if data['filename'] == 'Anonymous' %}
-                        <div class = "prof-container"><img class="profile-img" src="../static/images/guest.png"/></div>
+                        <div class = "prof-container"><img class="profile-img" id = 'output' src="../static/images/guest.png"/></div>
                         {% else %}
-                        <div class = "prof-container"><img class="profile-img" src="{{ url_for('view_pp', user_id=data['user_id']) }}"/></div>
+                        <div class = "prof-container"><img class="profile-img" id = 'output' src="{{ url_for('view_pp', user_id=data['user_id']) }}"/></div>
                         {% endif %}
                     </p>
                 </label>
             </div>
             {% if data['filename'] == 'Anonymous' %}
-                <div id="to-change" class = "prof-container"><img class="profile-img" src="../static/images/guest.png"/></div>
+                <div id="to-change" class = "prof-container"><img class="profile-img" id = 'output' src="../static/images/guest.png"/></div>
             {% else %}
-                <div id="to-change" class = "prof-container"><img class="profile-img" src="{{ url_for('view_pp', user_id=data['user_id']) }}"/></div>
+                <div id="to-change" class = "prof-container"><img class="profile-img" id = 'output' src="{{ url_for('view_pp', user_id=data['user_id']) }}"/></div>
             {% endif %}
         </div>
     </div>
