@@ -15,6 +15,7 @@ body {
 
 .custom-wrapper {
     position: fixed;
+    z-index: 999;
     width: 100%;
     background-color: black;
     margin-bottom: 1em;

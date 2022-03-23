@@ -192,10 +192,9 @@
                             <div id="all_comments">
 
                                 {% for comment in all_comments %}
+                                    <p>{{comment}}</p>
                                     {% for user in all_users %}
-                                        {% if comment['post_id'] == current_post['post_id'] %}
-                                            {% if user['user_id'] == comment['user_id'] %}
-                                        
+                                        {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
                                                 <div>
                                                     <b>@{{ user['username'] }}</b> <p id = "comment_text_{{ comment['comment_id'] }}" style = "display:inline">{{ comment['comment'] }}</p>  <i>{{ comment['tstamp'] }}</i> <br>
                                                     {% if session['profile'] and session['profile']['user_id'] == comment['user_id'] %}
@@ -250,7 +249,7 @@
                                                         
                                                     {% endif %}
                                                 </div>
-                                            {% endif %}
+                                            
                                         {% endif %}
                                     {% endfor %}
                                 {% endfor %}
@@ -272,7 +271,7 @@
                                             url: "{{url_for('add_comment')}}",
                                             data: {
                                                     post_id: {{ current_post['post_id'] }},
-                                                    user_id: "{{ current_post['user_id'] }}",
+                                                    user_id: "{{ session['profile']['user_id'] }}",
                                                     comment: input_comment
                                             },
                                             success: function(response){
