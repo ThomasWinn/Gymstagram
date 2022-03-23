@@ -11,7 +11,7 @@
     <div class="center-hashtag">
         <div class="hashtag-container">
             <img class="profile-pic" src="../static/images/hashtag.png">
-            <span>#{{hashtag_name}}</span>
+            <span class="threedtext"><b>#{{hashtag_name}}</b></span>
         </div>
     </div>
     <div class="post-area">
@@ -64,7 +64,18 @@
                                     </tbody>
                                 </table>
 
-                                <p class="post-caption"><b>{{ post['user_id'] }}</b> {{ post['description'] }} </p>
+                                <div class="post-caption">
+                                    <b>
+                                        {% for user in all_users %}
+                                            {% if user['user_id'] == post['user_id'] %}
+                                            <a href="{{ url_for('profile', id=post['user_id']) }}" style="text-decoration: none; color: black;">
+                                                <p>@{{ user['username'] }}
+                                            </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                    </b> {{ post['description'] }} <i>{{ post['tstamp'] }}</i></p>
+                                </div>
 
                             </div>
                         </a>

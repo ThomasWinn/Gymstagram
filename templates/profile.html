@@ -165,7 +165,7 @@
                 $("#unfollow-button-temp").show();
 
                 var num_follower_temp = Number({{data['followers'][0]}}) + 1;
-                $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+                $("#num_followers").replaceWith("<p id='num_followers'><b>" + num_follower_temp + " </b><br> Followers</p>");
 
                 $.ajax({
                     url: "{{url_for('follow_user')}}",
@@ -184,7 +184,7 @@
                 $("#follow-button").show();
 
                 var num_follower_temp = Number({{data['followers'][0]}});
-                $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+                $("#num_followers").replaceWith("<p id='num_followers'><b>" + num_follower_temp + " </b><br> Followers</p>");
 
                 $.ajax({
                     url: "{{url_for('unfollow_user')}}",
@@ -203,7 +203,7 @@
                 $("#follow-button-temp").show();
 
                 var num_follower_temp = Number({{data['followers'][0]}}) - 1;
-                $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+                $("#num_followers").replaceWith("<p id='num_followers'><b>" + num_follower_temp + " </b><br> Followers</p>");
 
                 $.ajax({
                     url: "{{url_for('unfollow_user')}}",
@@ -222,7 +222,7 @@
                 $("#unfollow-button").show();
 
                 var num_follower_temp = Number({{data['followers'][0]}});
-                $("#num_followers").replaceWith("<p id='num_followers'>" + num_follower_temp + " Followers</p>");
+                $("#num_followers").replaceWith("<p id='num_followers'><b>" + num_follower_temp + " </b><br> Followers</p>");
 
                 $.ajax({
                     url: "{{url_for('follow_user')}}",
