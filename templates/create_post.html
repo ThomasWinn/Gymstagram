@@ -56,12 +56,11 @@
             <h1 class = "pure-menu-heading ">Create your Gymstagram post!</h1>
             <form class="pure-form pure-form-aligned" method="post" enctype="multipart/form-data" action="{{url_for("upload_post")}}" id = "post_form">
               <fieldset>
-                <!-- <p><img id="output" width="500"/></p> -->
                 <div class="img-upload" id="change-pp">
                     <label for="input_img" class="upload_button">
-                        <p style="color: red;" style="font-size: 8em;">Click on the image to change the picture to post. This is a required field.</p>
+                        <!-- <p style="color: red;" style="font-size: 8em;">Click on the image to change the picture to post. This is a required field.</p> -->
                         <p>
-                            <img id="output" style="width: 400px; height: 200px;" src="../static/images/upload-1.png"/>
+                            <img id="output" style="width: 20em; height: 20em; border-radius: 2em;" src="../static/images/upload_post.jpg"/>
                         </p>
                     </label>
                 </div>
@@ -97,7 +96,7 @@
                     <button class="add_exercise pure-button">Add Sets/Reps Exercise</button>
                     <button class="time_exercise pure-button">Add Timed Exercise</button>
                 </div>
-                  <button id="add_post" onclick="disable()" type="submit" class="pure-button pure-button-primary">Create Post</button>
+                  <button id="add_post" onclick="disable()" type="submit" class="button-blue pure-button pure-button-primary">Create Post</button>
               </fieldset>
             </form>
         </div>

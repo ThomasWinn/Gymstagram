@@ -3,7 +3,9 @@
 {% endblock %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <p class="daily-quote">{{quote}}</p>
+    <blockquote>
+        {{quote}}
+    </blockquote>
     {% if not session["profile"] %}
     <div class="pure-g">
         <div class="button-center pure-u-1-1">

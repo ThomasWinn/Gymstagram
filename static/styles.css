@@ -1,11 +1,15 @@
 body {
     background: lightgray;
+    /* font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif; */
 }
+
+/* p, div, span, a, button, input {
+    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+} */
 
 .button-error {
     background: rgb(202, 60, 60);
     color: white;
-    /* this is a maroon */
 }
 
 .content-padding {
@@ -44,6 +48,11 @@ body {
     padding: 0.4em;
     margin-top: 0.4em;
     font-size: 17px;
+    color: white;
+}
+
+.pure-menu-item:hover a {
+    background-color: red;
     color: white;
 }
 
@@ -119,19 +128,15 @@ body {
 }
 
 @media (max-width: 50em) {
-
     .custom-menu-2 {
         text-align: right;
     }
-
     .custom-menu-3 {
         text-align: right;
     }
-
     .custom-toggle {
         display: block;
     }
-
 }
   
 /* @media screen and (max-width: 600px) {
@@ -165,80 +170,6 @@ body {
     text-align: center;
     font-size: 28px;
 }
-
-.edit-post-button {
-    background: blue; 
-    border:none; 
-    position: absolute; 
-    cursor: pointer;
-    transition: 0.3s;
-    opacity: 0.6;
-    top:0px; 
-    right:21px; 
-    width:20px; 
-    height:20px
-}
-
-.edit-post-button:hover {
-    opacity: 1
-}
-
-.edit-comment-button {
-    background: blue; 
-    border:none; 
-    position: absolute; 
-    cursor: pointer;
-    transition: 0.3s;
-    opacity: 0.6;
-    width:20px; 
-    height:1.1em;
-    align-items:left;
-}
-
-.edit-comment-button:hover {
-    opacity: 1
-}
-
-.delete-post-button {
-    background: red; 
-    border:none; 
-    position: absolute; 
-    cursor: pointer;
-    transition: 0.3s;
-    opacity: 0.6;
-    top:0px; 
-    right:1px; 
-    width:20px; 
-    height:20px
-}
-
-.delete-post-button:hover {
-    opacity: 1
-}
-
-.delete-exercise-icon {
-    padding-left:0.4em;
-    color:red;  
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%);
-}
-
-.post-icon {
-    position: absolute;
-    top:2px;
-    right:3px;
-    color:white;
-}
-
-.comment-icon {
-    font-size: 0.1em;
-    position: absolute;
-    top:2px;
-    right:3px;
-    color:white;
-}
-
 .post-area {
     margin-left: auto;
     margin-right: auto;
@@ -249,8 +180,8 @@ body {
     background: white;
     border-style: solid;
     border-width: 2px;
-    border-radius: 0.5em;
-    border-color: black;
+    border-radius: 1em;
+    border-color: darkgray;
     margin: 1em;
     padding-bottom: 0.3em;
 }
@@ -259,6 +190,7 @@ body {
 }
 .post-img {
     width: 100%;
+    border-radius: 0.8em 0.8em 0 0;
 }
 .post-caption {
     font-size: 18px;
@@ -295,7 +227,7 @@ body {
 }
 
 .active-button {
-    background-color: blue;
+    background-color: lightcoral;
     color: white;
 }
 
@@ -346,7 +278,7 @@ body {
 .profile-post-area {
     margin-left: auto;
     margin-right: auto;
-    width: 40em;
+    width: 52em;
 }
 
 .profile-post {
@@ -354,20 +286,59 @@ body {
 }
 
 .profile-post-img{
-    width: 13em;
-    height: 13em;
+    width: 17em;
+    height: 17em;
     object-fit: cover;
 }
 
-
-.profile-post-trash {
-    display:flex;
-    justify-content: space-between;
+.edit-post-button {
+    background: blue; 
+    border:none; 
+    position: absolute; 
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.6;
+    top:0em; 
+    right:1.58em;
+    width:1.25em; 
+    height:1.25em
 }
 
-.profile-post-trash i {
-    border: none;
-    background-color: white;
+.edit-post-button:hover {
+    opacity: 1
+}
+
+.delete-post-button {
+    background: red; 
+    border:none; 
+    position: absolute; 
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.6;
+    top:0em; 
+    right:0.33em; 
+    width:1.25em; 
+    height:1.25em;
+}
+
+.delete-post-button:hover {
+    opacity: 1
+}
+
+.delete-exercise-icon {
+    padding-left:0.4em;
+    color:red;  
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%);
+}
+
+.post-icon {
+    font-size: 0.3em;
+    position: absolute;
+    top:2px;
+    right:3px;
+    color:white;
 }
 
 #create_body {
@@ -411,6 +382,127 @@ body {
 
 .num-hash-post {
     text-align: right;
+}
+
+.button-blue {
+    align-items: center;
+    appearance: button;
+    background-color: #0276FF;
+    border-radius: 8px;
+    border-style: none;
+    box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: "RM Neue",sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: none;
+    transition: color .13s ease-in-out,background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+.button-blue:hover {
+background-color: #1d83ff;
+}
+
+  .button-red {
+    align-items: center;
+    appearance: button;
+    background-color: rgb(245, 0, 0);
+    border-radius: 8px;
+    border-style: none;
+    box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: "RM Neue",sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: none;
+    transition: color .13s ease-in-out,background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+.button-red:hover {
+background-color: rgb(255, 34, 34);
+}
+
+.button-green {
+    align-items: center;
+    appearance: button;
+    background-color: rgb(34, 187, 34);
+    border-radius: 8px;
+    border-style: none;
+    box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    flex-direction: row;
+    flex-shrink: 0;
+    font-family: "RM Neue",sans-serif;
+    font-size: 100%;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: none;
+    transition: color .13s ease-in-out,background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+.button-green:hover {
+background-color: rgb(50, 187, 50);
+}
+
+/* quote of the day */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic);
+blockquote{
+  font-size: 1.4em;
+  width:60%;
+  margin:50px auto;
+  font-family:Open Sans;
+  font-style:italic;
+  color: #555555;
+  padding:1.2em 30px 1.2em 75px;
+  /* border-left:8px solid #78C0A8 ; */
+  border-left:8px solid lightcoral ;
+
+  line-height:1.6;
+  position: relative;
+  background:#EDEDED;
+}
+
+blockquote::before{
+  font-family:Arial;
+  content: "\201C";
+  color: lightcoral;
+  font-size:4em;
+  position: absolute;
+  left: 10px;
+  top:-10px;
+}
+
+blockquote::after{
+  content: '';
+}
+
+blockquote span{
+  display:block;
+  color:#333333;
+  font-style: normal;
+  font-weight: bold;
+  margin-top:1em;
 }
 
 /* popup */
