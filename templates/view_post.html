@@ -75,108 +75,108 @@
                     
             </div>
         <div class="post-like-comment">
-            <div>
-                <p><p id = "num_likes">{{ num_likes[0] }}</p>
+            <div class="num-likes">
                 {% if session["profile"] %}
                     {% if session['profile']['user_id'] in post_likes %}
-                        <button id  = "like_button_temp">
+                        <a id="like_button_temp">
                             <i class="fa fa-thumbs-up"></i>
-                        </button>
-                        <button id = "unlike_button">
-                            <i class="fa fa-thumbs-down"></i>
-                        </button>
+                        </a>
+                        <a id="unlike_button">
+                            <i class="fa fa-thumbs-up" style="color:lightcoral;"></i>
+                        </a>
                     {% else %}
-                        <button id  = "like_button">
+                        <a id="like_button">
                             <i class="fa fa-thumbs-up"></i>
-                        </button>
-                        <button id = "unlike_button_temp">
-                            <i class="fa fa-thumbs-down"></i>
-                        </button>
+                        </a>
+                        <a id="unlike_button_temp">
+                            <i class="fa fa-thumbs-up" style="color:lightcoral;"></i>
+                        </a>
                     {% endif %}
                 {% endif %}
-            
-                </p>
-            </div>
-            <div>
+                <span id = "num_likes">{{ num_likes[0] }}</span>
             </div>
         </div>
-        <div class = "comments">
-        <div id="all_comments">
-
-            {% for comment in all_comments %}
-                {% for user in all_users %}
-                    {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
-                            <div>
-                                <a href="{{ url_for('profile', id=current_post['user_id']) }}" style="text-decoration: none; color: black;">
-                                    <b>@{{ user['username'] }}</b> 
-                                </a>
-                                    <p id = "comment_text_{{ comment['comment_id'] }}" style = "display:inline">{{ comment['comment'] }}</p>  <i style="padding-right:0.5em;">{{ comment['tstamp'] }}</i> <br>
-                                    {% if session['profile'] and session['profile']['user_id'] == comment['user_id'] %}
-                                    <!-- <button id = "edit_comment_button_{{ comment['comment_id'] }}" class="edit-comment-button" style="display:inline;">
-                                        <i class="comment-icon fa fa-pencil" style="font-size:0.9em"></i>
-                                    </button> -->
-                                        <span>   
-                                            <button class="submit_comment_edit" id = "submit_comment_edit_{{ comment['comment_id'] }}">
-                                                Save Changes
-                                            </button>
-                                            <button class="edit_comment_button" id = "edit_comment_button_{{ comment['comment_id'] }}">
-                                                Edit
-                                            </button>
-                                        <form style = "display: inline">
-                                            <button formaction="{{ url_for('delete_comment', post_id=current_post['post_id'], comment_id = comment['comment_id']) }}" formmethod="post" class="delete-comment-button">
-                                                Delete
-                                            </button>
-                                        </form>
-                                        <!-- <button formaction="{{ url_for('delete_post', post_id=current_post['post_id']) }}" formmethod="post" class="delete-post-button">
-                                            <i class="post-icon fa fa-trash"></i>
+        <div class="comments">
+            <hr size="8" width="100%" color="darkgray">
+            <span> <b>Comments:</b> </span>
+            <!-- <hr size="1" width="100%" color="darkgray"> -->
+            <div id="all_comments">
+                {% for comment in all_comments %}
+                    {% for user in all_users %}
+                        {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
+                                <div>
+                                    <a href="{{ url_for('profile', id=current_post['user_id']) }}" style="text-decoration: none; color: black;">
+                                        <b>@{{ user['username'] }}</b> 
+                                    </a>
+                                        <p id = "comment_text_{{ comment['comment_id'] }}" style="display:inline;">{{ comment['comment'] }}</p>  <i style="padding-right:0.5em;">{{ comment['tstamp'] }}</i> <br>
+                                        {% if session['profile'] and session['profile']['user_id'] == comment['user_id'] %}
+                                        <!-- <button id = "edit_comment_button_{{ comment['comment_id'] }}" class="edit-comment-button" style="display:inline;">
+                                            <i class="comment-icon fa fa-pencil" style="font-size:0.9em"></i>
                                         </button> -->
-                                        </span>
-                                    <script>
-                                        $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
-                                        var temp_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
-
-                                        $("#edit_comment_button_{{ comment['comment_id'] }}").click(function() {
-                                            $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<textarea style='height:1em;' id = 'comment_text_{{ comment['comment_id'] }}'>{{comment['comment']}}</textarea>");
-                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").show();
-                                            $("#edit_comment_button_{{ comment['comment_id'] }}").hide();
-                                        });
-
-
-                                        $("#submit_comment_edit_{{ comment['comment_id'] }}").click(function() {
+                                            <span>   
+                                                <button class="submit_comment_edit" id = "submit_comment_edit_{{ comment['comment_id'] }}">
+                                                    Save Changes
+                                                </button>
+                                                <button class="edit_comment_button" id = "edit_comment_button_{{ comment['comment_id'] }}">
+                                                    Edit
+                                                </button>
+                                            <form style = "display: inline">
+                                                <button formaction="{{ url_for('delete_comment', post_id=current_post['post_id'], comment_id = comment['comment_id']) }}" formmethod="post" class="delete-comment-button">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                            <!-- <button formaction="{{ url_for('delete_post', post_id=current_post['post_id']) }}" formmethod="post" class="delete-post-button">
+                                                <i class="post-icon fa fa-trash"></i>
+                                            </button> -->
+                                            </span>
+                                        <script>
                                             $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
-                                            $("#edit_comment_button_{{ comment['comment_id'] }}").show();
-                                            
-                                            var new_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
+                                            var temp_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
 
-                                            $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<span id = 'comment_text_{{ comment['comment_id'] }}'>"+ new_comment + "</span>");
+                                            $("#edit_comment_button_{{ comment['comment_id'] }}").click(function() {
+                                                $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<textarea style='height:1em;' id = 'comment_text_{{ comment['comment_id'] }}'>{{comment['comment']}}</textarea>");
+                                                $("#submit_comment_edit_{{ comment['comment_id'] }}").show();
+                                                $("#edit_comment_button_{{ comment['comment_id'] }}").hide();
+                                            });
 
+
+                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").click(function() {
+                                                $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
+                                                $("#edit_comment_button_{{ comment['comment_id'] }}").show();
+                                                
+                                                var new_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
+
+                                                $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<span id = 'comment_text_{{ comment['comment_id'] }}'>"+ new_comment + "</span>");
+
+                                                
+                                                $.ajax({
+                                                url: "{{url_for('edit_comment')}}",
+                                                data: {
+                                                        post_id: {{ current_post['post_id'] }},
+                                                        comment_id: {{ comment['comment_id'] }},
+                                                        new_comment: new_comment
+                                                },
+                                                success: function(response){
+                                                    console.log("success");
+                                                },
+                                                type:'POST'
+                                                })
+                                            });
                                             
-                                            $.ajax({
-                                            url: "{{url_for('edit_comment')}}",
-                                            data: {
-                                                    post_id: {{ current_post['post_id'] }},
-                                                    comment_id: {{ comment['comment_id'] }},
-                                                    new_comment: new_comment
-                                            },
-                                            success: function(response){
-                                                console.log("success");
-                                            },
-                                            type:'POST'
-                                            })
-                                        });
+                                        </script>
                                         
-                                    </script>
-                                    
-                                {% endif %}
-                            </div>
-                        
-                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </div>
+            </div>
             {% if session["profile"] %}
-                <textarea name = "comment" id = "comment" rows = "5" cols = "50" placeholder="Comment"required></textarea>
-                <button class = "pure-button" id  = "comment_button">Comment</button>
+                <div>
+                    <textarea name = "comment" id = "comment" rows = "3" cols = "50" style="min-width: 22.5em; max-width: 27.5em;" placeholder="Comment" required></textarea>
+                    <button class="button-blue pure-button" id="comment_button" style='max-width: 7em;'>Comment</button>
+                </div>
             {% endif %}
             </div>
 
@@ -198,7 +198,7 @@
         $("#unlike_button_temp").show();
 
         var num_likes_temp = Number({{ num_likes[0] }}) + 1;
-        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+        $("#num_likes").replaceWith("<span id='num_likes'>" + num_likes_temp + "</span>");
 
         $.ajax({
         url: "{{url_for('like_post')}}",
@@ -218,7 +218,7 @@
         $("#like_button").show();
 
         var num_likes_temp = Number({{ num_likes[0] }});
-        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+        $("#num_likes").replaceWith("<span id='num_likes'>" + num_likes_temp + "</span>");
 
         $.ajax({
         url: "{{url_for('unlike_post')}}",
@@ -239,7 +239,7 @@
 
         
         var num_likes_temp = Number({{ num_likes[0] }}) - 1;
-        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+        $("#num_likes").replaceWith("<span id='num_likes'>" + num_likes_temp + "</span>");
 
         $.ajax({
         url: "{{url_for('unlike_post')}}",
@@ -259,7 +259,7 @@
         $("#unlike_button").show();
 
         var num_likes_temp = Number({{ num_likes[0] }});
-        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+        $("#num_likes").replaceWith("<span id='num_likes'>" + num_likes_temp + "</span>");
 
         $.ajax({
         url: "{{url_for('like_post')}}",
