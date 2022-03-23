@@ -416,6 +416,21 @@ opacity: .7;
     align-items:center;
 }
 
+.center-hashtag {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.hashtag-container {
+    /* background: white; */
+    /* border-radius: 0.5em;
+    margin: 2px; */
+    display: flex;
+    align-items:center;
+}
+
 .profile-pic {
     height: 4em;
     width: 4em;
