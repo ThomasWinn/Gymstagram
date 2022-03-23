@@ -192,7 +192,6 @@
                             <div id="all_comments">
 
                                 {% for comment in all_comments %}
-                                    <p>{{comment}}</p>
                                     {% for user in all_users %}
                                         {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
                                                 <div>
