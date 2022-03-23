@@ -36,6 +36,11 @@ along with a very brief caption:**
 ![](![home](https://user-images.githubusercontent.com/72582693/159814898-a87fb9b3-831a-4765-a95b-48dad0e02bd0.JPG) : Home/Main Page
 )
 
+![](![profile](https://user-images.githubusercontent.com/72582693/159815020-cea7ae5a-6520-48d3-989c-9be70825e9fc.JPG) Profile Page
+)
+![](![create_post](https://user-images.githubusercontent.com/72582693/159815158-038c426c-c261-4ef2-8d04-0f646f3484b5.JPG) Create Post
+)
+
 
 ## Mock-up 
 
