@@ -11,7 +11,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 ### Students
 
 * Jeffrey Jia, jiaxx215@umn.edu
-* ...
+* Calvin Tran, tran0728@umn.edu
 
 
 ## Key Features
@@ -19,7 +19,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
+* Implementing functionality for likes
 
 ## Testing Notes
 
@@ -55,7 +55,7 @@ Link to prototype (Updated): https://app.moqups.com/5frE3V4AWB/view/page/a227f71
 Please do not document required libraries. or libraries that are mentioned in the product requirements**
 
 * Library or service name: description of use
-* ...
+* https://markdotto.com/playground/3d-text/ : Implementing appearance of 3D text
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
