@@ -592,7 +592,7 @@ def search_text():
 @app.route('/view_post/<int:post_id>', methods=['GET'])
 def view_post(post_id):
     cur_username = None
-    if session['profile']:
+    if session and session['profile']:
         cur_username = db.get_username(session['profile']['user_id'])[0][0]
     current_post = db.get_post(post_id)[0]
     current_exercises = db.get_post_exercises(post_id)
