@@ -3,9 +3,15 @@
 {% endblock %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <div class="pure-g">
+    <!-- <div class="pure-g">
         <div class="button-center pure-u-1-1">
             <p>{{hashtag_name}}</p>
+        </div>
+    </div> -->
+    <div class="center-hashtag">
+        <div class="hashtag-container">
+            <img class="profile-pic" src="../static/images/hashtag.png">
+            <span>#{{hashtag_name}}</span>
         </div>
     </div>
     <div class="post-area">
@@ -13,14 +19,9 @@
             {% for post in posts %}
                 <div class="pure-u-xl-1-1 pure-u-lg-1-1 pure-u-md-1-1 pure-u-sm-1-1">
                     <div class="post">
-                        <div class="post-top">
-                            <a href="{{ url_for('profile', id=post['user_id']) }}" style="text-decoration: none; color: black;">
-                                <p>*Insert profile pic* *insert profile name*</p>
-                            </a>
-                        </div>
                         <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none; color: black;">
                             <div>
-                                <img class=" post-img pure-img" src="{{url_for("view_post_image", post_id=post['post_id'])}}">
+                                <img class=" post-img pure-img" src="{{url_for('view_post_image', post_id=post['post_id'])}}">
                                 
                                 <table class="pure-table pure-table-horizontal post-table">
                                     <thead>
@@ -68,15 +69,126 @@
                             </div>
                         </a>
                         <div class="post-like-comment">
-                            <div>
-                                <i class="pure-button fa fa-thumbs-up"></i>
-                                <i class="pure-button fa fa-thumbs-down"></i>
+                            <div class="num-likes">
+                                {% if session["profile"] %}
+                                    {% if post['post_id'] in user_likes %}
+                                        <a id="like_button_temp_{{ post['post_id'] }}">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </a>
+                                        <a id="unlike_button_{{ post['post_id'] }}">
+                                            <i class="fa fa-thumbs-up" style="color:lightcoral;"></i>
+                                        </a>
+                                    {% else %}
+                                        <a id="like_button_{{ post['post_id'] }}">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </a>
+                                        <a id="unlike_button_temp_{{ post['post_id'] }}">
+                                            <i class="fa fa-thumbs-up" style="color:lightcoral;"></i>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                                <span id = "num_likes">
+                                    {% for key,value in likes_dict.items() %}
+                                        {% if key == post['post_id'] %}
+                                            <span id="likes_val_{{ post['post_id'] }}">{{ value }} likes</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
                             </div>
                             <div>
-                                <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none">
-                                    <i class="pure-button fa fa-comments"></i>
+                                <a href = "{{ url_for('view_post',post_id=post['post_id']) }}" style="text-decoration: none; color: black;">
+                                    <i class="fa fa-comments"></i>
                                 </a>
                             </div>
+                            {% if session["profile"] %}
+                            <script>
+                            $("#like_button_temp_{{ post['post_id'] }}").hide();
+                            $("#unlike_button_temp_{{ post['post_id'] }}").hide();
+
+
+                            $('#like_button_{{ post['post_id'] }}').click(function(){
+                                $("#like_button_{{ post['post_id'] }}").hide();    
+                                $("#unlike_button_temp_{{ post['post_id'] }}").show();
+
+                                var temp_likes_val = Number({{ likes_dict[post['post_id']] }}) + 1;
+                                $("#likes_val_{{ post['post_id'] }}").replaceWith("<span id = 'likes_val_{{ post['post_id'] }}'>"+ temp_likes_val+" likes</span>");
+
+                                $.ajax({
+                                url: "{{url_for('like_post')}}",
+                                data: {
+                                        post_id: {{ post['post_id'] }},
+                                        user_id: "{{ session['profile']['user_id'] }}",
+                                },
+                                success: function(response){
+                                    console.log("success");
+                                },
+                                type:'POST'
+                                })
+                            });
+
+                            $('#unlike_button_temp_{{ post['post_id'] }}').click(function(){
+                                $("#unlike_button_temp_{{ post['post_id'] }}").hide();    
+                                $("#like_button_{{ post['post_id'] }}").show();
+
+                                var temp_likes_val = Number({{ likes_dict[post['post_id']] }});
+                                $("#likes_val_{{ post['post_id'] }}").replaceWith("<span id = 'likes_val_{{ post['post_id'] }}'>"+ temp_likes_val+" likes</span>");
+
+                                $.ajax({
+                                url: "{{url_for('unlike_post')}}",
+                                data: {
+                                        post_id: {{ post['post_id'] }},
+                                        user_id: "{{ session['profile']['user_id'] }}",
+                                },
+                                success: function(response){
+                                    console.log("success");
+                                },
+                                type:'POST'
+                                })
+                            });
+
+                            $('#unlike_button_{{ post['post_id'] }}').click(function(){
+                                $("#unlike_button_{{ post['post_id'] }}").hide();    
+                                $("#like_button_temp_{{ post['post_id'] }}").show();
+
+                                var temp_likes_val = Number({{ likes_dict[post['post_id']] }}) - 1;
+                                $("#likes_val_{{ post['post_id'] }}").replaceWith("<span id = 'likes_val_{{ post['post_id'] }}'>"+ temp_likes_val+" likes</span>");
+                                
+
+
+                                $.ajax({
+                                url: "{{url_for('unlike_post')}}",
+                                data: {
+                                        post_id: {{ post['post_id'] }},
+                                        user_id: "{{ session['profile']['user_id'] }}",
+                                },
+                                success: function(response){
+                                    console.log("success");
+                                },
+                                type:'POST'
+                                })
+                            });
+
+                            $('#like_button_temp_{{ post['post_id'] }}').click(function(){
+                                $("#like_button_temp_{{ post['post_id'] }}").hide();    
+                                $("#unlike_button_{{ post['post_id'] }}").show();
+
+                                var temp_likes_val = Number({{ likes_dict[post['post_id']] }});
+                                $("#likes_val_{{ post['post_id'] }}").replaceWith("<span id = 'likes_val_{{ post['post_id'] }}'>"+ temp_likes_val+" likes</span>");
+
+                                $.ajax({
+                                url: "{{url_for('like_post')}}",
+                                data: {
+                                        post_id: {{ post['post_id'] }},
+                                        user_id: "{{ session['profile']['user_id'] }}",
+                                },
+                                success: function(response){
+                                    console.log("success");
+                                },
+                                type:'POST'
+                                })
+                            });
+                            </script>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

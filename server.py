@@ -106,11 +106,6 @@ def main_page():
             likes_dict[i[0]] = 1
         else:
             likes_dict[i[0]] += 1
-    # user_likes = []
-    # for i in all_likes:
-    #     if session['profile']['user_id'] == i[1]:
-    #         user_likes.append(i[0])
-    
     if 'profile' not in session:
         user_likes = []
         following_list_final = []
@@ -146,18 +141,18 @@ def following_page():
             likes_dict[i[0]] = 1
         else:
             likes_dict[i[0]] += 1
-    user_likes = []
-    for i in all_likes:
-        if session['profile']['user_id'] == i[1]:
-            user_likes.append(i[0])
-
     if 'profile' not in session:
+        user_likes = []
         following_list_final = []
     else:
         following_list_final = []
         following_list_temp = db.get_followed(session['profile']['user_id'])
         for i in following_list_temp:
             following_list_final.append(i[0])
+        user_likes = []
+        for i in all_likes:
+            if session['profile']['user_id'] == i[1]:
+                user_likes.append(i[0])
 
     rand = random.randint(1, 49)
     chosen_quote = db.get_quote(rand)
@@ -170,17 +165,39 @@ def following_page():
 ########################## TAG ##################################
 @app.route('/tag/<int:tag_id>', methods=['GET'])
 def display_tag_posts(tag_id):
+    # all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
+    all_users = db.get_all_users()
+    all_likes = db.get_all_likes()
+    likes_dict = {}
     post_id_arr = db.get_post_id_from_tag(tag_id)
     post_id_arr.sort(reverse=True) # sort descending order to show newer posts first
     all_posts = []
-    print(post_id_arr)
     for id in post_id_arr:
         all_posts.append(db.get_post(id[0])[0])
+    for i in all_posts:
+        likes_dict[i[0]] = 0
+    for i in all_likes:
+        if i[0] not in likes_dict:
+            likes_dict[i[0]] = 1
+        else:
+            likes_dict[i[0]] += 1
+    user_likes = []
+    for i in all_likes:
+        if session['profile']['user_id'] == i[1]:
+            user_likes.append(i[0])
+
+    if 'profile' not in session:
+        following_list_final = []
+    else:
+        following_list_final = []
+        following_list_temp = db.get_followed(session['profile']['user_id'])
+        for i in following_list_temp:
+            following_list_final.append(i[0])
     
     hashtag_name = db.get_hashtag_by_id(tag_id)[0][1]
-
-    return render_template('posts_by_tag.html', posts = all_posts, exercises=all_exercises, hashtag_name=hashtag_name)
+    
+    return render_template('posts_by_tag.html', posts = all_posts, exercises=all_exercises, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes, following_list = following_list_final, hashtag_name=hashtag_name)
 
 
 # Get all hashtags from a sentence
