@@ -22,9 +22,9 @@
                     <!-- <p style="color: red;" style="font-size: 8em;">Click on the plus button to change your profile picture!</p> -->
                     <p>
                         {% if data['filename'] == 'Anonymous' %}
-                        <div class = "prof-container"><img class="profile-img" id = 'output' src="../static/images/guest.png"/></div>
+                        <div class = "prof-container"><img class="edit-profile-img" id = 'output' src="../static/images/guest.png"/></div>
                         {% else %}
-                        <div class = "prof-container"><img class="profile-img" id = 'output' src="{{ url_for('view_pp', user_id=data['user_id']) }}"/></div>
+                        <div class = "prof-container"><img class="edit-profile-img" id = 'output' src="{{ url_for('view_pp', user_id=data['user_id']) }}"/></div>
                         {% endif %}
                     </p>
                 </label>

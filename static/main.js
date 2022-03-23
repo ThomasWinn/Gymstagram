@@ -44,3 +44,19 @@
 
       window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
       })(this, this.document);
+
+// prevent users from spam clicking links      
+$("a").click(function (event) {
+    if ($(this).hasClass("disabled")) {
+        event.preventDefault();
+    }
+    $(this).addClass("disabled");
+});
+
+// prevent users from spam clicking buttons
+$("body").on("submit", "form", function() {
+    $(this).submit(function() {
+        return false;
+    });
+    return true;
+});

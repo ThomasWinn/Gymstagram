@@ -266,6 +266,13 @@ opacity: .7;
     border-radius: 50%;
 }
 
+.edit-profile-img {
+    height: 20em;
+    width: 20em;
+    border-radius: 50%;
+    cursor:pointer;
+}
+
 .profile-stats-div {
     margin-left: auto;
     margin-right: auto;
