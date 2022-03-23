@@ -103,7 +103,7 @@ def get_all_posts_reverse():
 
 def get_user_posts(user_id):
     with get_db_cursor() as cur:
-        cur.execute("SELECT * FROM posts where user_id = %s", (user_id,))
+        cur.execute("SELECT * FROM posts where user_id = %s ORDER BY tstamp DESC", (user_id,))
         return cur.fetchall()
 
 def get_post(post_id):
