@@ -401,7 +401,7 @@ def first_time_user(session):
     # for some reason, it'll get a profile from the db, but when I look in the db, the user was never added...
     current_app.logger.info(db.get_user_profile(session['user_id']))
     if not db.get_user_profile(session['user_id']):
-        if session['name']:
+        if session['name'] and len(session['name'].split(' ')) == 2:
             full_name = session['name'].split(' ')
             fname = full_name[0]
             lname = full_name[1]

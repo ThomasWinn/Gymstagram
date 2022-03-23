@@ -91,21 +91,3 @@ create table post_tags (
   tag_id INT,
   UNIQUE (post_id, tag_id)
 );
-
-
--- why can't i add anything to anon
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dlds12', 'Anonyomous', 'Hughdan', 'Liu', 'Hughdan Liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjkd', 'Anon', 'Thom', 'Liu', 'Thom Liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsjf23Dfj2', 'anon', 'T', 'Liu', 'T Liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKsalfkjsaf12', 'JEFF', 'Jeff', 'Liu', 'Jeff Liu');
-insert into users (user_id, username, first_name, last_name, full_name) values ('lKla3Dlds12', 'Calvinliu', 'Calvin', 'Liu', 'Calvin Liu');
-
--- insert into tags (tag) values ('LOL');
--- insert into tags (tag) values ('lol');
--- insert into tags (tag) values ('lolita');
--- insert into tags (tag) values ('lolz');
--- insert into tags (tag) values ('lolly');
-
-
--- insert into posts (post_title, post_description, user_id) values ('My Workout', 'Insane Chest Workout 2/28/2022', 'lKsjf23Dlds12') RETURNING post_id;
-
