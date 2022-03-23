@@ -183,6 +183,22 @@ body {
     opacity: 1
 }
 
+.edit-comment-button {
+    background: blue; 
+    border:none; 
+    position: absolute; 
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.6;
+    width:20px; 
+    height:1.1em;
+    align-items:left;
+}
+
+.edit-comment-button:hover {
+    opacity: 1
+}
+
 .delete-post-button {
     background: red; 
     border:none; 
@@ -209,7 +225,14 @@ body {
 }
 
 .post-icon {
-    font-size: 0.3em;
+    position: absolute;
+    top:2px;
+    right:3px;
+    color:white;
+}
+
+.comment-icon {
+    font-size: 0.1em;
     position: absolute;
     top:2px;
     right:3px;
