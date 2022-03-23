@@ -27,7 +27,7 @@ create table followers (
 
 create table posts (
   post_id SERIAL PRIMARY KEY,
-  tstamp timestamp NOT NULL DEFAULT NOW(),
+  tstamp timestamp NOT NULL DEFAULT date_trunc('second', NOW() - interval '5 hours'),
   description text NOT NULL,
   filename text,
   data bytea,
@@ -65,7 +65,7 @@ create table likes (
 
 create table comments (
   comment_id SERIAL PRIMARY KEY,
-  tstamp timestamp NOT NULL DEFAULT NOW(),
+  tstamp timestamp NOT NULL DEFAULT date_trunc('second', NOW() - interval '5 hours'),
   post_id INT,
   user_id text,
   comment text,

@@ -5,289 +5,298 @@
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="post-area">  
-                      <div class="post">
-                          <div class="post-top">
-                          </div>
-                              <div>
-                                 <div style="position: relative;">
-                                      <img class=" post-img pure-img" style="display: block;" src="{{url_for("view_post_image", post_id=current_post['post_id'])}}">
-                                      {% if session['profile'] and session['profile']['user_id'] == current_post['user_id'] %}
-                                            <form>
-                                                <button formaction="{{ url_for('view_edit_post', post_id=current_post['post_id']) }}" formmethod="get" class="edit-post-button">
-                                                    <i class="post-icon fa fa-pencil"></i>
-                                                </button>
-                                                <button formaction="{{ url_for('delete_post', post_id=current_post['post_id']) }}" formmethod="post" class="delete-post-button">
-                                                    <i class="post-icon fa fa-trash"></i>
-                                                </button>
-                                            </form>
-                                      {% endif %}
-                                  </div>
-                                  <table class="pure-table pure-table-horizontal post-table">
-                                      <thead>
-                                          <tr>
-                                              <th>Exercise</th>
-                                              <th>Sets</th>
-                                              <th>Reps</th>
-                                              <th>Time</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                      {% for exercise in current_exercises %}
-                                          {% if exercise['post_id'] == current_post['post_id'] %}
-                                              <tr>
-                                                  <td>{{exercise['exercise_name']}}</td>
-                                                  <td>
-                                                      {% if exercise['num_sets'] == None %}
-                                                          -
-                                                      {% else %}
-                                                          {{exercise['num_sets']}}
-                                                      {% endif %}
-                                                  </td>
-                                                  <td>
-                                                      {% if exercise['num_reps'] == None %}
-                                                          -
-                                                      {% else %}
-                                                          {{exercise['num_reps']}}
-                                                      {% endif %}
-                                                  </td>
-                                                  <td>
-                                                      {% if exercise['num_time'] == None %}
-                                                          -
-                                                      {% else %}
-                                                          {{exercise['num_time']}} {{exercise['time_units']}}
-                                                      {% endif %}
-                                                  </td>
-                                              </tr>
-                                          {% endif %}
-                                      {% endfor %}
-                                      </tbody>
-                                  </table>
-                                  <p class="post-caption">
-                                      <b>
-                                        {% for user in all_users %}
-                                            {% if user['user_id'] == current_post['user_id'] %}
-                                                <p>@{{ user['username'] }}
-                                            {% endif %}
-                                        {% endfor %}
-                                      </b> {{ current_post['description'] }} <i>{{ current_post['tstamp'] }}</i> </p>
-                                      
-                              </div>
-                          <div class="post-like-comment">
-                              <div>
-                                  <p><p id = "num_likes">{{ num_likes[0] }}</p>
-                                  {% if session["profile"] %}
-                                        {% if session['profile']['user_id'] in post_likes %}
-                                            <button id  = "like_button_temp">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </button>
-                                            <button id = "unlike_button">
-                                                <i class="fa fa-thumbs-down"></i>
-                                            </button>
-                                        {% else %}
-                                            <button id  = "like_button">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </button>
-                                            <button id = "unlike_button_temp">
-                                                <i class="fa fa-thumbs-down"></i>
-                                            </button>
-                                        {% endif %}
+    <div class="post">
+        <div class="post-top">
+        </div>
+            <div>
+                <div style="position: relative;">
+                    <img class=" post-img pure-img" style="display: block;" src="{{url_for("view_post_image", post_id=current_post['post_id'])}}">
+                    {% if session['profile'] and session['profile']['user_id'] == current_post['user_id'] %}
+                        <form>
+                            <button formaction="{{ url_for('view_edit_post', post_id=current_post['post_id']) }}" formmethod="get" class="edit-post-button">
+                                <i class="post-icon fa fa-pencil"></i>
+                            </button>
+                            <button formaction="{{ url_for('delete_post', post_id=current_post['post_id']) }}" formmethod="post" class="delete-post-button">
+                                <i class="post-icon fa fa-trash"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                <table class="pure-table pure-table-horizontal post-table">
+                    <thead>
+                        <tr>
+                            <th>Exercise</th>
+                            <th>Sets</th>
+                            <th>Reps</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for exercise in current_exercises %}
+                        {% if exercise['post_id'] == current_post['post_id'] %}
+                            <tr>
+                                <td>{{exercise['exercise_name']}}</td>
+                                <td>
+                                    {% if exercise['num_sets'] == None %}
+                                        -
+                                    {% else %}
+                                        {{exercise['num_sets']}}
                                     {% endif %}
-                              
-                                  </p>
+                                </td>
+                                <td>
+                                    {% if exercise['num_reps'] == None %}
+                                        -
+                                    {% else %}
+                                        {{exercise['num_reps']}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if exercise['num_time'] == None %}
+                                        -
+                                    {% else %}
+                                        {{exercise['num_time']}} {{exercise['time_units']}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="post-caption">
+                    <b>
+                    {% for user in all_users %}
+                        {% if user['user_id'] == current_post['user_id'] %}
+                        <a href="{{ url_for('profile', id=current_post['user_id']) }}" style="text-decoration: none; color: black;">
+                            <p>@{{ user['username'] }}
+                        </a>
+                        {% endif %}
+                    {% endfor %}
+                    </b> {{ current_post['description'] }} <i>{{ current_post['tstamp'] }}</i> </p>
+                    
+            </div>
+        <div class="post-like-comment">
+            <div>
+                <p><p id = "num_likes">{{ num_likes[0] }}</p>
+                {% if session["profile"] %}
+                    {% if session['profile']['user_id'] in post_likes %}
+                        <button id  = "like_button_temp">
+                            <i class="fa fa-thumbs-up"></i>
+                        </button>
+                        <button id = "unlike_button">
+                            <i class="fa fa-thumbs-down"></i>
+                        </button>
+                    {% else %}
+                        <button id  = "like_button">
+                            <i class="fa fa-thumbs-up"></i>
+                        </button>
+                        <button id = "unlike_button_temp">
+                            <i class="fa fa-thumbs-down"></i>
+                        </button>
+                    {% endif %}
+                {% endif %}
+            
+                </p>
+            </div>
+            <div>
+            </div>
+        </div>
+        <div class = "comments">
+        <div id="all_comments">
 
-                                  {% if session["profile"] %}
-                                  <script>
-                                    $("#like_button_temp").hide();
-                                    $("#unlike_button_temp").hide();
-
-
-                                    $('#like_button').click(function(){
-                                        $("#like_button").hide();    
-                                        $("#unlike_button_temp").show();
-
-                                        var num_likes_temp = Number({{ num_likes[0] }}) + 1;
-                                        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
-
-                                        $.ajax({
-                                        url: "{{url_for('like_post')}}",
-                                        data: {
-                                                post_id: {{ current_post['post_id'] }},
-                                                user_id: "{{ session['profile']['user_id'] }}",
-                                        },
-                                        success: function(response){
-                                            console.log("success");
-                                        },
-                                        type:'POST'
-                                        })
-                                    });
-
-                                    $('#unlike_button_temp').click(function(){
-                                        $("#unlike_button_temp").hide();    
-                                        $("#like_button").show();
-
-                                        var num_likes_temp = Number({{ num_likes[0] }});
-                                        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
-
-                                        $.ajax({
-                                        url: "{{url_for('unlike_post')}}",
-                                        data: {
-                                                post_id: {{ current_post['post_id'] }},
-                                                user_id: "{{ session['profile']['user_id'] }}",
-                                        },
-                                        success: function(response){
-                                            console.log("success");
-                                        },
-                                        type:'POST'
-                                        })
-                                    });
-
-                                    $('#unlike_button').click(function(){
-                                        $("#unlike_button").hide();    
-                                        $("#like_button_temp").show();
-
-                                        
-                                        var num_likes_temp = Number({{ num_likes[0] }}) - 1;
-                                        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
-
-                                        $.ajax({
-                                        url: "{{url_for('unlike_post')}}",
-                                        data: {
-                                                post_id: {{ current_post['post_id'] }},
-                                                user_id: "{{ session['profile']['user_id'] }}",
-                                        },
-                                        success: function(response){
-                                            console.log("success");
-                                        },
-                                        type:'POST'
-                                        })
-                                    });
-
-                                    $('#like_button_temp').click(function(){
-                                        $("#like_button_temp").hide();    
-                                        $("#unlike_button").show();
-
-                                        var num_likes_temp = Number({{ num_likes[0] }});
-                                        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
-
-                                        $.ajax({
-                                        url: "{{url_for('like_post')}}",
-                                        data: {
-                                                post_id: {{ current_post['post_id'] }},
-                                                user_id: "{{ session['profile']['user_id'] }}",
-                                        },
-                                        success: function(response){
-                                            console.log("success");
-                                        },
-                                        type:'POST'
-                                        })
-                                    });
-                                  </script>
-                                  {% endif %}
-                              </div>
-                              <div>
-                              </div>
-                          </div>
-                          <div class = "comments">
-                            <div id="all_comments">
-
-                                {% for comment in all_comments %}
-                                    {% for user in all_users %}
-                                        {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
-                                                <div>
-                                                    <b>@{{ user['username'] }}</b> <p id = "comment_text_{{ comment['comment_id'] }}" style = "display:inline">{{ comment['comment'] }}</p>  <i>{{ comment['tstamp'] }}</i> <br>
-                                                    {% if session['profile'] and session['profile']['user_id'] == comment['user_id'] %}
-                                                         <span>   
-                                                                <button class="submit_comment_edit" id = "submit_comment_edit_{{ comment['comment_id'] }}">
-                                                                    Save Changes
-                                                                </button>
-                                                                <button class="edit_comment_button" id = "edit_comment_button_{{ comment['comment_id'] }}">
-                                                                    Edit
-                                                                </button>
-                                                            <form style = "display: inline">
-                                                                <button formaction="{{ url_for('delete_comment', post_id=current_post['post_id'], comment_id = comment['comment_id']) }}" formmethod="post" class="delete-comment-button">
-                                                                    Delete
-                                                                </button>
-                                                            </form>
-                                                         </span>
-                                                        <script>
-                                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
-                                                            var temp_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
-
-                                                            $("#edit_comment_button_{{ comment['comment_id'] }}").click(function() {
-                                                                $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<input type='text' id = 'comment_text_{{ comment['comment_id'] }}' value ='{{comment['comment']}}'>");
-                                                                $("#submit_comment_edit_{{ comment['comment_id'] }}").show();
-                                                                $("#edit_comment_button_{{ comment['comment_id'] }}").hide();
-                                                            });
-
-
-                                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").click(function() {
-                                                                $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
-                                                                $("#edit_comment_button_{{ comment['comment_id'] }}").show();
-                                                                
-                                                                var new_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
-
-                                                                $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<p id = 'comment_text_{{ comment['comment_id'] }}'>"+ new_comment + "</p>");
-
-                                                                
-                                                                $.ajax({
-                                                                url: "{{url_for('edit_comment')}}",
-                                                                data: {
-                                                                        post_id: {{ current_post['post_id'] }},
-                                                                        comment_id: {{ comment['comment_id'] }},
-                                                                        new_comment: new_comment
-                                                                },
-                                                                success: function(response){
-                                                                    console.log("success");
-                                                                },
-                                                                type:'POST'
-                                                                })
-                                                            });
-                                                            
-                                                        </script>
-                                                        
-                                                    {% endif %}
-                                                </div>
-                                            
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endfor %}
-                            </div>
-                                {% if session["profile"] %}
-                                  <textarea name = "comment" id = "comment" rows = "5" cols = "50" placeholder="Comment"required></textarea>
-                                  <button class = "pure-button" id  = "comment_button">Comment</button>
+            {% for comment in all_comments %}
+                {% for user in all_users %}
+                    {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
+                            <div>
+                                <a href="{{ url_for('profile', id=current_post['user_id']) }}" style="text-decoration: none; color: black;">
+                                    <b>@{{ user['username'] }}</b> 
+                                </a>
+                                    <p id = "comment_text_{{ comment['comment_id'] }}" style = "display:inline">{{ comment['comment'] }}</p>  <i style="padding-right:0.5em;">{{ comment['tstamp'] }}</i> <br>
+                                    {% if session['profile'] and session['profile']['user_id'] == comment['user_id'] %}
+                                    <!-- <button id = "edit_comment_button_{{ comment['comment_id'] }}" class="edit-comment-button" style="display:inline;">
+                                        <i class="comment-icon fa fa-pencil" style="font-size:0.9em"></i>
+                                    </button> -->
+                                        <span>   
+                                            <button class="submit_comment_edit" id = "submit_comment_edit_{{ comment['comment_id'] }}">
+                                                Save Changes
+                                            </button>
+                                            <button class="edit_comment_button" id = "edit_comment_button_{{ comment['comment_id'] }}">
+                                                Edit
+                                            </button>
+                                        <form style = "display: inline">
+                                            <button formaction="{{ url_for('delete_comment', post_id=current_post['post_id'], comment_id = comment['comment_id']) }}" formmethod="post" class="delete-comment-button">
+                                                Delete
+                                            </button>
+                                        </form>
+                                        <!-- <button formaction="{{ url_for('delete_post', post_id=current_post['post_id']) }}" formmethod="post" class="delete-post-button">
+                                            <i class="post-icon fa fa-trash"></i>
+                                        </button> -->
+                                        </span>
                                     <script>
-                                        
-        
-                                        $('#comment_button').click(function(){
-                                            var container = $("#all_comments");
-                                            var input_comment = $('#comment').val();
-                                            
-                                            console.log(input_comment)
-                                            $(container).append('<div>'+input_comment+'</div>'); //adding new input field
+                                        $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
+                                        var temp_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
 
+                                        $("#edit_comment_button_{{ comment['comment_id'] }}").click(function() {
+                                            $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<textarea style='height:1em;' id = 'comment_text_{{ comment['comment_id'] }}'>{{comment['comment']}}</textarea>");
+                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").show();
+                                            $("#edit_comment_button_{{ comment['comment_id'] }}").hide();
+                                        });
+
+
+                                        $("#submit_comment_edit_{{ comment['comment_id'] }}").click(function() {
+                                            $("#submit_comment_edit_{{ comment['comment_id'] }}").hide();
+                                            $("#edit_comment_button_{{ comment['comment_id'] }}").show();
+                                            
+                                            var new_comment = $("#comment_text_{{ comment['comment_id'] }}").val();
+
+                                            $("#comment_text_{{ comment['comment_id'] }}").replaceWith("<span id = 'comment_text_{{ comment['comment_id'] }}'>"+ new_comment + "</span>");
+
+                                            
                                             $.ajax({
-                                            url: "{{url_for('add_comment')}}",
+                                            url: "{{url_for('edit_comment')}}",
                                             data: {
                                                     post_id: {{ current_post['post_id'] }},
-                                                    user_id: "{{ session['profile']['user_id'] }}",
-                                                    comment: input_comment
+                                                    comment_id: {{ comment['comment_id'] }},
+                                                    new_comment: new_comment
                                             },
                                             success: function(response){
                                                 console.log("success");
                                             },
                                             type:'POST'
                                             })
-                                            $("#comment").val("");
                                         });
+                                        
                                     </script>
+                                    
                                 {% endif %}
-                             </div>
+                            </div>
+                        
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+            {% if session["profile"] %}
+                <textarea name = "comment" id = "comment" rows = "5" cols = "50" placeholder="Comment"required></textarea>
+                <button class = "pure-button" id  = "comment_button">Comment</button>
+            {% endif %}
+            </div>
 
-                        </div>
+    </div>
 
 
-                        </div>
+    </div>
 
                       
-  </div>    
+</div>  
+{% if session["profile"] %}
+<script>
+    $("#like_button_temp").hide();
+    $("#unlike_button_temp").hide();
+
+
+    $('#like_button').click(function(){
+        $("#like_button").hide();    
+        $("#unlike_button_temp").show();
+
+        var num_likes_temp = Number({{ num_likes[0] }}) + 1;
+        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+
+        $.ajax({
+        url: "{{url_for('like_post')}}",
+        data: {
+                post_id: {{ current_post['post_id'] }},
+                user_id: "{{ session['profile']['user_id'] }}",
+        },
+        success: function(response){
+            console.log("success");
+        },
+        type:'POST'
+        })
+    });
+
+    $('#unlike_button_temp').click(function(){
+        $("#unlike_button_temp").hide();    
+        $("#like_button").show();
+
+        var num_likes_temp = Number({{ num_likes[0] }});
+        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+
+        $.ajax({
+        url: "{{url_for('unlike_post')}}",
+        data: {
+                post_id: {{ current_post['post_id'] }},
+                user_id: "{{ session['profile']['user_id'] }}",
+        },
+        success: function(response){
+            console.log("success");
+        },
+        type:'POST'
+        })
+    });
+
+    $('#unlike_button').click(function(){
+        $("#unlike_button").hide();    
+        $("#like_button_temp").show();
+
+        
+        var num_likes_temp = Number({{ num_likes[0] }}) - 1;
+        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+
+        $.ajax({
+        url: "{{url_for('unlike_post')}}",
+        data: {
+                post_id: {{ current_post['post_id'] }},
+                user_id: "{{ session['profile']['user_id'] }}",
+        },
+        success: function(response){
+            console.log("success");
+        },
+        type:'POST'
+        })
+    });
+
+    $('#like_button_temp').click(function(){
+        $("#like_button_temp").hide();    
+        $("#unlike_button").show();
+
+        var num_likes_temp = Number({{ num_likes[0] }});
+        $("#num_likes").replaceWith("<p id='num_likes'>" + num_likes_temp + "</p>");
+
+        $.ajax({
+        url: "{{url_for('like_post')}}",
+        data: {
+                post_id: {{ current_post['post_id'] }},
+                user_id: "{{ session['profile']['user_id'] }}",
+        },
+        success: function(response){
+            console.log("success");
+        },
+        type:'POST'
+        })
+    });
+
+
+    $('#comment_button').click(function(){
+        var container = $("#all_comments");
+        var input_comment = $('#comment').val();
+        
+        console.log(input_comment)
+        $(container).append('<div> <a href="{{ url_for('profile', id=current_post['user_id']) }}" style="text-decoration: none; color: black;"> <b>@{{ cur_username }}</b> </a>' + ' ' + input_comment + ' <i> Just Now </i>' + '</div>'); //adding new input field
+        
+        $.ajax({
+        url: "{{url_for('add_comment')}}",
+        data: {
+                post_id: {{ current_post['post_id'] }},
+                user_id: "{{ session['profile']['user_id'] }}",
+                comment: input_comment
+        },
+        success: function(response){
+            console.log("success");
+        },
+        type:'POST'
+        })
+        $("#comment").val("");
+    });
+    
+</script>
+{% endif %}  
 {% endblock %}

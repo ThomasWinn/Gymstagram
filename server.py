@@ -574,6 +574,9 @@ def search_text():
 
 @app.route('/view_post/<int:post_id>', methods=['GET'])
 def view_post(post_id):
+    cur_username = None
+    if session['profile']:
+        cur_username = db.get_username(session['profile']['user_id'])[0][0]
     current_post = db.get_post(post_id)[0]
     current_exercises = db.get_post_exercises(post_id)
     all_comments = db.get_all_comments()
@@ -584,7 +587,7 @@ def view_post(post_id):
     post_likes = []
     for post in temp_post_likes:
         post_likes.append(post[1])
-    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes, post_likes = post_likes)
+    return render_template('view_post.html',current_post = current_post, current_exercises = current_exercises, all_comments = all_comments, all_users = all_users, num_likes = num_likes, post_likes = post_likes, cur_username=cur_username)
 
 @app.route('/view_post/<int:post_id>/delete', methods=['POST'])
 @requires_auth
