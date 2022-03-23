@@ -33,7 +33,8 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **[Add a screenshot of each key page (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
 along with a very brief caption:**
 
-![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
+![](![home](https://user-images.githubusercontent.com/72582693/159814898-a87fb9b3-831a-4765-a95b-48dad0e02bd0.JPG) : Home/Main Page
+)
 
 
 ## Mock-up 
