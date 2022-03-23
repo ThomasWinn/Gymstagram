@@ -16,18 +16,18 @@
     {% if session["profile"] %}
         <div class="pure-g">
             <div class="button-left pure-u-1-2">
-                <a class="pure-button active-button" style="width: 6em;" href=""><b>Following</b></a>
+                <a class="pure-button active-button" style="width: 8em;" href=""><b>Following</b></a>
             </div>
             <div class="button-right pure-u-1-2">
-                <a class=" pure-button" style="width: 6em;" href="{{ url_for('main_page') }}"><b>Explore</b></a>
+                <a class=" pure-button" style="width: 8em;" href="{{ url_for('main_page') }}"><b>Explore</b></a>
             </div>
         </div>
     {% endif %}
     <div class="post-area">
         <div class = "pure-g">
             {% if following_list == [] %}
-                <div class="pure-u-1-1" style="text-align: center;">
-                    <p>Follow some users to populate this page!!<p>
+                <div class="pure-u-1-1 threedtext" style="text-align: center;">
+                    <b><p>Follow some users to populate this page!!<p></b>
                 </div>
             {% endif %}
             {% for post in posts %}
