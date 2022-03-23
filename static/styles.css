@@ -213,17 +213,25 @@ opacity: .7;
     border-radius: 0.8em 0.8em 0 0;
 }
 .post-caption {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
     font-size: 18px;
 }
+
 .post-like-comment {
     display:flex;
     justify-content: space-between;
 }
 
 .post-like-comment i {
-    border: none;
-    background-color: white;
-    font-size: 24px;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    font-size: 30px;
+}
+
+.num-likes {
+    display:flex;
+    align-items:center;
 }
 
 .post-table {
