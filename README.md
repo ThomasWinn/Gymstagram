@@ -84,3 +84,9 @@ here:**
 ## Some Refernces
 Frontend:
 https://www.w3schools.com/howto/howto_css_searchbar.asp
+
+Button styling: https://getcssscan.com/css-buttons-examples
+
+Navigation bar responsive: https://purecss.io/layouts/tucked-menu-vertical/
+
+Quote of the day: https://codepen.io/cliftwalker/pen/XJaEXY
