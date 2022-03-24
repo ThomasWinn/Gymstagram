@@ -23,6 +23,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 * Implementing functionality for likes which utilized heavy amounts of AJAX
 * Learning the BeautifulSoup4 Documentation to efficiently scrape quote sites
+* Implementing the followers and following functinality.
 
 ## Testing Notes
 
@@ -72,7 +73,6 @@ Link to prototype (Updated): https://app.moqups.com/5frE3V4AWB/view/page/a227f71
 Please do not document required libraries. or libraries that are mentioned in the product requirements**
 
 * Library or service name: description of use
-* https://markdotto.com/playground/3d-text/ : Implementing appearance of 3D text
 * BeautfiulSoup4: Scrape gym quotes off of https://upperhand.com/50-motivational-workout-quotes/
 
 **If there's anything else you would like to disclose about how your project
@@ -90,3 +90,5 @@ Button styling: https://getcssscan.com/css-buttons-examples
 Navigation bar responsive: https://purecss.io/layouts/tucked-menu-vertical/
 
 Quote of the day: https://codepen.io/cliftwalker/pen/XJaEXY
+
+Implementing appearance of 3D text: https://markdotto.com/playground/3d-text/
