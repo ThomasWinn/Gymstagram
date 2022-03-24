@@ -41,6 +41,9 @@ along with a very brief caption:**
 ![](![create_post](https://user-images.githubusercontent.com/72582693/159815158-038c426c-c261-4ef2-8d04-0f646f3484b5.JPG) Create Post
 )
 
+![](![viewpost](https://user-images.githubusercontent.com/72582693/159821419-9d260c16-fe9b-497a-8ea5-b0b6a7570df2.JPG)
+)
+
 
 ## Mock-up 
 
