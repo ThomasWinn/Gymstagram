@@ -89,5 +89,9 @@ create table tags (
 create table post_tags (
   post_id INT,
   tag_id INT,
-  UNIQUE (post_id, tag_id)
+  UNIQUE (post_id, tag_id),
+  CONSTRAINT fk_post
+    FOREIGN KEY(post_id) 
+  REFERENCES posts(post_id)
+  ON DELETE CASCADE
 );

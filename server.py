@@ -128,6 +128,7 @@ def main_page():
     return render_template('home.html', posts = all_posts, exercises=all_exercises, quote=la_quote, all_users = all_users, all_likes = all_likes, likes_dict = likes_dict, user_likes = user_likes, following_list = following_list_final)
 
 @app.route('/following')
+@requires_auth
 def following_page():
     all_posts = db.get_all_posts()
     all_exercises = db.get_all_exercises()
@@ -184,7 +185,7 @@ def display_tag_posts(tag_id):
             likes_dict[i[0]] += 1
     user_likes = []
     for i in all_likes:
-        if session['profile']['user_id'] == i[1]:
+        if session and session['profile']['user_id'] == i[1]:
             user_likes.append(i[0])
 
     if 'profile' not in session:
@@ -274,6 +275,7 @@ def profile(id):
     return render_template('profile.html', data=data)
 
 @app.route('/profile/<string:id>', methods=['POST'])
+@requires_auth
 def update_user_profile(id):
     img_flag = 0
     file = request.files['image']
@@ -336,6 +338,7 @@ def update_user_profile(id):
 
 
 @app.route('/follow', methods = ['POST'])
+@requires_auth
 def follow_user():
     my_id = request.form['my_id']
     follow_user_id = request.form['follow_user_id']
@@ -343,6 +346,7 @@ def follow_user():
     return jsonify(status = "OK")
 
 @app.route('/unfollow', methods = ['POST'])
+@requires_auth
 def unfollow_user():
     my_id = request.form['my_id']
     follow_user_id = request.form['follow_user_id']
@@ -632,6 +636,7 @@ def edit_comment():
 #     exercises = db.get_post_exercises(post_id)
 #     return render_template("home.html", exercises = exercises)
 @app.route('/add_comment', methods = ['POST'])
+@requires_auth
 def add_comment():
     post_id = request.form['post_id']
     user_id = request.form['user_id']
@@ -640,6 +645,7 @@ def add_comment():
     return jsonify(status = "OK")
 
 @app.route('/like_post', methods = ['POST'])
+@requires_auth
 def like_post():
     post_id = request.form['post_id']
     user_id = request.form['user_id']
@@ -663,6 +669,7 @@ def edit_post(post_id):
     return redirect(url_for("view_post", post_id=post_id))
 
 @app.route('/unlike_post', methods = ['POST'])
+@requires_auth
 def unlike_post():
     post_id = request.form['post_id']
     user_id = request.form['user_id']
