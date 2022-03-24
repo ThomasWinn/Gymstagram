@@ -35,15 +35,20 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **[Add a screenshot of each key page (around 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
 along with a very brief caption:**
 
-![home](https://user-images.githubusercontent.com/72582693/159814898-a87fb9b3-831a-4765-a95b-48dad0e02bd0.JPG) : Home/Main Page
-
-
-![profile](https://user-images.githubusercontent.com/72582693/159815020-cea7ae5a-6520-48d3-989c-9be70825e9fc.JPG) Profile Page
-
-![create_post](https://user-images.githubusercontent.com/72582693/159815158-038c426c-c261-4ef2-8d04-0f646f3484b5.JPG) Create Post
-
-
-![viewpost](https://user-images.githubusercontent.com/72582693/159821419-9d260c16-fe9b-497a-8ea5-b0b6a7570df2.JPG) View Post
+This is the home page / landing page where randomly loaded motivational quotes are displayed and scraped with BeautifulSoup.<br>
+Explore page = posts from all Gymstagram users are displayed ordered by latest time stamp. <br>
+Followers page = posts from those you follow are visible and displayed by latest time stamp.<br>
+As a logged in user, you're able to observe the posted user's image, caption, and exercises. You're also able to interact with the posted user by liking or commenting on the post.
+![home](https://user-images.githubusercontent.com/72582693/159814898-a87fb9b3-831a-4765-a95b-48dad0e02bd0.JPG)
+<br>
+On your Profile page, you're able to see the your profile picture, username, full name, follower/following count, post count, and bio. At the bottom you can see your posts on Gymstagram with the ability to edit the description or delete the post.
+![profile](https://user-images.githubusercontent.com/72582693/159815020-cea7ae5a-6520-48d3-989c-9be70825e9fc.JPG)
+<br>
+On creation of a new post, you're required to add a picture and a caption. Tag's are optional inside the caption, but makes finding posts way easier. You can also add exercises if you so choose.
+![create_post](https://user-images.githubusercontent.com/72582693/159815158-038c426c-c261-4ef2-8d04-0f646f3484b5.JPG)
+<br>
+Upon viewing a post, you can look at the picture closer, and also have the ability to comment on this post or like. You can edit and delete your own post if you want as well.
+![viewpost](https://user-images.githubusercontent.com/72582693/159821419-9d260c16-fe9b-497a-8ea5-b0b6a7570df2.JPG)
 
 
 
