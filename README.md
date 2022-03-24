@@ -21,7 +21,8 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* Implementing functionality for likes
+* Implementing functionality for likes which utilized heavy amounts of AJAX
+* Learning the BeautifulSoup4 Documentation to efficiently scrape quote sites
 
 ## Testing Notes
 
@@ -36,8 +37,8 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 along with a very brief caption:**
 
 This is the home page / landing page where randomly loaded motivational quotes are displayed and scraped with BeautifulSoup.<br>
-Explore page = posts from all Gymstagram users are displayed ordered by latest time stamp. <br>
-Followers page = posts from those you follow are visible and displayed by latest time stamp.<br>
+<b>Explore page</b> = posts from all Gymstagram users are displayed ordered by latest time stamp. <br>
+<b>Following page</b> = posts from those you follow are visible and displayed by latest time stamp.<br>
 As a logged in user, you're able to observe the posted user's image, caption, and exercises. You're also able to interact with the posted user by liking or commenting on the post.
 ![home](https://user-images.githubusercontent.com/72582693/159814898-a87fb9b3-831a-4765-a95b-48dad0e02bd0.JPG)
 <br>
