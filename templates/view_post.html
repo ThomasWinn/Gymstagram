@@ -105,7 +105,7 @@
                     {% for user in all_users %}
                         {% if comment['post_id'] == current_post['post_id'] and user['user_id'] == comment['user_id'] %}
                                 <div>
-                                    <a href="{{ url_for('profile', id=current_post['user_id']) }}" style="text-decoration: none; color: black;">
+                                    <a href="{{ url_for('profile', id=user['user_id']) }}" style="text-decoration: none; color: black;">
                                         <b>@{{ user['username'] }}</b> 
                                     </a>
                                         <p id = "comment_text_{{ comment['comment_id'] }}" style="display:inline;">{{ comment['comment'] }}</p>  <i style="padding-right:0.5em;">{{ comment['tstamp'] }}</i> <br>
